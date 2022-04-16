@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/script.js" defer></script>
+    <title>Kalkulator ugovornih kazni</title>
+</head>
+
+<body>
+    <header>
+        <h1>Kalkulator ugovornih kazni</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Datumi:</h2>
+            <div class="date">
+                <p>Unesite datum pocetka ugovora:</p>
+                <div>
+                    <label for="input-start-date">Dan</label>
+                    <input type="text" id="input-start-date">
+                </div>
+                <div>
+                    <label for="input-start-month">Mesec</label>
+                    <input type="text" id="input-start-month">
+                </div>
+                <div>
+                    <label for="input-start-year">Godina</label>
+                    <input type="text" id="input-start-year">
+                </div>
+                <button id="btn--date">OK</button>
+            </div>
+            <div class="date">
+                <p id="today">Danasnji datum: </p>
+            </div>
+            <div class="date date--calculated">
+                <p id="time-passed">Proteklo vreme:</p>
+            </div>
+            <div class="date date--calculated">
+                <p id="time-left">Preostalo vreme:</p>
+            </div>
+        </section>
+        <section>
+            <h2>Trenutni paket:</h2>
+            <select name="billing-product">
+                <option value="" selected disabled>Izaberi:</option>
+                <optgroup label="Trio">
+                    <option value="silver">Trio Silver</option>
+                    <option value="gold">Trio Gold</option>
+                </optgroup>
+                <optgroup label="Eon">
+                    <option value="light">Eon Light</option>
+                    <option value="full">Eon Full</option>
+                </optgroup>
+            </select>
+        </section>
+    </main>
+    <footer></footer>
+</body>
+
+</html>
