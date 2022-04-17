@@ -1,10 +1,13 @@
 let startDay, startMonth, startYear;
 let currentDay, currentMonth, currentYear;
 let totalDaysPassed, totalDaysLeft;
+let totalPaymentsLeft;
 const dateInput = document.querySelector("#contract-start-date");
 const buttonDate = document.querySelector("#btn--date");
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
+const displayTotalPaymentsLeft = document.querySelector("#total-left");
+const displayBillingProductPrice = document.querySelector("#bp-price");
 
 function setTodaysDate() {
     const displayToday = document.querySelector("#today");
@@ -47,28 +50,56 @@ const currentBillingProduct = document.querySelector("#current-bp");
 currentBillingProduct.addEventListener("change", (e) => {
     billingProducts.forEach((product) => {
         if (product.name === e.currentTarget.value) {
-            console.log(product.price)
+            displayBillingProductPrice.textContent = `Cena paketa: ${product.price}`;
+            totalPaymentsLeft = ((product.price / 30) * totalDaysLeft).toFixed(2);
+            displayTotalPaymentsLeft.textContent = `Ukupno preostale pretplate: ${totalPaymentsLeft} RSD`;
         }
     })
 });
 
+const inputChannels = [...document.querySelectorAll("input[name='channels']")];
+console.log(inputChannels)
+inputChannels.forEach(channel => {
+    channel.addEventListener("change", function (e) {
+        if (e.currentTarget.checked) {
+            productPackages.forEach(product => {
+                if (e.currentTarget.id === product.name) {
+                    console.log(product.price)
+                }
+            })
+        }
+    })
+})
+
+
 const billingProducts = [
     {
         name: "silver",
-        price: 1500
+        price: 3449
     },
     {
         name: "gold",
-        price: 2500
+        price: 3829
     },
     {
         name: "light",
-        price: 2000
+        price: 3499
     },
     {
         name: "full",
-        price: 4000
+        price: 3999
     }
+]
+
+const productPackages = [
+    {
+        name: "pink",
+        price: 310
+    },
+    {
+        name: "cinestar",
+        price: 490
+    },
 ]
 
 setTodaysDate();
