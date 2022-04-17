@@ -7,7 +7,7 @@ const buttonDate = document.querySelector("#btn--date");
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
-const displayBillingProductPrice = document.querySelector("#bp-price");
+const displayRatePlanPrice = document.querySelector("#rp-price");
 
 function setTodaysDate() {
     const displayToday = document.querySelector("#today");
@@ -46,59 +46,73 @@ buttonDate.addEventListener("click", () => {
     calculateTotalDays();
 });
 
-const currentBillingProduct = document.querySelector("#current-bp");
-currentBillingProduct.addEventListener("change", (e) => {
-    billingProducts.forEach((product) => {
-        if (product.name === e.currentTarget.value) {
-            displayBillingProductPrice.textContent = `Cena paketa: ${product.price}`;
-            totalPaymentsLeft = ((product.price / 30) * totalDaysLeft).toFixed(2);
+const currentRatePlan = document.querySelector("#current-rp");
+currentRatePlan.addEventListener("change", (e) => {
+    ratePlans.forEach((plan) => {
+        if (plan.name === e.currentTarget.value) {
+            displayRatePlanPrice.textContent = `Cena paketa: ${(plan.price).toFixed(2)} RSD`;
+            totalPaymentsLeft = ((plan.price / 30) * totalDaysLeft).toFixed(2);
             displayTotalPaymentsLeft.textContent = `Ukupno preostale pretplate: ${totalPaymentsLeft} RSD`;
         }
     })
 });
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
-console.log(inputChannels)
+const displayTotalChannels = document.querySelector("#total-channels");
 inputChannels.forEach(channel => {
     channel.addEventListener("change", function (e) {
-        if (e.currentTarget.checked) {
-            productPackages.forEach(product => {
-                if (e.currentTarget.id === product.name) {
-                    console.log(product.price)
+        productPackages.forEach(product => {
+            if (e.currentTarget.id === product.name) {
+                if (e.currentTarget.checked) {
+                    product.qty = totalDaysPassed;
+                } else {
+                    product.qty = 0;
                 }
-            })
-        }
+            }
+            product.calcPrice = (product.price / 30) * product.qty
+            console.table(productPackages);
+        })
+        let totalPackages = (productPackages.reduce((acc,curr) => acc.calcPrice + curr.calcPrice)).toFixed(2)
+        displayTotalChannels.textContent = `Ukupno kanali: ${totalPackages} RSD`
     })
 })
 
+// function calculateTotalPackages() {
+//     productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice, 0);
+// } 
 
-const billingProducts = [
+
+const ratePlans = [
     {
         name: "silver",
-        price: 3449
+        price: 3449,
     },
     {
         name: "gold",
-        price: 3829
+        price: 3829,
     },
     {
         name: "light",
-        price: 3499
+        price: 3499,
     },
     {
         name: "full",
-        price: 3999
+        price: 3999,
     }
 ]
 
 const productPackages = [
     {
         name: "pink",
-        price: 310
+        price: 310,
+        qty: 0,
+        calcPrice: 0
     },
     {
         name: "cinestar",
-        price: 490
+        price: 490,
+        qty: 0,
+        calcPrice: 0
     },
 ]
 
