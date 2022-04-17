@@ -30,9 +30,14 @@ function setStartDate() {
 }
 
 function calculateTotalDays() {
-    totalDaysPassed = ((30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30));
-    if ((currentYear - startYear) === 2) {
-        totalDaysPassed += 360;
+    if ((currentYear - startYear) === 0) {
+        totalDaysPassed = currentDay + ((currentMonth - startMonth) * 30);
+    } else if ((currentYear - startYear) === 1) {
+        totalDaysPassed = ((30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30));
+    } else if ((currentYear - startYear) === 2) {
+        totalDaysPassed = (30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30) + 360;
+    } else {
+        return "error";
     }
     totalDaysLeft = 719 - totalDaysPassed;
     let formattedDaysPassed = `${Math.floor(totalDaysPassed / 30)} M i ${totalDaysPassed % 30} D`;
@@ -69,17 +74,14 @@ inputChannels.forEach(channel => {
                     product.qty = 0;
                 }
             }
-            product.calcPrice = (product.price / 30) * product.qty
+            product.calcPrice = (product.price / 30) * product.qty;
+            e.currentTarget.parentNode.lastElementChild.textContent = "testing" //product.calcPrice
             console.table(productPackages);
-        })
-        let totalPackages = (productPackages.reduce((acc,curr) => acc.calcPrice + curr.calcPrice)).toFixed(2)
-        displayTotalChannels.textContent = `Ukupno kanali: ${totalPackages} RSD`
-    })
-})
-
-// function calculateTotalPackages() {
-//     productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice, 0);
-// } 
+        });
+        let totalPackages = (productPackages.reduce((acc,curr) => acc.calcPrice + curr.calcPrice)).toFixed(2);
+        displayTotalChannels.textContent = `Ukupno kanali: ${totalPackages} RSD`;
+    });
+});
 
 
 const ratePlans = [
