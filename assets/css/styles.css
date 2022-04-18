@@ -5,27 +5,55 @@
 }
 
 body {
-    background-color: aliceblue;
+    font-family: system-ui, sans-serif;
+    background-color: honeydew;
 }
 
 section {
-    padding: 2em;
+    padding: 1.5em;
+    margin: 0.5em 0;
     background-color: white;
-    margin: 2em;
+    border-radius: 0.5em;
 }
 
-h1, h2 {
-    padding: 0.5em 0;
-}
+ h1, h2 {
+    padding-bottom: 0.5em;
+} 
 
 h1 {
+    padding-top: 1em;
     text-align: center;
 }
 
 p {
-    padding: 0.2em 0;
-}
+    padding: 0.5em 0;
+} 
 
 input {
     margin: 0.5em 0;
+    padding: 0.2em 0;
+    width: 50%;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1.5em;
+    gap: 1.5em;
+}
+
+.wrapper section:nth-child(1), .wrapper section:nth-child(2) {
+    grid-row: span 2;
+}
+
+.channels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    padding: 0.2em;
+    gap: 1em;
+}
+
+#prev-rp {
+    display: none;
 }

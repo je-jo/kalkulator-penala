@@ -15,20 +15,56 @@
         <h1>Kalkulator ugovornih kazni</h1>
     </header>
     <main>
+        <div class="wrapper">
+            <section>
+                <h2>Datumi:</h2>
+                <label>Unesite datum pocetka ugovora:
+                    <input type="date" id="contract-start-date">
+                </label>
+                <button id="btn--date">OK</button>
+                <p id="today">Danasnji datum: </p>
+                <p id="time-passed">Proteklo vreme:</p>
+                <p id="time-left">Preostalo vreme:</p>
+            </section>
+            <section>
+                <h2>Trenutni paket:</h2>
+                <select name="rate-plan" id="current-rp">
+                    <option value="" selected disabled>Izaberi:</option>
+                    <optgroup label="Trio">
+                        <option value="silver">Trio Silver</option>
+                        <option value="gold">Trio Gold</option>
+                    </optgroup>
+                    <optgroup label="Eon">
+                        <option value="light">Eon Light</option>
+                        <option value="full">Eon Full</option>
+                    </optgroup>
+                </select>
+                <p id="rp-price">Cena paketa:</p>
+            </section>
+            <section>
+                <h2>Ostvareni benefiti:
+                </h2>
+                <p id="total-benefits">Ukupno benefiti:</p>
+            </section>
+            <section>
+                <h2>Preostale pretplate:</h2>
+                <p id="total-left">Ukupno preostale pretplate:</p>
+            </section>
+        </div>
+<div class="wrapper">
         <section>
-            <h2>Datumi:</h2>
-            <label>Unesite datum pocetka ugovora:
-                <input type="date" id="contract-start-date">
-            </label>
-            <button id="btn--date">OK</button>
-            <p id="today">Danasnji datum: </p>
-            <p id="time-passed">Proteklo vreme:</p>
-            <p id="time-left">Preostalo vreme:</p>
-        </section>
-        <section>
-            <h2>Trenutni paket:</h2>
-            <select name="rate-plan" id="current-rp">
+            <h2>Akcija:</h2>
+            <p>Vrsta akcije:</p>
+            <select name="price-reduction" id="price-reduction">
                 <option value="" selected disabled>Izaberi:</option>
+                    <option value="one">1 dinar</option>
+                    <option value="prev">Stara cena</option>
+                    <option value="percent">Procenat</option>
+            </select>
+            <label for="reduction-time">Trajanje:</label>
+            <input type="text" id="reduction-time">
+            <select name="previous-rate-plan" id="prev-rp">
+                <option value="" selected disabled>Izaberi stari paket:</option>
                 <optgroup label="Trio">
                     <option value="silver">Trio Silver</option>
                     <option value="gold">Trio Gold</option>
@@ -38,10 +74,7 @@
                     <option value="full">Eon Full</option>
                 </optgroup>
             </select>
-            <p id="rp-price">Cena paketa:</p>
-        </section>
-        <section>
-            <h2>Akcija:</h2>
+            <p id="rp-total">Ukupno:</p>
         </section>
         <section>
             <h2>Promo Kanali:</h2>
@@ -62,10 +95,7 @@
         <section>
             <h2>Prikljucne takse:</h2>
         </section>
-        <section>
-            <h2>Preostale pretplate:</h2>
-            <p id="total-left">Ukupno preostale pretplate:</p>
-        </section>
+    </div>
     </main>
     <footer></footer>
 </body>

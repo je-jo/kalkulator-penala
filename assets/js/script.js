@@ -2,21 +2,56 @@ let startDay, startMonth, startYear;
 let currentDay, currentMonth, currentYear;
 let totalDaysPassed, totalDaysLeft;
 let totalPaymentsLeft;
+let currentPrice;
+let reducedPrice;
+let totalPackages;
+let totalBenefitsArray = [reducedPrice, totalPackages];
+let totalBenefits = totalBenefitsArray.reduce((acc, curr) => acc + curr, 0);
 const dateInput = document.querySelector("#contract-start-date");
 const buttonDate = document.querySelector("#btn--date");
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
+const displayTotalBenefits = document.querySelector("#total-benefits");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
 const displayRatePlanPrice = document.querySelector("#rp-price");
 
-function setTodaysDate() {
-    const displayToday = document.querySelector("#today");
+const displayToday = document.querySelector("#today");
+
+displayTotalBenefits.textContent = `Ukupno benefiti: ${totalBenefits}`;
+
+function setCurrentDay() {
     currentDay = new Date().getDate();
+    return currentDay;
+}
+
+function setCurrentMonth() {
     currentMonth = new Date().getMonth() + 1;
+    return currentMonth;
+}
+
+function setCurrentYear() {
     currentYear = new Date().getFullYear();
+    return currentYear;
+}
+
+function setTodayFormatted() {
     let today = `${new Date().getDate()}.${currentMonth}.${currentYear}.`
     displayToday.textContent = `Danasnji datum: ${today}`;
+    return today;
 }
+
+function updateDisplay() {
+
+}
+
+// function setTodaysDate() {
+
+//     currentDay = new Date().getDate();
+//     currentMonth = new Date().getMonth() + 1;
+//     currentYear = new Date().getFullYear();
+//     let today = `${new Date().getDate()}.${currentMonth}.${currentYear}.`
+//     displayToday.textContent = `Danasnji datum: ${today}`;
+// }
 
 function setStartDate() {
     let startDate = dateInput.value.split("-");
@@ -31,7 +66,7 @@ function setStartDate() {
 
 function calculateTotalDays() {
     if ((currentYear - startYear) === 0) {
-        totalDaysPassed = currentDay + ((currentMonth - startMonth) * 30);
+        totalDaysPassed = (currentDay - startDay) + ((currentMonth - startMonth) * 30);
     } else if ((currentYear - startYear) === 1) {
         totalDaysPassed = ((30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30));
     } else if ((currentYear - startYear) === 2) {
@@ -55,10 +90,13 @@ const currentRatePlan = document.querySelector("#current-rp");
 currentRatePlan.addEventListener("change", (e) => {
     ratePlans.forEach((plan) => {
         if (plan.name === e.currentTarget.value) {
+            currentPrice = plan.price;
             displayRatePlanPrice.textContent = `Cena paketa: ${(plan.price).toFixed(2)} RSD`;
             totalPaymentsLeft = ((plan.price / 30) * totalDaysLeft).toFixed(2);
             displayTotalPaymentsLeft.textContent = `Ukupno preostale pretplate: ${totalPaymentsLeft} RSD`;
         }
+
+        return currentPrice;
     })
 });
 
@@ -70,18 +108,61 @@ inputChannels.forEach(channel => {
             if (e.currentTarget.id === product.name) {
                 if (e.currentTarget.checked) {
                     product.qty = totalDaysPassed;
+                    let monthsPassed = e.currentTarget.nextElementSibling.nextElementSibling.value;
+                    if (monthsPassed) {
+                        product.qty = monthsPassed * 30
+                    }
+
                 } else {
                     product.qty = 0;
                 }
+                product.calcPrice = +((product.price / 30) * product.qty).toFixed(2);
+                console.log(product.calcPrice)
+                e.currentTarget.parentNode.lastElementChild.textContent = product.calcPrice;
             }
-            product.calcPrice = (product.price / 30) * product.qty;
-            e.currentTarget.parentNode.lastElementChild.textContent = "testing" //product.calcPrice
-            console.table(productPackages);
         });
-        let totalPackages = (productPackages.reduce((acc,curr) => acc.calcPrice + curr.calcPrice)).toFixed(2);
+        totalPackages = (productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice)).toFixed(2);
         displayTotalChannels.textContent = `Ukupno kanali: ${totalPackages} RSD`;
+        return totalPackages;
     });
 });
+
+const reductionTime = document.querySelector("#reduction-time");
+const reductionType = document.querySelector("#price-reduction");
+const displayReductionTotal = document.querySelector("#rp-total");
+const previousRatePlan = document.querySelector("#prev-rp");
+
+reductionType.addEventListener("change", () => {
+    let reductionTimePassed;
+    if (reductionTime.value) {
+        reductionTimePassed = reductionTime.value * 30
+    } else {
+        reductionTimePassed = totalDaysPassed;
+    }
+    if (reductionType.value === "one") {
+        reducedPrice = ((currentPrice - 1) / 30) * reductionTimePassed;
+        console.log(reducedPrice);
+    } else if (reductionType.value === "prev") {
+        console.log("stara cena");
+        let previousPrice;
+        previousRatePlan.style.display = "block";
+        previousRatePlan.addEventListener("change", (e) => {
+            ratePlans.forEach((plan) => {
+                if (plan.name === e.currentTarget.value) {
+                    previousPrice = plan.price;
+                    return previousPrice;
+                }
+                reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
+            })
+        });
+        //reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
+    } else if (reductionType.value === "percent") {
+        console.log("procenat od cene")
+    }
+    displayReductionTotal.textContent = `Ukupno: ${(reducedPrice).toFixed(2)}`;
+    return reducedPrice;
+})
+
 
 
 const ratePlans = [
@@ -116,9 +197,13 @@ const productPackages = [
         qty: 0,
         calcPrice: 0
     },
-]
+];
 
-setTodaysDate();
+
+setCurrentDay();
+setCurrentMonth();
+setCurrentYear();
+setTodayFormatted();
 
 
 
