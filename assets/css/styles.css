@@ -1,12 +1,21 @@
+:root {
+    font-family: system-ui, sans-serif;
+    --clr-bg: #fff;
+    --clr-main: #222;
+    --box-shadow: 0px 0.5rem 2rem rgba(51, 51, 51, 0.1);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
+
 body {
-    font-family: system-ui, sans-serif;
-    background-color: honeydew;
+    background-color: var(--clr-bg);
+    color: var(--clr-main);
 }
 
 section {
@@ -14,6 +23,7 @@ section {
     margin: 0.5em 0;
     background-color: white;
     border-radius: 0.5em;
+    box-shadow: var(--box-shadow);
 }
 
  h1, h2 {
@@ -29,20 +39,31 @@ p {
     padding: 0.5em 0;
 } 
 
+span {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
 input {
     margin: 0.5em 0;
     padding: 0.2em 0;
-    width: 50%;
+    width: 90%;
+    text-align: center;
+}
+
+button {
+    padding: 0.5em 1em;
+    display: block;
+    width: 90%;
 }
 
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     padding: 1.5em;
     gap: 1.5em;
 }
 
-.wrapper section:nth-child(1), .wrapper section:nth-child(2) {
+.full-height {
     grid-row: span 2;
 }
 

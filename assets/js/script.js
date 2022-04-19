@@ -1,104 +1,125 @@
-let startDay, startMonth, startYear;
-let currentDay, currentMonth, currentYear;
-let totalDaysPassed, totalDaysLeft;
-let totalPaymentsLeft;
-let currentPrice;
-let reducedPrice;
-let totalPackages;
-let totalBenefitsArray = [reducedPrice, totalPackages];
-let totalBenefits = totalBenefitsArray.reduce((acc, curr) => acc + curr, 0);
-const dateInput = document.querySelector("#contract-start-date");
-const buttonDate = document.querySelector("#btn--date");
-const displayTimePassed = document.querySelector("#time-passed");
-const displayTimeLeft = document.querySelector("#time-left");
-const displayTotalBenefits = document.querySelector("#total-benefits");
-const displayTotalPaymentsLeft = document.querySelector("#total-left");
-const displayRatePlanPrice = document.querySelector("#rp-price");
+//01. set today
+
+const currentDay = new Date().getDate();
+const currentMonth = new Date().getMonth() + 1;
+const currentYear = new Date().getFullYear();
+const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
 
 const displayToday = document.querySelector("#today");
+displayToday.innerHTML = `<p>Danasnji datum: <span>${todayFormatted}</span></p>`;
 
-displayTotalBenefits.textContent = `Ukupno benefiti: ${totalBenefits}`;
+// 02. set contract start date
 
-function setCurrentDay() {
-    currentDay = new Date().getDate();
-    return currentDay;
-}
+const dateInput = document.querySelector("#contract-start-date");
 
-function setCurrentMonth() {
-    currentMonth = new Date().getMonth() + 1;
-    return currentMonth;
-}
-
-function setCurrentYear() {
-    currentYear = new Date().getFullYear();
-    return currentYear;
-}
-
-function setTodayFormatted() {
-    let today = `${new Date().getDate()}.${currentMonth}.${currentYear}.`
-    displayToday.textContent = `Danasnji datum: ${today}`;
-    return today;
-}
-
-function updateDisplay() {
-
-}
-
-// function setTodaysDate() {
-
-//     currentDay = new Date().getDate();
-//     currentMonth = new Date().getMonth() + 1;
-//     currentYear = new Date().getFullYear();
-//     let today = `${new Date().getDate()}.${currentMonth}.${currentYear}.`
-//     displayToday.textContent = `Danasnji datum: ${today}`;
-// }
+let startDay, startMonth, startYear;
 
 function setStartDate() {
     let startDate = dateInput.value.split("-");
-    startYear = startDate[0]; //assumes date format '2021', '12', '31'
-    startMonth = startDate[1];
+    startYear = +startDate[0]; //assumes date format '2021', '12', '31'
+    startMonth = +startDate[1];
     if (startDate[2] == 31) {
         startDay = 30;
     } else {
-        startDay = startDate[2];
+        startDay = +startDate[2];
     }
 }
 
-function calculateTotalDays() {
-    if ((currentYear - startYear) === 0) {
-        totalDaysPassed = (currentDay - startDay) + ((currentMonth - startMonth) * 30);
-    } else if ((currentYear - startYear) === 1) {
-        totalDaysPassed = ((30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30));
-    } else if ((currentYear - startYear) === 2) {
-        totalDaysPassed = (30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30) + 360;
-    } else {
-        return "error";
+//03. calculate days left and passed
+
+let totalDaysPassed = () => {
+    switch (currentYear - startYear) {
+        case (0):
+            return (currentDay - startDay) + ((currentMonth - startMonth) * 30);
+        case (1):
+            return ((30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30));
+        case (2):
+            return (30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30) + 360;
     }
-    totalDaysLeft = 719 - totalDaysPassed;
-    let formattedDaysPassed = `${Math.floor(totalDaysPassed / 30)} M i ${totalDaysPassed % 30} D`;
-    displayTimePassed.textContent = `Proteklo vreme: ${formattedDaysPassed}`;
-    let formattedDaysLeft = `${Math.floor(totalDaysLeft / 30)} M i ${totalDaysLeft % 30} D`;
-    displayTimeLeft.textContent = `Preostalo vreme: ${formattedDaysLeft}`;
 }
 
+let totalDaysLeft = () => 719 - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
+
+// 04. format and display days
+
+let formattedDaysPassed = () => `${Math.floor(totalDaysPassed() / 30)} M i ${totalDaysPassed() % 30} D`;
+let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} M i ${totalDaysLeft() % 30} D`;
+const displayTimePassed = document.querySelector("#time-passed");
+const displayTimeLeft = document.querySelector("#time-left");
+
+function updateDisplayDates() {
+    displayTimePassed.innerHTML = `<p>Proteklo vreme: <span>${formattedDaysPassed()}</span></p>`;
+    displayTimeLeft.innerHTML = `<p>Preostalo vreme: <span>${formattedDaysLeft()}</span></p>`;
+}
+
+// 05. date button
+
+const buttonDate = document.querySelector("#btn--date");
 buttonDate.addEventListener("click", () => {
     setStartDate();
-    calculateTotalDays();
+    if (totalDaysPassed() <= 0) {
+        alert("Pogresan unos! Proverite datum pocetka ugovora.")
+    }
+    updateDisplayDates();
 });
 
+//06. set current rate plan 
+
+let currentPrice;
 const currentRatePlan = document.querySelector("#current-rp");
+const displayRatePlanPrice = document.querySelector("#rp-price");
+
 currentRatePlan.addEventListener("change", (e) => {
     ratePlans.forEach((plan) => {
         if (plan.name === e.currentTarget.value) {
             currentPrice = plan.price;
             displayRatePlanPrice.textContent = `Cena paketa: ${(plan.price).toFixed(2)} RSD`;
-            totalPaymentsLeft = ((plan.price / 30) * totalDaysLeft).toFixed(2);
+            totalPaymentsLeft = ((plan.price / 30) * totalDaysLeft()).toFixed(2);
             displayTotalPaymentsLeft.textContent = `Ukupno preostale pretplate: ${totalPaymentsLeft} RSD`;
         }
 
         return currentPrice;
     })
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let totalPaymentsLeft;
+
+let reducedPrice;
+let totalPackages;
+let totalBenefitsArray = [reducedPrice, totalPackages];
+let totalBenefits = totalBenefitsArray.reduce((acc, curr) => acc + curr, 0);
+
+
+const displayTotalBenefits = document.querySelector("#total-benefits");
+const displayTotalPaymentsLeft = document.querySelector("#total-left");
+
+
+displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
+
+
+
+
+
+
+
+
+
+
+
+
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const displayTotalChannels = document.querySelector("#total-channels");
@@ -107,7 +128,7 @@ inputChannels.forEach(channel => {
         productPackages.forEach(product => {
             if (e.currentTarget.id === product.name) {
                 if (e.currentTarget.checked) {
-                    product.qty = totalDaysPassed;
+                    product.qty = totalDaysPassed();
                     let monthsPassed = e.currentTarget.nextElementSibling.nextElementSibling.value;
                     if (monthsPassed) {
                         product.qty = monthsPassed * 30
@@ -122,7 +143,7 @@ inputChannels.forEach(channel => {
             }
         });
         totalPackages = (productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice)).toFixed(2);
-        displayTotalChannels.textContent = `Ukupno kanali: ${totalPackages} RSD`;
+        displayTotalChannels.innerHTML = `<p>Ukupno kanali: <span>${totalPackages}</span> RSD</p>`;
         return totalPackages;
     });
 });
@@ -137,7 +158,7 @@ reductionType.addEventListener("change", () => {
     if (reductionTime.value) {
         reductionTimePassed = reductionTime.value * 30
     } else {
-        reductionTimePassed = totalDaysPassed;
+        reductionTimePassed = totalDaysPassed();
     }
     if (reductionType.value === "one") {
         reducedPrice = ((currentPrice - 1) / 30) * reductionTimePassed;
@@ -159,7 +180,7 @@ reductionType.addEventListener("change", () => {
     } else if (reductionType.value === "percent") {
         console.log("procenat od cene")
     }
-    displayReductionTotal.textContent = `Ukupno: ${(reducedPrice).toFixed(2)}`;
+    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice).toFixed(2)}</span></p>`;
     return reducedPrice;
 })
 
@@ -198,12 +219,6 @@ const productPackages = [
         calcPrice: 0
     },
 ];
-
-
-setCurrentDay();
-setCurrentMonth();
-setCurrentYear();
-setTodayFormatted();
 
 
 
