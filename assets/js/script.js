@@ -44,6 +44,7 @@ let totalDaysLeft = () => 719 - totalDaysPassed(); //assumes contract lasts 23m 
 
 let formattedDaysPassed = () => `${Math.floor(totalDaysPassed() / 30)} M i ${totalDaysPassed() % 30} D`;
 let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} M i ${totalDaysLeft() % 30} D`;
+
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
 
@@ -65,23 +66,25 @@ buttonDate.addEventListener("click", () => {
 
 //06. set current rate plan 
 
-let currentPrice;
-const currentRatePlan = document.querySelector("#current-rp");
+const currentRatePlanInput = document.querySelector("#current-rp");
 const displayRatePlanPrice = document.querySelector("#rp-price");
 
-currentRatePlan.addEventListener("change", (e) => {
-    ratePlans.forEach((plan) => {
-        if (plan.name === e.currentTarget.value) {
-            currentPrice = plan.price;
-            displayRatePlanPrice.textContent = `Cena paketa: ${(plan.price).toFixed(2)} RSD`;
-            totalPaymentsLeft = ((plan.price / 30) * totalDaysLeft()).toFixed(2);
-            displayTotalPaymentsLeft.textContent = `Ukupno preostale pretplate: ${totalPaymentsLeft} RSD`;
-        }
+let selectedRatePlan;
 
-        return currentPrice;
-    })
+currentRatePlanInput.addEventListener("click", (e) => {
+    selectedRatePlan = e.currentTarget.value;
+    totalPaymentsLeft()
 });
 
+let currentPrice = () => {
+    displayRatePlanPrice.innerHTML = `<p>Cena paketa: <span>${(ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price}</span></p>`;
+    return (ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price //important!
+}
+
+let totalPaymentsLeft = () => {
+    displayTotalPaymentsLeft.innerHTML = `<p>Ukupno preostale pretplate: <span>${(currentPrice() / 30) * totalDaysLeft()}</span> RSD</p>`;
+    return ((currentPrice() / 30) * totalDaysLeft().toFixed(2));
+}
 
 
 
@@ -89,36 +92,14 @@ currentRatePlan.addEventListener("change", (e) => {
 
 
 
-
-
-
-
-
-
-let totalPaymentsLeft;
+//displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
 
 let reducedPrice;
 let totalPackages;
-let totalBenefitsArray = [reducedPrice, totalPackages];
-let totalBenefits = totalBenefitsArray.reduce((acc, curr) => acc + curr, 0);
 
 
 const displayTotalBenefits = document.querySelector("#total-benefits");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
-
-
-displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
-
-
-
-
-
-
-
-
-
-
-
 
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
@@ -142,7 +123,7 @@ inputChannels.forEach(channel => {
                 e.currentTarget.parentNode.lastElementChild.textContent = product.calcPrice;
             }
         });
-        totalPackages = (productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice)).toFixed(2);
+        totalPackages = (productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice)).toFixed(2), 0;
         displayTotalChannels.innerHTML = `<p>Ukupno kanali: <span>${totalPackages}</span> RSD</p>`;
         return totalPackages;
     });
@@ -176,49 +157,32 @@ reductionType.addEventListener("change", () => {
                 reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
             })
         });
-        //reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
     } else if (reductionType.value === "percent") {
         console.log("procenat od cene")
     }
     displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice).toFixed(2)}</span></p>`;
     return reducedPrice;
-})
+});
 
-
-
-const ratePlans = [
-    {
-        name: "silver",
-        price: 3449,
-    },
-    {
-        name: "gold",
-        price: 3829,
-    },
-    {
-        name: "light",
-        price: 3499,
-    },
-    {
-        name: "full",
-        price: 3999,
-    }
-]
+function constructPlan(name, price) {
+    const obj = {};
+    obj.name = name;
+    obj.price = price;
+    return obj;
+}
 
 const productPackages = [
-    {
-        name: "pink",
-        price: 310,
-        qty: 0,
-        calcPrice: 0
-    },
-    {
-        name: "cinestar",
-        price: 490,
-        qty: 0,
-        calcPrice: 0
-    },
+    constructPlan("pink", 310),
+    constructPlan("cinestar", 490),
 ];
+
+const ratePlans = [
+    constructPlan("silver", 3449),
+    constructPlan("gold", 3829),
+    constructPlan("light", 3499),
+    constructPlan("full", 3999),
+    constructPlan("d3-start", 1395),
+]
 
 
 
