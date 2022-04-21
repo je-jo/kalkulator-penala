@@ -14,7 +14,7 @@ const dateInput = document.querySelector("#contract-start-date");
 
 let startDay, startMonth, startYear;
 
-function setStartDate() {
+function setStartDate() { //run on button click
     let startDate = dateInput.value.split("-");
     startYear = +startDate[0]; //assumes date format '2021', '12', '31'
     startMonth = +startDate[1];
@@ -48,9 +48,14 @@ let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} M i ${totalDa
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
 
-function updateDisplayDates() {
+function updateDisplay() { //runs on date button click, select curr rate plan
     displayTimePassed.innerHTML = `<p>Proteklo vreme: <span>${formattedDaysPassed()}</span></p>`;
     displayTimeLeft.innerHTML = `<p>Preostalo vreme: <span>${formattedDaysLeft()}</span></p>`;
+    if (selectedRatePlan) {
+        displayRatePlanPrice.innerHTML = `<p>Cena paketa: <span>${currentPrice().toFixed(2)}</span> RSD</p>`;
+        displayTotalPaymentsLeft.innerHTML = `<p>Ukupno preostale pretplate: <span>${totalPaymentsLeft().toFixed(2)}</span> RSD</p>`;
+    }
+
 }
 
 // 05. date button
@@ -61,73 +66,128 @@ buttonDate.addEventListener("click", () => {
     if (totalDaysPassed() <= 0) {
         alert("Pogresan unos! Proverite datum pocetka ugovora.")
     }
-    updateDisplayDates();
+    updateDisplay();
 });
 
-//06. set current rate plan 
+//06. set current rate plan and total payments left
 
 const currentRatePlanInput = document.querySelector("#current-rp");
 const displayRatePlanPrice = document.querySelector("#rp-price");
+const displayTotalPaymentsLeft = document.querySelector("#total-left");
 
 let selectedRatePlan;
 
 currentRatePlanInput.addEventListener("click", (e) => {
     selectedRatePlan = e.currentTarget.value;
-    totalPaymentsLeft()
+    totalPaymentsLeft();
+    updateDisplay();
 });
 
 let currentPrice = () => {
-    displayRatePlanPrice.innerHTML = `<p>Cena paketa: <span>${(ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price}</span></p>`;
     return (ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price //important!
 }
 
 let totalPaymentsLeft = () => {
-    displayTotalPaymentsLeft.innerHTML = `<p>Ukupno preostale pretplate: <span>${(currentPrice() / 30) * totalDaysLeft()}</span> RSD</p>`;
-    return ((currentPrice() / 30) * totalDaysLeft().toFixed(2));
+    return (currentPrice() / 30) * totalDaysLeft();
 }
 
 
+//08. benefits - promo channels
 
-
-
-
-
-//displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
-
-let reducedPrice;
-let totalPackages;
-
-
-const displayTotalBenefits = document.querySelector("#total-benefits");
-const displayTotalPaymentsLeft = document.querySelector("#total-left");
-
+const productPackages = [
+    constructPlan("pink", 310),
+    constructPlan("cinestar", 490),
+];
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
+const inputText = [...document.querySelectorAll("input[type='text']")];
 const displayTotalChannels = document.querySelector("#total-channels");
-inputChannels.forEach(channel => {
+
+let selected;
+
+function getSelected(e) {
+    if (e.currentTarget.checked) {
+        selected = e.currentTarget.id;
+    } else {
+        selected = null;
+    }
+    console.log(`selected is ${selected}`)
+    return selected;
+}
+
+inputChannels.forEach(input => {
+    input.addEventListener("change", getSelected)
+});
+
+let calcPrice = () => product.qty * product.price;
+
+
+
+
+
+productPackages.forEach(product => {
+    if (product.name === selected) {
+        inputText.forEach(textbox => textbox.addEventListener("change", function (e) {
+            if (e.currentTarget.value) {
+                product.qty = e.currentTarget.value * 30;
+                console.log(product.qty)
+            }
+            else {
+                product.qty = (totalDaysPassed() / 30);
+                console.log(product.qty)
+            }
+        }))
+    }
+});
+
+
+//product.calcPrice = product.qty * product.price;
+
+
+
+
+
+
+
+
+/* inputChannels.forEach(channel => {
     channel.addEventListener("change", function (e) {
         productPackages.forEach(product => {
             if (e.currentTarget.id === product.name) {
                 if (e.currentTarget.checked) {
-                    product.qty = totalDaysPassed();
-                    let monthsPassed = e.currentTarget.nextElementSibling.nextElementSibling.value;
-                    if (monthsPassed) {
-                        product.qty = monthsPassed * 30
-                    }
-
+                    inputText.forEach(elem => {
+                        elem.addEventListener("change", function () {
+                            if (elem.value) {
+                                product.qty = +elem.value * 30;
+                            } else {
+                                product.qty = totalDaysPassed();
+                            }
+                        })
+                    })
                 } else {
                     product.qty = 0;
                 }
+                console.log(product.qty)
                 product.calcPrice = +((product.price / 30) * product.qty).toFixed(2);
                 console.log(product.calcPrice)
                 e.currentTarget.parentNode.lastElementChild.textContent = product.calcPrice;
             }
         });
+        
         totalPackages = (productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice)).toFixed(2), 0;
         displayTotalChannels.innerHTML = `<p>Ukupno kanali: <span>${totalPackages}</span> RSD</p>`;
         return totalPackages;
     });
-});
+}); */
+
+
+
+
+
+
+
+
+
 
 const reductionTime = document.querySelector("#reduction-time");
 const reductionType = document.querySelector("#price-reduction");
@@ -171,10 +231,7 @@ function constructPlan(name, price) {
     return obj;
 }
 
-const productPackages = [
-    constructPlan("pink", 310),
-    constructPlan("cinestar", 490),
-];
+
 
 const ratePlans = [
     constructPlan("silver", 3449),
@@ -184,5 +241,14 @@ const ratePlans = [
     constructPlan("d3-start", 1395),
 ]
 
+
+
+//displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
+
+let reducedPrice;
+let totalPackages;
+
+
+const displayTotalBenefits = document.querySelector("#total-benefits");
 
 

@@ -26,6 +26,10 @@ section {
     box-shadow: var(--box-shadow);
 }
 
+.wrapper:nth-child(1) > section:nth-child(2) {
+    order: -1;
+}
+
  h1, h2 {
     padding-bottom: 0.5em;
 } 
@@ -58,13 +62,17 @@ button {
 
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     padding: 1.5em;
     gap: 1.5em;
 }
 
-.full-height {
+.double-height {
     grid-row: span 2;
+}
+
+.double-width {
+    grid-column: span 2;
 }
 
 .channels {
@@ -73,6 +81,7 @@ button {
     align-items: center;
     padding: 0.2em;
     gap: 1em;
+    border: 2px solid salmon;
 }
 
 #prev-rp {
