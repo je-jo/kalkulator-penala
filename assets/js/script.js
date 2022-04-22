@@ -1,3 +1,29 @@
+function constructPlan(name, price, qty) {
+    const obj = {};
+    obj.name = name;
+    obj.price = price;
+    obj.qty = qty;
+    obj.calcPrice = function () {
+        return (obj.price / 30) * obj.qty
+    }
+    return obj;
+}
+
+
+
+const ratePlans = [
+    constructPlan("silver", 3449, 0),
+    constructPlan("gold", 3829, 0),
+    constructPlan("light", 3499, 0),
+    constructPlan("full", 3999, 0),
+    constructPlan("d3-start", 1395, 0),
+];
+
+const productPackages = [
+    constructPlan("pink", 310, 0),
+    constructPlan("cinestar", 490, 0),
+];
+
 //01. set today
 
 const currentDay = new Date().getDate();
@@ -94,38 +120,39 @@ let totalPaymentsLeft = () => {
 
 //08. benefits - promo channels
 
-const productPackages = [
-    constructPlan("pink", 310),
-    constructPlan("cinestar", 490),
-];
+
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputText = [...document.querySelectorAll("input[type='text']")];
 const displayTotalChannels = document.querySelector("#total-channels");
 
-let selected;
-
-function getSelected(e) {
-    if (e.currentTarget.checked) {
-        selected = e.currentTarget.id;
-    } else {
-        selected = null;
-    }
-    console.log(`selected is ${selected}`)
-    return selected;
+function getQty(e) {
+    productPackages.forEach(elem => {
+        for (let prop in elem) {
+            if (elem[prop] === e.currentTarget.id) {
+                if (e.currentTarget.checked) {
+                    elem.qty = totalDaysLeft();
+                } else {
+                    elem.qty = 0;
+                }
+            }
+        }
+        console.table(productPackages)
+    });
 }
 
 inputChannels.forEach(input => {
-    input.addEventListener("change", getSelected)
+    input.addEventListener("change", getQty)
 });
 
-let calcPrice = () => product.qty * product.price;
+inputText.forEach(textbox => {
+    textbox.addEventListener("change", function(e) {
+        
+    })
+}) 
 
 
-
-
-
-productPackages.forEach(product => {
+/*productPackages.forEach(product => {
     if (product.name === selected) {
         inputText.forEach(textbox => textbox.addEventListener("change", function (e) {
             if (e.currentTarget.value) {
@@ -138,10 +165,9 @@ productPackages.forEach(product => {
             }
         }))
     }
-});
+}); */
 
 
-//product.calcPrice = product.qty * product.price;
 
 
 
@@ -224,22 +250,7 @@ reductionType.addEventListener("change", () => {
     return reducedPrice;
 });
 
-function constructPlan(name, price) {
-    const obj = {};
-    obj.name = name;
-    obj.price = price;
-    return obj;
-}
 
-
-
-const ratePlans = [
-    constructPlan("silver", 3449),
-    constructPlan("gold", 3829),
-    constructPlan("light", 3499),
-    constructPlan("full", 3999),
-    constructPlan("d3-start", 1395),
-]
 
 
 
