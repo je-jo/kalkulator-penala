@@ -126,53 +126,51 @@ const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputText = [...document.querySelectorAll("input[type='text']")];
 const displayTotalChannels = document.querySelector("#total-channels");
 
-function getQty(e) {
-    productPackages.forEach(elem => {
-        for (let prop in elem) {
-            if (elem[prop] === e.currentTarget.id) {
-                if (e.currentTarget.checked) {
-                    elem.qty = totalDaysLeft();
-                } else {
-                    elem.qty = 0;
-                }
-            }
-        }
-        console.table(productPackages)
-    });
-}
-
 inputChannels.forEach(input => {
-    input.addEventListener("change", getQty)
+    input.addEventListener("change", isChecked)
 });
 
-inputText.forEach(textbox => {
-    textbox.addEventListener("change", function(e) {
+function isChecked(e) {
+    productPackages.forEach(elem => {
+        if (elem.name === e.currentTarget.id) {
+            if (e.currentTarget.checked) {
+                elem.qty = totalDaysPassed();
+            } else {
+                elem.qty = 0;
+            }
+            if (e.currentTarget.checked && elem.months) {
+                elem.qty = elem.months * 30
+            }
+            e.currentTarget.parentNode.lastElementChild.textContent = (elem.calcPrice()).toFixed(2);
+        }
+        console.table(productPackages)
+        console.log(elem.calcPrice())
         
-    })
-}) 
+    });
+    
+}
 
+inputText.forEach(textbox => {
+    textbox.addEventListener("change", hasValue)
+});
 
-/*productPackages.forEach(product => {
-    if (product.name === selected) {
-        inputText.forEach(textbox => textbox.addEventListener("change", function (e) {
+function hasValue(e) {
+    productPackages.forEach(elem => {
+        if (elem.name === e.currentTarget.parentNode.firstElementChild.id) {
             if (e.currentTarget.value) {
-                product.qty = e.currentTarget.value * 30;
-                console.log(product.qty)
+                elem.months = +e.currentTarget.value;
+            } else {
+                elem.months = null
             }
-            else {
-                product.qty = (totalDaysPassed() / 30);
-                console.log(product.qty)
-            }
-        }))
-    }
-}); */
-
-
-
-
-
-
-
+        }
+        if (e.currentTarget.parentNode.firstElementChild.checked && elem.months) {
+            elem.qty = elem.months * 30
+        } else {
+            elem.qty = totalDaysPassed();
+        }
+        console.table(productPackages);
+    });
+}
 
 
 
