@@ -18,11 +18,41 @@ const ratePlans = [
 ];
 
 const productPackages = [
-    constructPlan("pink", 310, 0, 0),
-    constructPlan("cinestar", 490, 0, 0),
+    constructPlan("hit", 310, 0, 0),
+    constructPlan("plus", 560, 0, 0),
+    constructPlan("hbo", 490, 0, 0),
     constructPlan("tidal", 450, 0, 0),
+    constructPlan("cinemax", 260, 0, 0),
+    constructPlan("hbo-premium", 720, 0, 0),
+    constructPlan("cinestar-premiere", 490, 0, 0),
+    constructPlan("pink", 310, 0, 0),
+    constructPlan("hd-maximum", 1890, 0, 0),
+    constructPlan("pickbox", 575, 0, 0),
+    constructPlan("ttv-extra", 429, 0, 0),
+    constructPlan("ttv-club-x", 254, 0, 0),
+    constructPlan("ttv-filmski-paket", 690, 0, 0),
+    constructPlan("ttv-filmbox", 360, 0, 0),
     constructPlan("ttv-pink", 550, 0, 0),
+    constructPlan("flat-fixni", 390, 0, 0),
 ];
+
+const hardwareItems = [
+    constructPlan("pds-2100", 2900, 0, 0),
+    constructPlan("pds-3121", 4900, 0, 0),
+    constructPlan("d3-mini", 1900, 0, 0),
+    constructPlan("eon-smart-box", 6900, 0, 0),
+    constructPlan("pt-ttv", 4900, 0, 0),
+    constructPlan("ttv-montaza", 9900, 0, 0),
+    constructPlan("basic-modem", 3900, 0, 0),
+    constructPlan("d3-cam", 1900, 0, 0),
+    constructPlan("advanced-modem", 6900, 0, 0),
+    constructPlan("wifi-mesh", 9900, 0, 0),
+    constructPlan("eon-smart-box-50%", 3450, 0, 0),
+    constructPlan("pt-ktv-stan", 3900, 0, 0),
+    constructPlan("pt-ktv-kuca", 9900, 0, 0),
+    constructPlan("renta-eon-box", 290, 0, 0),
+    constructPlan("renta-ttv-risiver", 490, 0, 0),
+]
 
 //setup: dinamically add checkboxes
 
@@ -37,17 +67,41 @@ for (let i = 0; i < productPackages.length; i++) {
     newCheckbox.setAttribute("name", "channels");
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${productPackages[i].name}`);
-    newLabel.textContent = `${(productPackages[i].name).toUpperCase()}`;
+    newLabel.textContent = `${((productPackages[i].name).replace("-", " ")).toUpperCase()}`;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
     const newSpan = document.createElement("span");
     newSpan.classList.add("channels-calc-price");
-    newSpan.textContent = `${(productPackages[i].calcPrice)} RSD`
+    newSpan.textContent = `${(productPackages[i].calcPrice)} RSD`;
     newListItem.appendChild(newCheckbox);
     newListItem.appendChild(newLabel);
     newListItem.appendChild(newTextInput);
     newListItem.appendChild(newSpan);
     channelsContainer.appendChild(newListItem);
+}
+
+const hardwareContainer = document.querySelector("#hardware");
+
+for (let i = 0; i < hardwareItems.length; i++) {
+    const newListItem = document.createElement("li");
+    newListItem.classList.add("channels");
+    const newCheckbox = document.createElement("input");
+    newCheckbox.setAttribute("type", "checkbox");
+    newCheckbox.setAttribute("id", `${hardwareItems[i].name}`);
+    newCheckbox.setAttribute("name", "hardware");
+    const newLabel = document.createElement("label");
+    newLabel.setAttribute("for", `${hardwareItems[i].name}`);
+    newLabel.textContent = `${((hardwareItems[i].name).replace("-", " ")).toUpperCase()}`;
+    const newTextInput = document.createElement("input");
+    newTextInput.setAttribute("type", "text");
+    const newSpan = document.createElement("span");
+    //newSpan.classList.add("channels-calc-price");
+    newSpan.textContent = `${(hardwareItems[i].calcPrice)} RSD`;
+    newListItem.appendChild(newCheckbox);
+    newListItem.appendChild(newLabel);
+    newListItem.appendChild(newTextInput);
+    newListItem.appendChild(newSpan);
+    hardwareContainer.appendChild(newListItem);
 }
 
 //01. set today
@@ -99,6 +153,8 @@ let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} M i ${totalDa
 
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
+const displayRatePlanPrice = document.querySelector("#rp-price");
+const displayTotalPaymentsLeft = document.querySelector("#total-left");
 
 function updateDisplay() { //runs on date button click, select curr rate plan
     displayTimePassed.innerHTML = `<p>Proteklo vreme: <span>${formattedDaysPassed()}</span></p>`;
@@ -107,7 +163,6 @@ function updateDisplay() { //runs on date button click, select curr rate plan
         displayRatePlanPrice.innerHTML = `<p>Cena paketa: <span>${currentPrice().toFixed(2)}</span> RSD</p>`;
         displayTotalPaymentsLeft.innerHTML = `<p>Ukupno preostale pretplate: <span>${totalPaymentsLeft().toFixed(2)}</span> RSD</p>`;
     }
-
 }
 
 // 05. date button
@@ -124,8 +179,7 @@ buttonDate.addEventListener("click", () => {
 //06. set current rate plan and total payments left
 
 const currentRatePlanInput = document.querySelector("#current-rp");
-const displayRatePlanPrice = document.querySelector("#rp-price");
-const displayTotalPaymentsLeft = document.querySelector("#total-left");
+
 
 let selectedRatePlan;
 
@@ -153,26 +207,32 @@ const inputText = [...document.querySelectorAll("input[type='text']")];
 const displayTotalChannels = document.querySelector("#total-channels");
 
 inputChannels.forEach(input => {
-    input.addEventListener("change", isChecked)
+    input.addEventListener("change", function(e) {
+        isChecked(e, productPackages)
+    })
 });
 
-function isChecked(e) {
-    productPackages.forEach(elem => {
+const inputHardware = [...document.querySelectorAll("input[name='hardware']")];
+inputHardware.forEach(input => {
+    input.addEventListener("change", function(e) {
+        isChecked(e, hardwareItems)
+    })
+}); 
+
+function isChecked(e, arr) {
+    arr.forEach(elem => {
         if (elem.name === e.currentTarget.id) {
-            if (e.currentTarget.checked) {
+            if (e.currentTarget.checked && elem.modifier) {
+                elem.qty = elem.modifier * 30
+            } else if (e.currentTarget.checked) {
                 elem.qty = totalDaysPassed();
-            } else {
+            }
+            else {
                 elem.qty = 0;
             }
-            if (e.currentTarget.checked && elem.months) {
-                elem.qty = elem.months * 30
-            }
-            
         }
-        elem.calcPrice = elem.qty * (elem.price / 30)
-        //console.table(productPackages)
-        e.currentTarget.parentNode.lastElementChild.style.backgroundColor = "pink";
-        e.currentTarget.parentNode.lastElementChild.textContent = `${(elem.calcPrice).toFixed(2)} RSD`;
+        calcElementPrice();
+        displayElementPrice()
     });
 
 }
@@ -185,58 +245,46 @@ function hasValue(e) {
     productPackages.forEach(elem => {
         if (elem.name === e.currentTarget.parentNode.firstElementChild.id) {
             if (e.currentTarget.value) {
-                elem.months = +e.currentTarget.value;
+                elem.modifier = +e.currentTarget.value;
             } else {
-                elem.months = null
+                elem.modifier = null
+            }
+            if (elem.modifier) {
+                if (e.currentTarget.parentNode.firstElementChild.checked) {
+                    elem.qty = elem.modifier * 30
+                } else {
+                    elem.qty = 0;
+                }
+            } else {
+                elem.qty = totalDaysPassed();
             }
         }
-        if (e.currentTarget.parentNode.firstElementChild.checked && elem.months) {
-            elem.qty = elem.months * 30
-        } else {
-            elem.qty = totalDaysPassed();
-        }
-        elem.calcPrice = elem.qty * (elem.price / 30)
-        console.table(productPackages);
+        calcElementPrice();
+        displayElementPrice()
     });
 }
 
+let totalPackages;
 function calcElementPrice() {
     productPackages.forEach(elem => {
-        elem.calcPrice = elem.qty * (elem.price / 30)
+        elem.calcPrice = elem.qty * (elem.price / 30);
     })
+    totalPackages = productPackages.reduce((total, element) => total + element.calcPrice, 0);
 }
 
-/* inputChannels.forEach(input => {
-    input.addEventListener("change", calcElementPrice)
-});
-inputText.forEach(textbox => {
-    textbox.addEventListener("change", calcElementPrice)
-}); */
+const displaySinglePP = [...document.querySelectorAll("#promo-channels > li > span")];
+
+function displayElementPrice() {
+    for (let i = 0; i < displaySinglePP.length; i++) {
+        displaySinglePP[i].textContent = `${(productPackages[i].calcPrice).toFixed(2)} RSD`
+    }
+    displayTotalChannels.innerHTML = `<p>Ukupno kanali: <span>${(totalPackages).toFixed(2)}</span> RSD</p>`;
+}
+
+//let channelPrices = productPackages.map(elem => elem.calcPrice);
 
 
-
-/* inputChannels.forEach(channel => {
-    channel.addEventListener("change", function (e) {
-        productPackages.forEach(product => {
-            if (e.currentTarget.id === product.name) {
-                if (e.currentTarget.checked) {
-                    inputText.forEach(elem => {
-                        elem.addEventListener("change", function () {
-                            if (elem.value) {
-                                product.qty = +elem.value * 30;
-                            } else {
-                                product.qty = totalDaysPassed();
-                            }
-                        })
-                    })
-                } else {
-                    product.qty = 0;
-                }
-                console.log(product.qty)
-                product.calcPrice = +((product.price / 30) * product.qty).toFixed(2);
-                console.log(product.calcPrice)
-                e.currentTarget.parentNode.lastElementChild.textContent = product.calcPrice;
-            }
+/*
         });
         
         totalPackages = (productPackages.reduce((acc, curr) => acc.calcPrice + curr.calcPrice)).toFixed(2), 0;
@@ -296,7 +344,7 @@ reductionType.addEventListener("change", () => {
 //displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
 
 let reducedPrice;
-let totalPackages;
+
 
 
 const displayTotalBenefits = document.querySelector("#total-benefits");

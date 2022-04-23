@@ -24,6 +24,8 @@ section {
     background-color: white;
     border-radius: 0.5em;
     box-shadow: var(--box-shadow);
+    max-height: 50vh;
+    overflow-y: scroll;
 }
 
 .wrapper:nth-child(1) > section:nth-child(2) {
@@ -77,11 +79,10 @@ button {
 
 .channels {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 10fr 2fr 5fr;
     align-items: center;
     padding: 0.2em;
     gap: 1em;
-    border: 2px solid salmon;
 }
 
 #prev-rp {
