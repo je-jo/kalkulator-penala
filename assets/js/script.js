@@ -1,28 +1,54 @@
-function constructPlan(name, price, qty) {
+//setup: construct arrays of package objects
+
+function constructPlan(name, price, qty, calcPrice) {
     const obj = {};
     obj.name = name;
     obj.price = price;
     obj.qty = qty;
-    obj.calcPrice = function () {
-        return (obj.price / 30) * obj.qty
-    }
+    obj.calcPrice = calcPrice;
     return obj;
 }
 
-
-
 const ratePlans = [
-    constructPlan("silver", 3449, 0),
-    constructPlan("gold", 3829, 0),
-    constructPlan("light", 3499, 0),
-    constructPlan("full", 3999, 0),
+    constructPlan("silver", 3449, 0, 0),
+    constructPlan("gold", 3829, 0, 0),
+    constructPlan("light", 3499, 0, 0),
+    constructPlan("full", 3999, 0, 0),
     constructPlan("d3-start", 1395, 0),
 ];
 
 const productPackages = [
-    constructPlan("pink", 310, 0),
-    constructPlan("cinestar", 490, 0),
+    constructPlan("pink", 310, 0, 0),
+    constructPlan("cinestar", 490, 0, 0),
+    constructPlan("tidal", 450, 0, 0),
+    constructPlan("ttv-pink", 550, 0, 0),
 ];
+
+//setup: dinamically add checkboxes
+
+const channelsContainer = document.querySelector("#promo-channels");
+
+for (let i = 0; i < productPackages.length; i++) {
+    const newListItem = document.createElement("li");
+    newListItem.classList.add("channels");
+    const newCheckbox = document.createElement("input");
+    newCheckbox.setAttribute("type", "checkbox");
+    newCheckbox.setAttribute("id", `${productPackages[i].name}`);
+    newCheckbox.setAttribute("name", "channels");
+    const newLabel = document.createElement("label");
+    newLabel.setAttribute("for", `${productPackages[i].name}`);
+    newLabel.textContent = `${(productPackages[i].name).toUpperCase()}`;
+    const newTextInput = document.createElement("input");
+    newTextInput.setAttribute("type", "text");
+    const newSpan = document.createElement("span");
+    newSpan.classList.add("channels-calc-price");
+    newSpan.textContent = `${(productPackages[i].calcPrice)} RSD`
+    newListItem.appendChild(newCheckbox);
+    newListItem.appendChild(newLabel);
+    newListItem.appendChild(newTextInput);
+    newListItem.appendChild(newSpan);
+    channelsContainer.appendChild(newListItem);
+}
 
 //01. set today
 
@@ -141,13 +167,14 @@ function isChecked(e) {
             if (e.currentTarget.checked && elem.months) {
                 elem.qty = elem.months * 30
             }
-            e.currentTarget.parentNode.lastElementChild.textContent = (elem.calcPrice()).toFixed(2);
+            
         }
-        console.table(productPackages)
-        console.log(elem.calcPrice())
-        
+        elem.calcPrice = elem.qty * (elem.price / 30)
+        //console.table(productPackages)
+        e.currentTarget.parentNode.lastElementChild.style.backgroundColor = "pink";
+        e.currentTarget.parentNode.lastElementChild.textContent = `${(elem.calcPrice).toFixed(2)} RSD`;
     });
-    
+
 }
 
 inputText.forEach(textbox => {
@@ -168,9 +195,23 @@ function hasValue(e) {
         } else {
             elem.qty = totalDaysPassed();
         }
+        elem.calcPrice = elem.qty * (elem.price / 30)
         console.table(productPackages);
     });
 }
+
+function calcElementPrice() {
+    productPackages.forEach(elem => {
+        elem.calcPrice = elem.qty * (elem.price / 30)
+    })
+}
+
+/* inputChannels.forEach(input => {
+    input.addEventListener("change", calcElementPrice)
+});
+inputText.forEach(textbox => {
+    textbox.addEventListener("change", calcElementPrice)
+}); */
 
 
 
