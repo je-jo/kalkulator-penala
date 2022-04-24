@@ -112,7 +112,7 @@ const currentYear = new Date().getFullYear();
 const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
 
 const displayToday = document.querySelector("#today");
-displayToday.innerHTML = `<p>Danasnji datum: <span>${todayFormatted}</span></p>`;
+displayToday.textContent = todayFormatted;
 
 // 02. set contract start date
 
@@ -157,11 +157,11 @@ const displayRatePlanPrice = document.querySelector("#rp-price");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
 
 function updateDisplay() { //runs on date button click, select curr rate plan
-    displayTimePassed.innerHTML = `<p>Proteklo vreme: <span>${formattedDaysPassed()}</span></p>`;
-    displayTimeLeft.innerHTML = `<p>Preostalo vreme: <span>${formattedDaysLeft()}</span></p>`;
+    displayTimePassed.textContent = formattedDaysPassed();
+    displayTimeLeft.textContent = formattedDaysLeft();
     if (selectedRatePlan) {
-        displayRatePlanPrice.innerHTML = `<p>Cena paketa: <span>${currentPrice().toFixed(2)}</span> RSD</p>`;
-        displayTotalPaymentsLeft.innerHTML = `<p>Ukupno preostale pretplate: <span>${totalPaymentsLeft().toFixed(2)}</span> RSD</p>`;
+        displayRatePlanPrice.textContent = currentPrice().toFixed(2);
+        displayTotalPaymentsLeft.textContent = totalPaymentsLeft().toFixed(2);
     }
 }
 
