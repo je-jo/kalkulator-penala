@@ -10,12 +10,92 @@ function constructPlan(name, price, qty, calcPrice) {
 }
 
 const ratePlans = [
-    constructPlan("silver", 3449, 0, 0),
-    constructPlan("gold", 3829, 0, 0),
-    constructPlan("light", 3499, 0, 0),
-    constructPlan("full", 3999, 0, 0),
-    constructPlan("d3-start", 1395, 0),
+    constructPlan("d3-start", 1395, 0, 0),
+    constructPlan("duo-silver", 3049, 0, 0),
+    constructPlan("duo-gold", 3429, 0, 0),
+    constructPlan("duo-gold-extra", 4139, 0, 0),
+    constructPlan("duo-gold-premium", 5389, 0, 0),
+    constructPlan("trio-silver", 3449, 0, 0),
+
+    constructPlan("trio-gold", 3829, 0, 0),
+    constructPlan("eon-light", 3499, 0, 0),
+    constructPlan("eon-full", 3999, 0, 0),
+    
+    constructPlan("test-test", 20000, 0, 0),
 ];
+
+/*
+BEOGRID DUO NET+TEL DIAMOND	3310
+BEOGRID DUO NET+TEL GOLD	2300
+BEOGRID DUO NET+TEL PLATINUM	2810
+BEOGRID DUO NET+TEL SILVER	1920
+BEOGRID DUO NET+TV DIAMOND	3730
+BEOGRID DUO NET+TV GOLD	2820
+BEOGRID DUO NET+TV PLATINUM	3230
+BEOGRID DUO NET+TV SILVER	2340
+BEOGRID NET DIAMOND	2930
+BEOGRID NET GOLD	1920
+BEOGRID NET PLATINUM	2430
+BEOGRID NET SILVER	1540
+BEOGRID TRIO DIAMOND	4230
+BEOGRID TRIO GOLD	3220
+BEOGRID TRIO PLATINUM	3830
+BEOGRID TRIO SILVER	2740
+D3 START	1395
+DUO NET GOLD	3429
+DUO NET GOLD EXTRA	4139
+DUO NET GOLD PREMIUM	5389
+DUO NET SILVER	3049
+DUO TEL GOLD	2379
+DUO TEL GOLD EXTRA	2989
+DUO TEL GOLD PREMIUM	3859
+DUO TEL SILVER	1999
+EON CINESTAR	599
+	
+EON DUO FULL	3599
+EON DUO LIGHT	3099
+EON DUO PREMIUM	4599
+EON FULL	3999
+EON FULL TV OTT	1999
+EON LIGHT	3499
+EON LIGHT TV OTT	1499
+EON PORODIČNI	499
+EON PREMIUM	4999
+EON PREMIUM TV OTT	2999
+EON SPORT	799
+EON SPORT+PORODIČNI	999
+EON TV FULL	1999
+EON TV LIGHT	1499
+EON TV PREMIUM	2999
+IKOM FLAT EXTRA 1	1870
+IKOM FLAT EXTRA 2	2420
+IKOM FLAT EXTRA 3	2920
+IKOM FLAT EXTRA 4	3520
+IKOM FLAT EXTRA 5	4620
+IKOM FLAT STANDARD 1	1770
+IKOM FLAT STANDARD 2	2270
+IKOM FLAT STANDARD 3	2870
+IKOM FLAT STANDARD 4	3470
+IKOM FLAT STANDARD 5	4570
+IKOM FON EXTRA	2170
+IKOM FON STANDARD	1770
+IKOM TEL 1	2170
+IKOM TEL 2	2720
+IKOM TEL 3	3220
+IKOM TEL 4	3820
+IKOM TEL 5	4920
+NEMA	0
+TOTAL TV EXTRA	1395
+TOTAL TV PREMIUM	2095
+TOTAL TV START	895
+TOTAL TV TRIO EXTRA	2495
+TOTAL TV TRIO PREMIUM	3195
+TRIO GOLD	3829
+TRIO GOLD EXTRA	4539
+TRIO GOLD PREMIUM	5789
+TRIO MINI	2499
+TRIO SILVER	3449
+*/
 
 const productPackages = [
     constructPlan("pink", 310, 0, 0),
@@ -38,22 +118,31 @@ const productPackages = [
 ];
 
 const hardwareItems = [
+    constructPlan("pt-ktv-stan", 3900, 0, 0),
+    constructPlan("pt-ktv-kuca", 9900, 0, 0),
+    constructPlan("eon-smart-box", 6900, 0, 0),
+    constructPlan("renta-eon-box", 290, 0, 0),
+    constructPlan("basic-modem", 3900, 0, 0),
+    constructPlan("advanced-modem", 6900, 0, 0),
     constructPlan("pds-2100", 2900, 0, 0),
     constructPlan("pds-3121", 4900, 0, 0),
     constructPlan("d3-mini", 1900, 0, 0),
-    constructPlan("eon-smart-box", 6900, 0, 0),
-    constructPlan("pt-ttv", 4900, 0, 0),
-    constructPlan("ttv-montaza", 9900, 0, 0),
-    constructPlan("basic-modem", 3900, 0, 0),
     constructPlan("d3-cam", 1900, 0, 0),
-    constructPlan("advanced-modem", 6900, 0, 0),
     constructPlan("wifi-mesh", 9900, 0, 0),
     constructPlan("eon-smart-box-50%", 3450, 0, 0),
-    constructPlan("pt-ktv-stan", 3900, 0, 0),
-    constructPlan("pt-ktv-kuca", 9900, 0, 0),
-    constructPlan("renta-eon-box", 290, 0, 0),
+    constructPlan("pt-ttv", 4900, 0, 0),
+    constructPlan("ttv-montaza", 9900, 0, 0),
     constructPlan("renta-ttv-risiver", 490, 0, 0),
 ]
+
+const currentRatePlanInput = document.querySelector("#current-rp"); //add rate plans select menu
+
+for (let i = 0; i < ratePlans.length; i++) {
+    const newOptionItem = document.createElement("option");
+    newOptionItem.setAttribute("value", `${ratePlans[i].name}`);
+    newOptionItem.textContent = `${((ratePlans[i].name).replaceAll("-", " ")).toUpperCase()}`;
+    currentRatePlanInput.appendChild(newOptionItem);
+}
 
 //setup: dinamically add checkboxes
 
@@ -68,7 +157,7 @@ for (let i = 0; i < productPackages.length; i++) {
     newCheckbox.setAttribute("name", "channels");
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${productPackages[i].name}`);
-    newLabel.textContent = `${((productPackages[i].name).replace("-", " ")).toUpperCase()}`;
+    newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " ")).toUpperCase()}`;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
     const newSpan = document.createElement("span");
@@ -179,7 +268,7 @@ buttonDate.addEventListener("click", () => {
 
 //06. set current rate plan and total payments left
 
-const currentRatePlanInput = document.querySelector("#current-rp");
+
 
 
 let selectedRatePlan;
@@ -247,22 +336,6 @@ function isChecked(e, arr) {
     });
 }
 
-function calcElementPrice(arr) {
-    arr.forEach(elem => {
-        elem.calcPrice = elem.qty * elem.price;
-    })
-    return arr.reduce((total, element) => total + element.calcPrice, 0);
-}
-
-const displaySinglePP = [...document.querySelectorAll("#promo-channels > li > span")];
-const displaySingleHW = [...document.querySelectorAll("#hardware > li > span")];
-
-function displayElementPrice(arrOfNodes, arrOfProducts) {
-    for (let i = 0; i < arrOfNodes.length; i++) {
-        arrOfNodes[i].textContent = `${(arrOfProducts[i].calcPrice).toFixed(2)} RSD`
-    }
-}
-
 inputText.forEach(textbox => {
     textbox.addEventListener("change", function (e) {
         if (e.currentTarget.parentNode.firstElementChild.name === "channels") {
@@ -296,11 +369,29 @@ function hasValue(e, arr) {
                 elem.qty = totalDaysPassed() / 30;
             }
         }
+        calcElementPrice(arr);
     });
+    
+}
+
+function calcElementPrice(arr) {
+    arr.forEach(elem => {
+        elem.calcPrice = elem.qty * elem.price;
+    })
+    return arr.reduce((total, element) => total + element.calcPrice, 0);
+}
+
+const displaySinglePP = [...document.querySelectorAll("#promo-channels > li > span")];
+const displaySingleHW = [...document.querySelectorAll("#hardware > li > span")];
+
+function displayElementPrice(arrOfNodes, arrOfProducts) {
+    for (let i = 0; i < arrOfNodes.length; i++) {
+        arrOfNodes[i].textContent = `${(arrOfProducts[i].calcPrice).toFixed(2)} RSD`
+    }
 }
 
 
-
+////////
 
 
 
