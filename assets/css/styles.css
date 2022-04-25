@@ -229,14 +229,14 @@ button:hover {
 
 /* utilities */
 
-/*.wrapper {
+.wrapper {
     display: grid;
-    width: min(90%, 1400px);
+    width: min(90%, 1800px);
     grid-template-columns: repeat(4, 1fr);
     padding: 1.5em;
     gap: 3em;
     margin: 0 auto;
-} */
+} 
 
 .double-height {
     grid-row: span 2;
@@ -266,12 +266,18 @@ input {
     text-align: center;
 }
 
+
+
 .channels {
     display: grid;
     grid-template-columns: 1fr 10fr 2fr 5fr;
     align-items: center;
     padding: 0.2em;
     gap: 1em;
+}
+
+.channels > label {
+    text-transform: capitalize;
 }
 
 

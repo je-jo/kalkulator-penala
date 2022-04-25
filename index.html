@@ -15,6 +15,7 @@
         <h1>Kalkulator ugovornih kazni</h1>
     </header>
     <main>
+        <div class="wrapper">
         <section class="card double-width">
             <h2>Datumi:</h2>
             <label for="contract-start-date">Unesite datum pocetka ugovora:</label>
@@ -24,17 +25,6 @@
             <h2>Trenutni paket:</h2>
             <select name="rate-plan" id="current-rp">
                 <option value="" selected disabled>Izaberi:</option>
-                <!-- <optgroup>
-                    <option value="d3-start">D3 start</option>
-                </optgroup>
-                <optgroup label="Trio">
-                    <option value="silver">Trio Silver</option>
-                    <option value="gold">Trio Gold</option>
-                </optgroup>
-                <optgroup label="Eon">
-                    <option value="light">Eon Light</option>
-                    <option value="full">Eon Full</option>
-                </optgroup> -->
             </select>
             <p>Cena paketa: <span id="rp-price">/</span> RSD.</p>
         </section>
@@ -42,13 +32,14 @@
             <h2>Ostvareni benefiti:
             </h2>
             <p>Proteklo vreme: <span id="time-passed"></span></p>
-            <p id="total-benefits">Ukupno benefiti:</p>
+            <p>Ukupno benefiti: <span id="total-benefits">/</span> RSD.</p>
         </section>
         <section class="card">
             <h2>Preostale pretplate:</h2>
             <p>Preostalo vreme: <span id="time-left"></span></p>
             <p>Ukupno preostale pretplate: <span id="total-left">/</span> RSD.</p>
         </section>
+    </div>
         <div class="wrapper">
             <section class="card">
                 <h2>Akcija:</h2>
@@ -61,16 +52,8 @@
                 </select>
                 <!-- <label for="reduction-time">Trajanje:</label>
                 <input type="text" id="reduction-time"> -->
-                <select name="previous-rate-plan" id="prev-rp" style="display:none">
+                <select name="previous-rate-plan" id="prev-rp">
                     <option value="" selected disabled>Izaberi stari paket:</option>
-                    <optgroup label="Trio">
-                        <option value="silver">Trio Silver</option>
-                        <option value="gold">Trio Gold</option>
-                    </optgroup>
-                    <optgroup label="Eon">
-                        <option value="light">Eon Light</option>
-                        <option value="full">Eon Full</option>
-                    </optgroup>
                 </select>
                 <p id="rp-total">Ukupno:</p>
             </section>

@@ -114,7 +114,6 @@ const productPackages = [
     constructPlan("ttv-filmski-paket", 690, 0, 0),
     constructPlan("ttv-filmbox", 360, 0, 0),
     constructPlan("ttv-pink", 550, 0, 0),
-
 ];
 
 const hardwareItems = [
@@ -135,16 +134,21 @@ const hardwareItems = [
     constructPlan("renta-ttv-risiver", 490, 0, 0),
 ]
 
-const currentRatePlanInput = document.querySelector("#current-rp"); //add rate plans select menu
+
+
+//setup: dinamically add select menus and checkboxes
+
+const currentRatePlanInput = document.querySelector("#current-rp"); //add rate plans select menus
+const previousRatePlanInput = document.querySelector("#prev-rp");
 
 for (let i = 0; i < ratePlans.length; i++) {
     const newOptionItem = document.createElement("option");
     newOptionItem.setAttribute("value", `${ratePlans[i].name}`);
     newOptionItem.textContent = `${((ratePlans[i].name).replaceAll("-", " ")).toUpperCase()}`;
+    let newOptionCopy = newOptionItem.cloneNode(true);
     currentRatePlanInput.appendChild(newOptionItem);
+    previousRatePlanInput.appendChild(newOptionCopy);
 }
-
-//setup: dinamically add checkboxes
 
 const channelsContainer = document.querySelector("#promo-channels"); //add channels to page
 
@@ -157,7 +161,7 @@ for (let i = 0; i < productPackages.length; i++) {
     newCheckbox.setAttribute("name", "channels");
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${productPackages[i].name}`);
-    newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " ")).toUpperCase()}`;
+    newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " "))}`;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
     const newSpan = document.createElement("span");
@@ -268,9 +272,6 @@ buttonDate.addEventListener("click", () => {
 
 //06. set current rate plan and total payments left
 
-
-
-
 let selectedRatePlan;
 
 currentRatePlanInput.addEventListener("click", (e) => {
@@ -287,10 +288,54 @@ let totalPaymentsLeft = () => {
     return (currentPrice() / 30) * totalDaysLeft();
 }
 
+//07. calculate reduced price
 
-//08. benefits - promo channels
+const reductionTime = document.querySelector("#reduction-time");
+const reductionType = document.querySelector("#price-reduction");
+const displayReductionTotal = document.querySelector("#rp-total");
+
+reductionType.addEventListener("change", () => {
+    let reductionTimePassed;
+    if (reductionTime.value) {
+        reductionTimePassed = reductionTime.value * 30
+    } else {
+        reductionTimePassed = totalDaysPassed();
+    }
+    if (reductionType.value === "one") {
+        reducedPrice = ((currentPrice - 1) / 30) * reductionTimePassed;
+        console.log(reducedPrice);
+    } else if (reductionType.value === "prev") {
+        console.log("stara cena");
+        let previousPrice;
+        previousRatePlan.style.display = "block";
+        previousRatePlan.addEventListener("change", (e) => {
+            ratePlans.forEach((plan) => {
+                if (plan.name === e.currentTarget.value) {
+                    previousPrice = plan.price;
+                    return previousPrice;
+                }
+                reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
+            })
+        });
+    } else if (reductionType.value === "percent") {
+        console.log("procenat od cene")
+    }
+    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice).toFixed(2)}</span></p>`;
+    return reducedPrice;
+});
 
 
+
+
+let reducedPrice;
+
+
+
+
+
+
+
+//08. benefits - promo channels and hardware items
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputCheckboxes = [...document.querySelectorAll("input[type='checkbox']")];
@@ -298,8 +343,11 @@ const inputText = [...document.querySelectorAll("input[type='text']")];
 const displayTotalChannels = document.querySelector("#total-channels");
 const displayTotalHardware = document.querySelector("#total-hardware");
 
+const displayTotalBenefits = document.querySelector("#total-benefits");
+
 let totalPackages = () => calcElementPrice(productPackages);
 let totalHardware = () => calcElementPrice(hardwareItems);
+let totalBenefits = () => [0, totalPackages(), totalHardware()].reduce((acc, curr) => acc + curr, 0);
 
 inputCheckboxes.forEach(checkbox => {
     checkbox.addEventListener("change", function (e) {
@@ -312,6 +360,7 @@ inputCheckboxes.forEach(checkbox => {
         }
         displayTotalChannels.textContent = totalPackages().toFixed(2);
         displayTotalHardware.textContent = totalHardware().toFixed(2);
+        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
     })
 })
 
@@ -348,6 +397,7 @@ inputText.forEach(textbox => {
         }
         displayTotalChannels.textContent = totalPackages().toFixed(2);
         displayTotalHardware.textContent = totalHardware().toFixed(2);
+        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
     })
 });
 
@@ -389,59 +439,12 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
         arrOfNodes[i].textContent = `${(arrOfProducts[i].calcPrice).toFixed(2)} RSD`
     }
 }
-
-
 ////////
 
 
 
 
 
-const reductionTime = document.querySelector("#reduction-time");
-const reductionType = document.querySelector("#price-reduction");
-const displayReductionTotal = document.querySelector("#rp-total");
-const previousRatePlan = document.querySelector("#prev-rp");
 
-reductionType.addEventListener("change", () => {
-    let reductionTimePassed;
-    if (reductionTime.value) {
-        reductionTimePassed = reductionTime.value * 30
-    } else {
-        reductionTimePassed = totalDaysPassed();
-    }
-    if (reductionType.value === "one") {
-        reducedPrice = ((currentPrice - 1) / 30) * reductionTimePassed;
-        console.log(reducedPrice);
-    } else if (reductionType.value === "prev") {
-        console.log("stara cena");
-        let previousPrice;
-        previousRatePlan.style.display = "block";
-        previousRatePlan.addEventListener("change", (e) => {
-            ratePlans.forEach((plan) => {
-                if (plan.name === e.currentTarget.value) {
-                    previousPrice = plan.price;
-                    return previousPrice;
-                }
-                reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
-            })
-        });
-    } else if (reductionType.value === "percent") {
-        console.log("procenat od cene")
-    }
-    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice).toFixed(2)}</span></p>`;
-    return reducedPrice;
-});
-
-
-
-
-
-//displayTotalBenefits.innerHTML = `<p>Ukupno benefiti: <span>${totalBenefits}</span></p>`
-
-let reducedPrice;
-
-
-
-const displayTotalBenefits = document.querySelector("#total-benefits");
 
 
