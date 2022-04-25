@@ -99,6 +99,7 @@ header {
 
 main {
     padding: 5vh;
+    width: min(90%, 1800px);
 }
 
 footer {
@@ -169,8 +170,7 @@ a {
 
 
 blockquote {
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0 auto;
     padding-left: 1.5rem;
     border-left: 2px solid var(--clr-secondary);
 }
@@ -231,7 +231,7 @@ button:hover {
 
 .wrapper {
     display: grid;
-    width: min(90%, 1800px);
+    
     grid-template-columns: repeat(4, 1fr);
     padding: 1.5em;
     gap: 3em;
@@ -266,6 +266,10 @@ input {
     text-align: center;
 }
 
+input[type="radio"] {
+    width: auto;
+}
+
 
 
 .channels {
@@ -279,6 +283,10 @@ input {
 .channels > label {
     text-transform: capitalize;
 }
+
+/*#prev-rp {
+    display: none;
+} */
 
 
 /* :root {

@@ -242,8 +242,8 @@ let totalDaysLeft = () => 719 - totalDaysPassed(); //assumes contract lasts 23m 
 
 // 04. format and display days
 
-let formattedDaysPassed = () => `${Math.floor(totalDaysPassed() / 30)} M i ${totalDaysPassed() % 30} D`;
-let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} M i ${totalDaysLeft() % 30} D`;
+let formattedDaysPassed = () => `${Math.floor(totalDaysPassed() / 30)} m i ${totalDaysPassed() % 30} d`;
+let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} m i ${totalDaysLeft() % 30} d`;
 
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
@@ -290,39 +290,53 @@ let totalPaymentsLeft = () => {
 
 //07. calculate reduced price
 
-const reductionTime = document.querySelector("#reduction-time");
+
 const reductionType = document.querySelector("#price-reduction");
+const reductionTime = document.querySelector("#reduction-time");
 const displayReductionTotal = document.querySelector("#rp-total");
+const percentInput = [...document.querySelectorAll("input[type='radio']")];
+const percentContainer = document.querySelector("#percent");
+percentInput.forEach(input => input.style.fontSize = "40px")
 
 reductionType.addEventListener("change", () => {
-    let reductionTimePassed;
+    /* let reductionTimePassed;
     if (reductionTime.value) {
         reductionTimePassed = reductionTime.value * 30
     } else {
         reductionTimePassed = totalDaysPassed();
-    }
+    } */
     if (reductionType.value === "one") {
-        reducedPrice = ((currentPrice - 1) / 30) * reductionTimePassed;
+        reducedPrice = ((currentPrice() - 1) / 30);
         console.log(reducedPrice);
     } else if (reductionType.value === "prev") {
         console.log("stara cena");
-        let previousPrice;
-        previousRatePlan.style.display = "block";
-        previousRatePlan.addEventListener("change", (e) => {
+        //let previousPrice;
+        previousRatePlanInput.style.display = "block";
+        previousRatePlanInput.addEventListener("change", (e) => {
             ratePlans.forEach((plan) => {
                 if (plan.name === e.currentTarget.value) {
                     previousPrice = plan.price;
                     return previousPrice;
                 }
-                reducedPrice = ((currentPrice - previousPrice) / 30) * reductionTimePassed;
+                reducedPrice = ((currentPrice() - previousPrice) / 30);
+                console.log(reducedPrice)
             })
         });
     } else if (reductionType.value === "percent") {
-        console.log("procenat od cene")
-    }
-    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice).toFixed(2)}</span></p>`;
+        percentContainer.style.display = "block";
+        percentInput.forEach(input => {
+            input.addEventListener("change", (e) => {
+                console.log(e.currentTarget.value)
+                reducedPrice = (currentPrice() / 100) * e.currentTarget.value
+            })
+        
+    })
+}
+    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice * totalDaysPassed()).toFixed(2)}</span></p>`;
     return reducedPrice;
 });
+
+
 
 
 
@@ -440,6 +454,21 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
     }
 }
 ////////
+
+const buttonFinal = document.querySelector("#btn--final");
+const outputFinal = document.querySelector("#output--final");
+
+buttonFinal.addEventListener("click", function() {
+    outputFinal.innerHTML = `
+
+    <p>${todayFormatted} - HDS Agent:</p>
+
+    <p>Ukupno ostvareni benefiti: ${totalBenefits().toFixed(2)} RSD (elaborat...);</p>
+
+    <p>Ukupno preostale pretplate: ${totalPaymentsLeft().toFixed(2)} RSD (${currentPrice().toFixed(2)} RSD X ${formattedDaysLeft()});</p>
+    
+    `
+})
 
 
 

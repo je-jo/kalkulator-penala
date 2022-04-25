@@ -16,30 +16,30 @@
     </header>
     <main>
         <div class="wrapper">
-        <section class="card double-width">
-            <h2>Datumi:</h2>
-            <label for="contract-start-date">Unesite datum pocetka ugovora:</label>
-            <input type="date" id="contract-start-date" min="2020-01-01" max="2022-12-31">
-            <button id="btn--date">OK</button>
-            <p>Danasnji datum: <span id="today"></span></p>
-            <h2>Trenutni paket:</h2>
-            <select name="rate-plan" id="current-rp">
-                <option value="" selected disabled>Izaberi:</option>
-            </select>
-            <p>Cena paketa: <span id="rp-price">/</span> RSD.</p>
-        </section>
-        <section class="card">
-            <h2>Ostvareni benefiti:
-            </h2>
-            <p>Proteklo vreme: <span id="time-passed"></span></p>
-            <p>Ukupno benefiti: <span id="total-benefits">/</span> RSD.</p>
-        </section>
-        <section class="card">
-            <h2>Preostale pretplate:</h2>
-            <p>Preostalo vreme: <span id="time-left"></span></p>
-            <p>Ukupno preostale pretplate: <span id="total-left">/</span> RSD.</p>
-        </section>
-    </div>
+            <section class="card double-width">
+                <h2>Datumi:</h2>
+                <label for="contract-start-date">Unesite datum pocetka ugovora:</label>
+                <input type="date" id="contract-start-date" min="2020-01-01" max="2022-12-31">
+                <button id="btn--date">OK</button>
+                <p>Danasnji datum: <span id="today"></span></p>
+                <h2>Trenutni paket:</h2>
+                <select name="rate-plan" id="current-rp">
+                    <option value="" selected disabled>Izaberi:</option>
+                </select>
+                <p>Cena paketa: <span id="rp-price">/</span> RSD.</p>
+            </section>
+            <section class="card">
+                <h2>Ostvareni benefiti:
+                </h2>
+                <p>Proteklo vreme: <span id="time-passed"></span></p>
+                <p>Ukupno benefiti: <span id="total-benefits">/</span> RSD.</p>
+            </section>
+            <section class="card">
+                <h2>Preostale pretplate:</h2>
+                <p>Preostalo vreme: <span id="time-left"></span></p>
+                <p>Ukupno preostale pretplate: <span id="total-left">/</span> RSD.</p>
+            </section>
+        </div>
         <div class="wrapper">
             <section class="card">
                 <h2>Akcija:</h2>
@@ -50,11 +50,20 @@
                     <option value="prev">Stara cena</option>
                     <option value="percent">Procenat</option>
                 </select>
-                <!-- <label for="reduction-time">Trajanje:</label>
-                <input type="text" id="reduction-time"> -->
+                <label for="reduction-time">Trajanje:</label>
+                <input type="text" id="reduction-time">
                 <select name="previous-rate-plan" id="prev-rp">
                     <option value="" selected disabled>Izaberi stari paket:</option>
                 </select>
+                <p>Procenat:</p>
+                <div id="percent">
+                    <label for="10">
+                        <input type="radio" id="10" name="percent" value="10">
+                        10 %</label>
+                    <label for="50">
+                        <input type="radio" id="50" name="percent" value="50">
+                        50 %</label>
+                </div>
                 <p id="rp-total">Ukupno:</p>
             </section>
             <section class="card">
@@ -82,6 +91,8 @@
                 </ul>
             </section>
         </div>
+        <button id="btn--final">Generisi izvestaj</button>
+        <blockquote id="output--final">...</blockquote>
     </main>
     <footer>
         <p>
