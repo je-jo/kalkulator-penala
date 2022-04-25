@@ -15,40 +15,40 @@
         <h1>Kalkulator ugovornih kazni</h1>
     </header>
     <main>
-            <section class="card double-width">
-                <h2>Datumi:</h2>
-                <label for="contract-start-date">Unesite datum pocetka ugovora:</label>
-                <input type="date" id="contract-start-date" min="2020-01-01" max="2022-12-31">
-                <button id="btn--date">OK</button>
-                <p>Danasnji datum: <span id="today"></span></p>
-                <h2>Trenutni paket:</h2>
-                <select name="rate-plan" id="current-rp">
-                    <option value="" selected disabled>Izaberi:</option>
-                    <optgroup>
-                        <option value="d3-start">D3 start</option>
-                    </optgroup>
-                    <optgroup label="Trio">
-                        <option value="silver">Trio Silver</option>
-                        <option value="gold">Trio Gold</option>
-                    </optgroup>
-                    <optgroup label="Eon">
-                        <option value="light">Eon Light</option>
-                        <option value="full">Eon Full</option>
-                    </optgroup>
-                </select>
-                <p>Cena paketa: <span id="rp-price">/</span> RSD.</p>
-            </section>
-            <section class="card">
-                <h2>Ostvareni benefiti:
-                </h2>
-                <p>Proteklo vreme: <span id="time-passed"></span></p>
-                <p id="total-benefits">Ukupno benefiti:</p>
-            </section>
-            <section class="card">
-                <h2>Preostale pretplate:</h2>
-                <p>Preostalo vreme: <span id="time-left"></span></p>
-                <p>Ukupno preostale pretplate: <span id="total-left">/</span> RSD.</p>
-            </section>
+        <section class="card double-width">
+            <h2>Datumi:</h2>
+            <label for="contract-start-date">Unesite datum pocetka ugovora:</label>
+            <input type="date" id="contract-start-date" min="2020-01-01" max="2022-12-31">
+            <button id="btn--date">OK</button>
+            <p>Danasnji datum: <span id="today"></span></p>
+            <h2>Trenutni paket:</h2>
+            <select name="rate-plan" id="current-rp">
+                <option value="" selected disabled>Izaberi:</option>
+                <optgroup>
+                    <option value="d3-start">D3 start</option>
+                </optgroup>
+                <optgroup label="Trio">
+                    <option value="silver">Trio Silver</option>
+                    <option value="gold">Trio Gold</option>
+                </optgroup>
+                <optgroup label="Eon">
+                    <option value="light">Eon Light</option>
+                    <option value="full">Eon Full</option>
+                </optgroup>
+            </select>
+            <p>Cena paketa: <span id="rp-price">/</span> RSD.</p>
+        </section>
+        <section class="card">
+            <h2>Ostvareni benefiti:
+            </h2>
+            <p>Proteklo vreme: <span id="time-passed"></span></p>
+            <p id="total-benefits">Ukupno benefiti:</p>
+        </section>
+        <section class="card">
+            <h2>Preostale pretplate:</h2>
+            <p>Preostalo vreme: <span id="time-left"></span></p>
+            <p>Ukupno preostale pretplate: <span id="total-left">/</span> RSD.</p>
+        </section>
         <div class="wrapper">
             <section class="card">
                 <h2>Akcija:</h2>
@@ -76,7 +76,7 @@
             </section>
             <section class="card">
                 <h2>Promo Kanali:</h2>
-                <p id="total-channels">Ukupno kanali:</p>
+                <p>Ukupno kanali: <span id="total-channels"></span> RSD.</p>
                 <ul id="promo-channels">
                     <li class="channels">
                         <div class="checkbox"></div>
@@ -88,6 +88,7 @@
             </section>
             <section class="card">
                 <h2>Prikljucne takse:</h2>
+                <p>Ukupno oprema: <span id="total-hardware"></span> RSD.</p>
                 <ul id="hardware">
                     <li class="channels">
                         <div class="checkbox"></div>
@@ -101,8 +102,8 @@
     </main>
     <footer>
         <p>
-            &copy; 2022.
-          </p>
+            &copy; Jovicic, 2022.
+        </p>
     </footer>
 </body>
 
