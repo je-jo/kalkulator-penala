@@ -250,7 +250,9 @@ button:hover {
     order: -1;
 }
 
-span {
+.output,
+#output--final {
+    font-family: monospace;
     font-size: 1.1rem;
     font-weight: bold;
     text-decoration: underline;
@@ -284,9 +286,10 @@ input[type="radio"] {
     text-transform: capitalize;
 }
 
-/*#prev-rp {
+#prev-rp,
+#percent {
     display: none;
-} */
+} 
 
 
 /* :root {

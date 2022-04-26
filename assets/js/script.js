@@ -20,7 +20,7 @@ const ratePlans = [
     constructPlan("trio-gold", 3829, 0, 0),
     constructPlan("eon-light", 3499, 0, 0),
     constructPlan("eon-full", 3999, 0, 0),
-    
+
     constructPlan("test-test", 20000, 0, 0),
 ];
 
@@ -254,8 +254,8 @@ function updateDisplay() { //runs on date button click, select curr rate plan
     displayTimePassed.textContent = formattedDaysPassed();
     displayTimeLeft.textContent = formattedDaysLeft();
     if (selectedRatePlan) {
-        displayRatePlanPrice.textContent = currentPrice().toFixed(2);
-        displayTotalPaymentsLeft.textContent = totalPaymentsLeft().toFixed(2);
+        displayRatePlanPrice.textContent = currentPrice().toLocaleString("en-US");
+        displayTotalPaymentsLeft.textContent = totalPaymentsLeft().toLocaleString("en-US");
     }
 }
 
@@ -281,67 +281,91 @@ currentRatePlanInput.addEventListener("click", (e) => {
 });
 
 let currentPrice = () => {
-    return (ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price //important!
+    return +((ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price).toFixed(2) //important!
 }
 
 let totalPaymentsLeft = () => {
-    return (currentPrice() / 30) * totalDaysLeft();
+    return +((currentPrice() / 30) * totalDaysLeft()).toFixed(2);
 }
 
 //07. calculate reduced price
 
 
 const reductionType = document.querySelector("#price-reduction");
-const reductionTime = document.querySelector("#reduction-time");
-const displayReductionTotal = document.querySelector("#rp-total");
 const percentInput = [...document.querySelectorAll("input[type='radio']")];
 const percentContainer = document.querySelector("#percent");
-percentInput.forEach(input => input.style.fontSize = "40px")
 
-reductionType.addEventListener("change", () => {
-    /* let reductionTimePassed;
-    if (reductionTime.value) {
-        reductionTimePassed = reductionTime.value * 30
-    } else {
-        reductionTimePassed = totalDaysPassed();
-    } */
-    if (reductionType.value === "one") {
-        reducedPrice = ((currentPrice() - 1) / 30);
-        console.log(reducedPrice);
-    } else if (reductionType.value === "prev") {
-        console.log("stara cena");
-        //let previousPrice;
-        previousRatePlanInput.style.display = "block";
-        previousRatePlanInput.addEventListener("change", (e) => {
-            ratePlans.forEach((plan) => {
-                if (plan.name === e.currentTarget.value) {
-                    previousPrice = plan.price;
-                    return previousPrice;
-                }
-                reducedPrice = ((currentPrice() - previousPrice) / 30);
-                console.log(reducedPrice)
-            })
-        });
-    } else if (reductionType.value === "percent") {
-        percentContainer.style.display = "block";
-        percentInput.forEach(input => {
-            input.addEventListener("change", (e) => {
-                console.log(e.currentTarget.value)
-                reducedPrice = (currentPrice() / 100) * e.currentTarget.value
-            })
-        
-    })
-}
-    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice * totalDaysPassed()).toFixed(2)}</span></p>`;
-    return reducedPrice;
+
+
+previousRatePlanInput.addEventListener("click", (e) => {
+    let previousRatePlan = e.currentTarget.value;
+    return previousRatePlan;
+    //totalPaymentsLeft();
+    //updateDisplay();
 });
 
+let previousRatePlan;
+let previousPrice = () => {
+    return +((ratePlans.find(plan => (plan.name.includes(previousRatePlan)))).price).toFixed(2)
+}
+
+
+let percentReduction;
+
+
+reductionType.addEventListener("change", () => {
+    if (reductionType.value === "one") {
+        previousRatePlanInput.style.display = "none";
+        percentContainer.style.display = "none";
+        reducedPrice = currentPrice() - 1;
+    } else if (reductionType.value === "prev") {
+        previousRatePlanInput.style.display = "block";
+        percentContainer.style.display = "none";
+        if (previousRatePlan) {
+            reducedPrice = currentPrice() - previousPrice()
+        } else {
+            //return
+            previousRatePlanInput.addEventListener("click", (e) => {
+                previousRatePlan = e.currentTarget.value;
+            })
+        }
+    }
+    else if (reductionType.value === "percent") {
+        percentContainer.style.display = "block";
+        previousRatePlanInput.style.display = "none";
+        if (percentReduction) {
+            reducedPrice = currentPrice() * percentReduction
+        } else {
+            // return
+            percentInput.forEach(input => {
+                input.addEventListener("change", (e) => {
+                    percentReduction = e.currentTarget.value;
+                })
+            })
+        }
+
+    }
+    //reducedPrice = currentPrice() - 1;
+    //reducedPrice = ((currentPrice() - previousPrice()) / 30);
+    //reducedPrice = currentPrice() * percentReduction;
+    console.log(`previous rate plan is ${previousRatePlan}`)
+    console.log(`percent reduction is ${percentReduction}`)
+    console.log(reducedPrice)
+    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice * totalDaysPassed()/30).toFixed(2)}</span></p>`;
+    return reducedPrice
+})
+
+//  }
+
+
+
+
+const displayReductionTotal = document.querySelector("#rp-total");
 
 
 
 
 
-let reducedPrice;
 
 
 
@@ -435,7 +459,7 @@ function hasValue(e, arr) {
         }
         calcElementPrice(arr);
     });
-    
+
 }
 
 function calcElementPrice(arr) {
@@ -458,7 +482,7 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
 const buttonFinal = document.querySelector("#btn--final");
 const outputFinal = document.querySelector("#output--final");
 
-buttonFinal.addEventListener("click", function() {
+buttonFinal.addEventListener("click", function () {
     outputFinal.innerHTML = `
 
     <p>${todayFormatted} - HDS Agent:</p>
