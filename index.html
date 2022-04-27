@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sr">
 
 <head>
     <meta charset="UTF-8">
@@ -15,34 +15,40 @@
         <h1>Kalkulator ugovornih kazni</h1>
     </header>
     <main>
+        <section>
+
+        <h2>Osnovni podaci</h2>
         <div class="wrapper">
-            <section class="card double-width">
-                <h2>Datumi:</h2>
+            <div class="card double-width">
+                <h3>Datumi:</h3>
                 <label for="contract-start-date">Unesite datum pocetka ugovora:</label>
                 <input type="date" id="contract-start-date" min="2020-01-01" max="2022-12-31">
                 <button id="btn--date">OK</button>
                 <p>Danasnji datum: <span class="output" id="today"></span></p>
-                <h2>Trenutni paket:</h2>
+                <h3>Trenutni paket:</h3>
                 <select name="rate-plan" id="current-rp">
                     <option value="" selected disabled>Izaberi:</option>
                 </select>
                 <p>Cena paketa: <span class="output" id="rp-price">/</span> RSD.</p>
-            </section>
-            <section class="card">
-                <h2>Ostvareni benefiti:
-                </h2>
+            </div>
+            <div class="card">
+                <h3>Ostvareni benefiti:
+                </h3>
                 <p>Proteklo vreme: <span class="output" id="time-passed"></span></p>
                 <p>Ukupno benefiti: <span class="output" id="total-benefits">/</span> RSD.</p>
-            </section>
-            <section class="card">
-                <h2>Preostale pretplate:</h2>
+            </div>
+            <div class="card">
+                <h3>Preostale pretplate:</h3>
                 <p>Preostalo vreme: <span class="output" id="time-left"></span></p>
                 <p>Ukupno preostale pretplate: <span class="output" id="total-left">/</span> RSD.</p>
-            </section>
+            </div>
         </div>
+    </section>
+    <section>
+        <h2>Ostvareni benefiti</h2>
         <div class="wrapper">
-            <section class="card">
-                <h2>Akcija:</h2>
+            <div class="card">
+                <h3>Akcija:</h3>
                 <p>Vrsta akcije:</p>
                 <select name="price-reduction" id="price-reduction">
                     <option value="" selected disabled>Izaberi:</option>
@@ -63,12 +69,14 @@
                         <input type="radio" id="50" name="percent" value="0.5">
                         50 %</label>
                 </div>
+                
                 <label for="reduction-time">Trajanje:</label>
-                <input type="text" id="reduction-time">
-                <p id="rp-total">Ukupno:</p>
-            </section>
-            <section class="card">
-                <h2>Promo Kanali:</h2>
+                <input type="text" id="reduction-time" class="modifier">
+                <p>Iznos akcijske pogodnosti: <span id="price-reduction-ammount" class="output"></span></p>
+                <p>Ukupno akcijska pogodnost: <span id="rp-total" class="output"></span></p>
+            </div>
+            <div class="card">
+                <h3>Promo Kanali:</h3>
                 <p>Ukupno kanali: <span class="output" id="total-channels"></span> RSD.</p>
                 <ul id="promo-channels">
                     <li class="channels">
@@ -78,9 +86,9 @@
                         <div>Ukupno cena</div>
                     </li>
                 </ul>
-            </section>
-            <section class="card">
-                <h2>Prikljucne takse:</h2>
+            </div>
+            <div class="card">
+                <h3>Prikljucne takse:</h3>
                 <p>Ukupno oprema: <span class="output" id="total-hardware"></span> RSD.</p>
                 <ul id="hardware">
                     <li class="channels">
@@ -90,10 +98,14 @@
                         <div>Ukupno cena</div>
                     </li>
                 </ul>
-            </section>
+            </div>
         </div>
+        </section>
+        <section>
+            <h2>Izvestaj</h2>
         <button id="btn--final">Generisi izvestaj</button>
         <blockquote id="output--final">...</blockquote>
+    </section>
     </main>
     <footer>
         <p>

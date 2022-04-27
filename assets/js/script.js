@@ -164,6 +164,7 @@ for (let i = 0; i < productPackages.length; i++) {
     newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " "))}`;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
+    newTextInput.classList.add("modifier");
     const newSpan = document.createElement("span");
     newSpan.classList.add("channels-calc-price");
     newSpan.textContent = `${(productPackages[i].calcPrice)} RSD`;
@@ -188,6 +189,7 @@ for (let i = 0; i < hardwareItems.length; i++) {
     newLabel.textContent = `${((hardwareItems[i].name).replace("-", " ")).toUpperCase()}`;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
+    newTextInput.classList.add("modifier");
     const newSpan = document.createElement("span");
     newSpan.classList.add("hardware-calc-price");
     newSpan.textContent = `${(hardwareItems[i].calcPrice)} RSD`;
@@ -294,90 +296,79 @@ let totalPaymentsLeft = () => {
 const reductionType = document.querySelector("#price-reduction");
 const percentInput = [...document.querySelectorAll("input[type='radio']")];
 const percentContainer = document.querySelector("#percent");
-
-
+let previousRatePlan;
+let percentReduction;
+const displayReductionTotal = document.querySelector("#rp-total");
+const displayReducedPrice = document.querySelector("#price-reduction-ammount");
 
 previousRatePlanInput.addEventListener("click", (e) => {
-    let previousRatePlan = e.currentTarget.value;
-    return previousRatePlan;
-    //totalPaymentsLeft();
-    //updateDisplay();
+    previousRatePlan = e.currentTarget.value;
+    previousPrice();
+    reducedPrice();
+    reductionTotal();
+    displayReducedPrice.textContent = reducedPrice();
+    displayReductionTotal.textContent = reductionTotal();
+    displayTotalBenefits.textContent = totalBenefits().toFixed(2);
 });
 
-let previousRatePlan;
+percentInput.forEach(input => {
+    input.addEventListener("change", (e) => {
+        percentReduction = e.currentTarget.value;
+        reducedPrice();
+        reductionTotal();
+        displayReducedPrice.textContent = reducedPrice();
+        displayReductionTotal.textContent = reductionTotal();
+        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+    })
+});
+
 let previousPrice = () => {
     return +((ratePlans.find(plan => (plan.name.includes(previousRatePlan)))).price).toFixed(2)
 }
 
+let reducedPrice = () => {
+    if (reductionType.value === "one") {
+        return currentPrice() - 1
+    }
+    if (reductionType.value === "prev") {
+        return currentPrice() - previousPrice()
+    }
+    if (reductionType.value === "percent") {
+        return currentPrice() * percentReduction;
+    }
+    else return 0;
+}
 
-let percentReduction;
+let reductionTotal = () => reducedPrice() * (totalDaysPassed() / 30);
+
 
 
 reductionType.addEventListener("change", () => {
     if (reductionType.value === "one") {
         previousRatePlanInput.style.display = "none";
         percentContainer.style.display = "none";
-        reducedPrice = currentPrice() - 1;
+        reducedPrice();
+        reductionTotal();
+        displayReducedPrice.textContent = reducedPrice();
+        displayReductionTotal.textContent = reductionTotal();
+        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+    
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
         percentContainer.style.display = "none";
-        if (previousRatePlan) {
-            reducedPrice = currentPrice() - previousPrice()
-        } else {
-            //return
-            previousRatePlanInput.addEventListener("click", (e) => {
-                previousRatePlan = e.currentTarget.value;
-            })
-        }
     }
     else if (reductionType.value === "percent") {
         percentContainer.style.display = "block";
         previousRatePlanInput.style.display = "none";
-        if (percentReduction) {
-            reducedPrice = currentPrice() * percentReduction
-        } else {
-            // return
-            percentInput.forEach(input => {
-                input.addEventListener("change", (e) => {
-                    percentReduction = e.currentTarget.value;
-                })
-            })
         }
-
-    }
-    //reducedPrice = currentPrice() - 1;
-    //reducedPrice = ((currentPrice() - previousPrice()) / 30);
-    //reducedPrice = currentPrice() * percentReduction;
-    console.log(`previous rate plan is ${previousRatePlan}`)
-    console.log(`percent reduction is ${percentReduction}`)
-    console.log(reducedPrice)
-    displayReductionTotal.innerHTML = `<p>Ukupno: <span>${(reducedPrice * totalDaysPassed()/30).toFixed(2)}</span></p>`;
-    return reducedPrice
-})
-
-//  }
-
-
-
-
-const displayReductionTotal = document.querySelector("#rp-total");
-
-
-
-
-
-
-
-
-
-
+    });
 
 
 //08. benefits - promo channels and hardware items
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputCheckboxes = [...document.querySelectorAll("input[type='checkbox']")];
-const inputText = [...document.querySelectorAll("input[type='text']")];
+const inputText = [...document.querySelectorAll("input[class='modifier']")];
 const displayTotalChannels = document.querySelector("#total-channels");
 const displayTotalHardware = document.querySelector("#total-hardware");
 
@@ -385,7 +376,7 @@ const displayTotalBenefits = document.querySelector("#total-benefits");
 
 let totalPackages = () => calcElementPrice(productPackages);
 let totalHardware = () => calcElementPrice(hardwareItems);
-let totalBenefits = () => [0, totalPackages(), totalHardware()].reduce((acc, curr) => acc + curr, 0);
+let totalBenefits = () => [reductionTotal(), totalPackages(), totalHardware()].reduce((acc, curr) => acc + curr, 0);
 
 inputCheckboxes.forEach(checkbox => {
     checkbox.addEventListener("change", function (e) {
@@ -477,7 +468,8 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
         arrOfNodes[i].textContent = `${(arrOfProducts[i].calcPrice).toFixed(2)} RSD`
     }
 }
-////////
+
+// output
 
 const buttonFinal = document.querySelector("#btn--final");
 const outputFinal = document.querySelector("#output--final");

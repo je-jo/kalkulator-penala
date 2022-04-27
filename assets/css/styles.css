@@ -128,6 +128,7 @@ h1 {
 
 h2 {
     font-size: var(--fs-h2);
+    text-align: center;
 }
 
 h3 {
@@ -221,10 +222,6 @@ button:hover {
     overflow-y: auto;
 }
 
-.card>h2 {
-    font-size: var(--fs-h3);
-}
-
 
 
 /* utilities */
@@ -246,7 +243,7 @@ button:hover {
     grid-column: span 2;
 }
 
-.wrapper:nth-child(1)>section:nth-child(2) {
+section:nth-child(1)>.wrapper>div:nth-child(2) {
     order: -1;
 }
 
