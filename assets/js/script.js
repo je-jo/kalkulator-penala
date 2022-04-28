@@ -11,20 +11,53 @@ function constructPlan(name, price, qty, calcPrice) {
 
 const ratePlans = [
     constructPlan("d3-start", 1395, 0, 0),
+
     constructPlan("duo-silver", 3049, 0, 0),
     constructPlan("duo-gold", 3429, 0, 0),
     constructPlan("duo-gold-extra", 4139, 0, 0),
     constructPlan("duo-gold-premium", 5389, 0, 0),
-    constructPlan("trio-silver", 3449, 0, 0),
 
+    constructPlan("duo-tel-silver", 1999, 0, 0),
+    constructPlan("duo-tel-gold", 2379, 0, 0),
+    constructPlan("duo-tel-gold-extra", 2989, 0, 0),
+    constructPlan("duo-tel-gold-premium", 3859, 0, 0),
+
+    constructPlan("trio-silver", 3449, 0, 0),
     constructPlan("trio-gold", 3829, 0, 0),
+    constructPlan("trio-gold-extra", 4539, 0, 0),
+    constructPlan("trio-gold-premium", 5789, 0, 0),
+    constructPlan("trio-mini", 2499, 0, 0),
+
+    constructPlan("eon-duo-light", 3099, 0, 0),
+    constructPlan("eon-duo-full", 3599, 0, 0),
+    constructPlan("eon-duo-premium", 4599, 0, 0),
+
     constructPlan("eon-light", 3499, 0, 0),
     constructPlan("eon-full", 3999, 0, 0),
+    constructPlan("eon-premium", 4999, 0, 0),
 
-    constructPlan("test-test", 20000, 0, 0),
+    constructPlan("eon-tv-light", 1499, 0, 0),
+    constructPlan("eon-tv-full", 1999, 0, 0),
+    constructPlan("eon-tv-premium", 2999, 0, 0),
+
+    constructPlan("ttv-start", 895, 0, 0),
+    constructPlan("ttv-extra", 1395, 0, 0),
+    constructPlan("ttv-premium", 2095, 0, 0),
+    constructPlan("ttv-trio-extra", 2495, 0, 0),
+    constructPlan("ttv-trio-premium", 3195, 0, 0),
+
+    constructPlan("eon-ott-light", 1499, 0, 0),
+    constructPlan("eon-ott-full", 1999, 0, 0),
+    constructPlan("eon-ott-premium", 2999, 0, 0),
 ];
 
 /*
+
+EON PORODIČNI	499
+EON CINESTAR	599
+EON SPORT	799
+EON SPORT+PORODIČNI	999
+
 BEOGRID DUO NET+TEL DIAMOND	3310
 BEOGRID DUO NET+TEL GOLD	2300
 BEOGRID DUO NET+TEL PLATINUM	2810
@@ -41,32 +74,7 @@ BEOGRID TRIO DIAMOND	4230
 BEOGRID TRIO GOLD	3220
 BEOGRID TRIO PLATINUM	3830
 BEOGRID TRIO SILVER	2740
-D3 START	1395
-DUO NET GOLD	3429
-DUO NET GOLD EXTRA	4139
-DUO NET GOLD PREMIUM	5389
-DUO NET SILVER	3049
-DUO TEL GOLD	2379
-DUO TEL GOLD EXTRA	2989
-DUO TEL GOLD PREMIUM	3859
-DUO TEL SILVER	1999
-EON CINESTAR	599
-	
-EON DUO FULL	3599
-EON DUO LIGHT	3099
-EON DUO PREMIUM	4599
-EON FULL	3999
-EON FULL TV OTT	1999
-EON LIGHT	3499
-EON LIGHT TV OTT	1499
-EON PORODIČNI	499
-EON PREMIUM	4999
-EON PREMIUM TV OTT	2999
-EON SPORT	799
-EON SPORT+PORODIČNI	999
-EON TV FULL	1999
-EON TV LIGHT	1499
-EON TV PREMIUM	2999
+
 IKOM FLAT EXTRA 1	1870
 IKOM FLAT EXTRA 2	2420
 IKOM FLAT EXTRA 3	2920
@@ -84,17 +92,7 @@ IKOM TEL 2	2720
 IKOM TEL 3	3220
 IKOM TEL 4	3820
 IKOM TEL 5	4920
-NEMA	0
-TOTAL TV EXTRA	1395
-TOTAL TV PREMIUM	2095
-TOTAL TV START	895
-TOTAL TV TRIO EXTRA	2495
-TOTAL TV TRIO PREMIUM	3195
-TRIO GOLD	3829
-TRIO GOLD EXTRA	4539
-TRIO GOLD PREMIUM	5789
-TRIO MINI	2499
-TRIO SILVER	3449
+
 */
 
 const productPackages = [
@@ -200,6 +198,17 @@ for (let i = 0; i < hardwareItems.length; i++) {
     hardwareContainer.appendChild(newListItem);
 }
 
+function formatPrice(num) {
+    return num.toLocaleString('de-DE', {
+        style: 'currency',
+        currency: 'DIN',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    })
+}
+
+
+
 //01. set today
 
 const currentDay = new Date().getDate();
@@ -256,8 +265,8 @@ function updateDisplay() { //runs on date button click, select curr rate plan
     displayTimePassed.textContent = formattedDaysPassed();
     displayTimeLeft.textContent = formattedDaysLeft();
     if (selectedRatePlan) {
-        displayRatePlanPrice.textContent = currentPrice().toLocaleString("en-US");
-        displayTotalPaymentsLeft.textContent = totalPaymentsLeft().toLocaleString("en-US");
+        displayRatePlanPrice.textContent = formatPrice(currentPrice());
+        displayTotalPaymentsLeft.textContent = formatPrice(totalPaymentsLeft());
     }
 }
 
@@ -339,7 +348,25 @@ let reducedPrice = () => {
     else return 0;
 }
 
-let reductionTotal = () => reducedPrice() * (totalDaysPassed() / 30);
+let multiplier
+const inputMultiplier = document.querySelector("input[class='multiplier']");
+inputMultiplier.addEventListener("change", (e) => {
+    multiplier = +e.currentTarget.value;
+    reducedPrice();
+    reductionTotal();
+    displayReducedPrice.textContent = reducedPrice();
+    displayReductionTotal.textContent = reductionTotal();
+    displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+
+})
+
+let reductionTotal = () => {
+    if (multiplier) {
+        return reducedPrice() * multiplier;
+    } else {
+        return reducedPrice() * (totalDaysPassed() / 30);
+    }
+}
 
 
 
@@ -352,7 +379,7 @@ reductionType.addEventListener("change", () => {
         displayReducedPrice.textContent = reducedPrice();
         displayReductionTotal.textContent = reductionTotal();
         displayTotalBenefits.textContent = totalBenefits().toFixed(2);
-    
+
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
         percentContainer.style.display = "none";
@@ -360,8 +387,8 @@ reductionType.addEventListener("change", () => {
     else if (reductionType.value === "percent") {
         percentContainer.style.display = "block";
         previousRatePlanInput.style.display = "none";
-        }
-    });
+    }
+});
 
 
 //08. benefits - promo channels and hardware items
@@ -481,7 +508,7 @@ buttonFinal.addEventListener("click", function () {
 
     <p>Ukupno ostvareni benefiti: ${totalBenefits().toFixed(2)} RSD (elaborat...);</p>
 
-    <p>Ukupno preostale pretplate: ${totalPaymentsLeft().toFixed(2)} RSD (${currentPrice().toFixed(2)} RSD X ${formattedDaysLeft()});</p>
+    <p>Ukupno preostale pretplate: ${formatPrice(totalPaymentsLeft())} (${currentPrice().toFixed(2)} RSD X ${formattedDaysLeft()});</p>
     
     `
 })
