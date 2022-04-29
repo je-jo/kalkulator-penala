@@ -83,7 +83,7 @@ body {
     min-height: 100vh;
     background-color: var(--clr-bg);
     color: var(--clr-body);
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 header {
@@ -153,7 +153,7 @@ p {
 }
 
 li+li,
-section + section {
+section+section {
     margin-top: 1rem;
 }
 
@@ -228,12 +228,12 @@ button:hover {
 
 .wrapper {
     display: grid;
-    
+
     grid-template-columns: repeat(4, 1fr);
     padding: 1.5em;
     gap: 3em;
     margin: 0 auto;
-} 
+}
 
 .double-height {
     grid-row: span 2;
@@ -249,19 +249,19 @@ section:nth-child(1)>.wrapper>div:nth-child(2) {
 
 .output,
 #output--final {
-   /* font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace;
     font-size: 1.1rem;
     font-weight: bold;
     text-decoration: underline;
     text-decoration-style: dashed;
     text-decoration-thickness: 5px;
     text-decoration-color: #fec418; */
-    background-color: lightgrey;
+    background-color: var(--clr-secondary);
     outline: 1px dotted gray;
     outline-offset: 2px;
     border-radius: var(--border-radius) / 2;
     font-family: 'Courier New', Courier, monospace;
-  
+
 }
 
 input {
@@ -277,7 +277,7 @@ input[type="radio"] {
 
 
 
-.channels {
+.checkbox--wrapper {
     display: grid;
     grid-template-columns: 1fr 10fr 2fr 5fr;
     align-items: center;
@@ -285,14 +285,14 @@ input[type="radio"] {
     gap: 1em;
 }
 
-.channels > label {
+.checkbox--wrapper>label {
     text-transform: capitalize;
 }
 
 #prev-rp,
 #percent {
     display: none;
-} 
+}
 
 
 /* :root {

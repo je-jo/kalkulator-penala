@@ -11,61 +11,53 @@ function constructPlan(name, price, qty, calcPrice) {
 
 const ratePlans = [
     constructPlan("d3-start", 1395, 0, 0),
-
     constructPlan("duo-silver", 3049, 0, 0),
     constructPlan("duo-gold", 3429, 0, 0),
     constructPlan("duo-gold-extra", 4139, 0, 0),
     constructPlan("duo-gold-premium", 5389, 0, 0),
-
     constructPlan("duo-tel-silver", 1999, 0, 0),
     constructPlan("duo-tel-gold", 2379, 0, 0),
     constructPlan("duo-tel-gold-extra", 2989, 0, 0),
     constructPlan("duo-tel-gold-premium", 3859, 0, 0),
-
     constructPlan("trio-silver", 3449, 0, 0),
     constructPlan("trio-gold", 3829, 0, 0),
     constructPlan("trio-gold-extra", 4539, 0, 0),
     constructPlan("trio-gold-premium", 5789, 0, 0),
     constructPlan("trio-mini", 2499, 0, 0),
-
     constructPlan("eon-duo-light", 3099, 0, 0),
     constructPlan("eon-duo-full", 3599, 0, 0),
     constructPlan("eon-duo-premium", 4599, 0, 0),
-
     constructPlan("eon-light", 3499, 0, 0),
     constructPlan("eon-full", 3999, 0, 0),
     constructPlan("eon-premium", 4999, 0, 0),
-
     constructPlan("eon-tv-light", 1499, 0, 0),
     constructPlan("eon-tv-full", 1999, 0, 0),
     constructPlan("eon-tv-premium", 2999, 0, 0),
-
     constructPlan("ttv-start", 895, 0, 0),
     constructPlan("ttv-extra", 1395, 0, 0),
     constructPlan("ttv-premium", 2095, 0, 0),
     constructPlan("ttv-trio-extra", 2495, 0, 0),
     constructPlan("ttv-trio-premium", 3195, 0, 0),
-
     constructPlan("eon-ott-light", 1499, 0, 0),
     constructPlan("eon-ott-full", 1999, 0, 0),
     constructPlan("eon-ott-premium", 2999, 0, 0),
+    constructPlan("eon-porodicni", 499, 0, 0),
+    constructPlan("eon-cinestar", 599, 0, 0),
+    constructPlan("eon-sport", 799, 0, 0),
+    constructPlan("eon-sport-porodicni", 999, 0, 0),
+    constructPlan("beogrid-duo-silver", 2340, 0, 0),
+    constructPlan("beogrid-duo-gold", 2820, 0, 0),
+    constructPlan("beogrid-duo-platinum", 3230, 0, 0),
+    constructPlan("beogrid-duo-diamond", 3730, 0, 0),
+    constructPlan("beogrid-duo-tel-silver", 1920, 0, 0),
+    constructPlan("beogrid-duo-tel-gold", 2300, 0, 0),
+    constructPlan("beogrid-duo-tel-platinum", 2810, 0, 0),
+    constructPlan("beogrid-duo-tel-diamond", 3310, 0, 0),
+
 ];
 
 /*
 
-EON PORODIČNI	499
-EON CINESTAR	599
-EON SPORT	799
-EON SPORT+PORODIČNI	999
-
-BEOGRID DUO NET+TEL DIAMOND	3310
-BEOGRID DUO NET+TEL GOLD	2300
-BEOGRID DUO NET+TEL PLATINUM	2810
-BEOGRID DUO NET+TEL SILVER	1920
-BEOGRID DUO NET+TV DIAMOND	3730
-BEOGRID DUO NET+TV GOLD	2820
-BEOGRID DUO NET+TV PLATINUM	3230
-BEOGRID DUO NET+TV SILVER	2340
 BEOGRID NET DIAMOND	2930
 BEOGRID NET GOLD	1920
 BEOGRID NET PLATINUM	2430
@@ -152,11 +144,11 @@ const channelsContainer = document.querySelector("#promo-channels"); //add chann
 
 for (let i = 0; i < productPackages.length; i++) {
     const newListItem = document.createElement("li");
-    newListItem.classList.add("channels");
+    newListItem.classList.add("checkbox--wrapper");
     const newCheckbox = document.createElement("input");
     newCheckbox.setAttribute("type", "checkbox");
     newCheckbox.setAttribute("id", `${productPackages[i].name}`);
-    newCheckbox.setAttribute("name", "channels");
+    newCheckbox.setAttribute("name", "calc-by-time");
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${productPackages[i].name}`);
     newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " "))}`;
@@ -177,17 +169,26 @@ const hardwareContainer = document.querySelector("#hardware"); //add hardware to
 
 for (let i = 0; i < hardwareItems.length; i++) {
     const newListItem = document.createElement("li");
-    newListItem.classList.add("channels");
+    newListItem.classList.add("checkbox--wrapper");
     const newCheckbox = document.createElement("input");
     newCheckbox.setAttribute("type", "checkbox");
     newCheckbox.setAttribute("id", `${hardwareItems[i].name}`);
-    newCheckbox.setAttribute("name", "hardware");
+    if (`${hardwareItems[i].name}`.includes("rent")) {          //some items are rented and we need to calculate them by contract time, instead of once
+        newCheckbox.setAttribute("name", "calc-by-time");
+    } else {
+        newCheckbox.setAttribute("name", "calc-by-piece");
+    }
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${hardwareItems[i].name}`);
-    newLabel.textContent = `${((hardwareItems[i].name).replace("-", " ")).toUpperCase()}`;
+    newLabel.textContent = `${(hardwareItems[i].name).replaceAll("-", " ")}`;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
-    newTextInput.classList.add("modifier");
+    if (`${hardwareItems[i].name}`.includes("rent")) {
+        newTextInput.classList.add("multiple-rent");
+    } else {
+        newTextInput.classList.add("modifier");
+    }
+
     const newSpan = document.createElement("span");
     newSpan.classList.add("hardware-calc-price");
     newSpan.textContent = `${(hardwareItems[i].calcPrice)} RSD`;
@@ -212,6 +213,9 @@ function formatPrice(num) {
 //01. set today
 
 const currentDay = new Date().getDate();
+if (currentDay === 31) {
+    currentDay = 30;
+}
 const currentMonth = new Date().getMonth() + 1;
 const currentYear = new Date().getFullYear();
 const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
@@ -292,11 +296,11 @@ currentRatePlanInput.addEventListener("click", (e) => {
 });
 
 let currentPrice = () => {
-    return +((ratePlans.find(plan => (plan.name.includes(selectedRatePlan)))).price).toFixed(2) //important!
+    return ratePlans.find(plan => (plan.name.includes(selectedRatePlan))).price //important!
 }
 
 let totalPaymentsLeft = () => {
-    return +((currentPrice() / 30) * totalDaysLeft()).toFixed(2);
+    return (currentPrice() / 30) * totalDaysLeft();
 }
 
 //07. calculate reduced price
@@ -315,24 +319,25 @@ previousRatePlanInput.addEventListener("click", (e) => {
     previousPrice();
     reducedPrice();
     reductionTotal();
-    displayReducedPrice.textContent = reducedPrice();
-    displayReductionTotal.textContent = reductionTotal();
-    displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+    displayReducedPrice.textContent = formatPrice(reducedPrice());
+    displayReductionTotal.textContent = formatPrice(reductionTotal());
+    displayTotalBenefits.textContent = formatPrice(totalBenefits());
 });
+
 
 percentInput.forEach(input => {
     input.addEventListener("change", (e) => {
         percentReduction = e.currentTarget.value;
         reducedPrice();
         reductionTotal();
-        displayReducedPrice.textContent = reducedPrice();
-        displayReductionTotal.textContent = reductionTotal();
-        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+        displayReducedPrice.textContent = formatPrice(reducedPrice());
+        displayReductionTotal.textContent = formatPrice(reductionTotal());
+        displayTotalBenefits.textContent = formatPrice(totalBenefits());
     })
 });
 
 let previousPrice = () => {
-    return +((ratePlans.find(plan => (plan.name.includes(previousRatePlan)))).price).toFixed(2)
+    return (ratePlans.find(plan => (plan.name.includes(previousRatePlan)))).price
 }
 
 let reducedPrice = () => {
@@ -348,15 +353,15 @@ let reducedPrice = () => {
     else return 0;
 }
 
-let multiplier
+let multiplier;
 const inputMultiplier = document.querySelector("input[class='multiplier']");
 inputMultiplier.addEventListener("change", (e) => {
     multiplier = +e.currentTarget.value;
     reducedPrice();
     reductionTotal();
-    displayReducedPrice.textContent = reducedPrice();
-    displayReductionTotal.textContent = reductionTotal();
-    displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+    displayReducedPrice.textContent = formatPrice(reducedPrice());
+    displayReductionTotal.textContent = formatPrice(reductionTotal());
+    displayTotalBenefits.textContent = formatPrice(totalBenefits());
 
 })
 
@@ -376,9 +381,9 @@ reductionType.addEventListener("change", () => {
         percentContainer.style.display = "none";
         reducedPrice();
         reductionTotal();
-        displayReducedPrice.textContent = reducedPrice();
-        displayReductionTotal.textContent = reductionTotal();
-        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+        displayReducedPrice.textContent = formatPrice(reducedPrice());
+        displayReductionTotal.textContent = formatPrice(reductionTotal());
+        displayTotalBenefits.textContent = formatPrice(totalBenefits());
 
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
@@ -396,6 +401,7 @@ reductionType.addEventListener("change", () => {
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputCheckboxes = [...document.querySelectorAll("input[type='checkbox']")];
 const inputText = [...document.querySelectorAll("input[class='modifier']")];
+const inputMultiRent = [...document.querySelectorAll("input[class='multiple-rent']")];
 const displayTotalChannels = document.querySelector("#total-channels");
 const displayTotalHardware = document.querySelector("#total-hardware");
 
@@ -407,16 +413,13 @@ let totalBenefits = () => [reductionTotal(), totalPackages(), totalHardware()].r
 
 inputCheckboxes.forEach(checkbox => {
     checkbox.addEventListener("change", function (e) {
-        if (e.currentTarget.name === "channels") {
-            isChecked(e, productPackages);
-            displayElementPrice(displaySinglePP, productPackages);
-        } else if (e.currentTarget.name === "hardware") {
-            isChecked(e, hardwareItems);
-            displayElementPrice(displaySingleHW, hardwareItems);
-        }
-        displayTotalChannels.textContent = totalPackages().toFixed(2);
-        displayTotalHardware.textContent = totalHardware().toFixed(2);
-        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+        isChecked(e, productPackages);
+        displayElementPrice(displaySinglePP, productPackages);
+        isChecked(e, hardwareItems);
+        displayElementPrice(displaySingleHW, hardwareItems);
+        displayTotalChannels.textContent = formatPrice(totalPackages());
+        displayTotalHardware.textContent = formatPrice(totalHardware());
+        displayTotalBenefits.textContent = formatPrice(totalBenefits());
     })
 })
 
@@ -426,10 +429,10 @@ function isChecked(e, arr) {
             if (e.currentTarget.checked && elem.modifier) {
                 elem.qty = elem.modifier;
             } else if (e.currentTarget.checked) {
-                if (e.currentTarget.name === "channels") {
+                if (e.currentTarget.name === "calc-by-time") {
                     elem.qty = totalDaysPassed() / 30;
                 }
-                if (e.currentTarget.name === "hardware") {
+                if (e.currentTarget.name === "calc-by-piece") {
                     elem.qty = 1;
                 }
             }
@@ -443,17 +446,23 @@ function isChecked(e, arr) {
 
 inputText.forEach(textbox => {
     textbox.addEventListener("change", function (e) {
-        if (e.currentTarget.parentNode.firstElementChild.name === "channels") {
-            hasValue(e, productPackages);
-            displayElementPrice(displaySinglePP, productPackages);
-        }
-        if (e.currentTarget.parentNode.firstElementChild.name === "hardware") {
-            hasValue(e, hardwareItems);
-            displayElementPrice(displaySingleHW, hardwareItems);
-        }
-        displayTotalChannels.textContent = totalPackages().toFixed(2);
-        displayTotalHardware.textContent = totalHardware().toFixed(2);
-        displayTotalBenefits.textContent = totalBenefits().toFixed(2);
+        hasValue(e, productPackages);
+        displayElementPrice(displaySinglePP, productPackages);
+        hasValue(e, hardwareItems);
+        displayElementPrice(displaySingleHW, hardwareItems);
+        displayTotalChannels.textContent = formatPrice(totalPackages());
+        displayTotalHardware.textContent = formatPrice(totalHardware());
+        displayTotalBenefits.textContent = formatPrice(totalBenefits());
+    })
+});
+
+inputMultiRent.forEach(multi => {
+    multi.addEventListener("change", function (e) {
+        hasMulti(e, hardwareItems);
+        displayElementPrice(displaySingleHW, hardwareItems);
+        displayTotalChannels.textContent = formatPrice(totalPackages());
+        displayTotalHardware.textContent = formatPrice(totalHardware());
+        displayTotalBenefits.textContent = formatPrice(totalBenefits());
     })
 });
 
@@ -477,7 +486,28 @@ function hasValue(e, arr) {
         }
         calcElementPrice(arr);
     });
+}
 
+function hasMulti(e) {
+    hardwareItems.forEach(elem => {
+        if (elem.name === e.currentTarget.parentNode.firstElementChild.id) {
+            if (e.currentTarget.value) {
+                elem.multiplier = +e.currentTarget.value;
+            } else {
+                elem.multiplier = null
+            }
+            if (elem.multiplier) {
+                if (e.currentTarget.parentNode.firstElementChild.checked) {
+                    elem.qty = (totalDaysPassed() / 30) * elem.multiplier;
+                } else {
+                    elem.qty = 0;
+                }
+            } else {
+                elem.qty = totalDaysPassed() / 30;
+            }
+        }
+        calcElementPrice(hardwareItems);
+    });
 }
 
 function calcElementPrice(arr) {
@@ -492,7 +522,7 @@ const displaySingleHW = [...document.querySelectorAll("#hardware > li > span")];
 
 function displayElementPrice(arrOfNodes, arrOfProducts) {
     for (let i = 0; i < arrOfNodes.length; i++) {
-        arrOfNodes[i].textContent = `${(arrOfProducts[i].calcPrice).toFixed(2)} RSD`
+        arrOfNodes[i].textContent = formatPrice(arrOfProducts[i].calcPrice);
     }
 }
 
