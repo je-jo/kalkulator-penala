@@ -227,7 +227,7 @@ button:hover {
 
 /* utilities */
 
-.wrapper {
+.wrapper--card {
     display: grid;
 
     grid-template-columns: repeat(4, 1fr);
@@ -240,11 +240,11 @@ button:hover {
     grid-row: span 2;
 }
 
-.double-width {
+.card--dbl-w {
     grid-column: span 2;
 }
 
-section:nth-child(1)>.wrapper>div:nth-child(2) {
+section:nth-child(1)>.wrapper--card>div:nth-child(2) {
     order: -1;
 }
 
@@ -278,7 +278,7 @@ input[type="radio"] {
 
 
 
-.checkbox--wrapper {
+.wrapper--checkbox {
     display: grid;
     grid-template-columns: 1fr 10fr 2fr 5fr;
     align-items: center;
@@ -286,12 +286,12 @@ input[type="radio"] {
     gap: 1em;
 }
 
-.checkbox--wrapper>label {
+.wrapper--checkbox>label {
     text-transform: capitalize;
 }
 
-#prev-rp,
-#percent {
+#rp-prev,
+#reduction-percent {
     display: none;
 }
 

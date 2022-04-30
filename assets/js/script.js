@@ -128,8 +128,8 @@ const hardwareItems = [
 
 //setup: dinamically add select menus and checkboxes
 
-const currentRatePlanInput = document.querySelector("#current-rp"); //add rate plans select menus
-const previousRatePlanInput = document.querySelector("#prev-rp");
+const currentRatePlanInput = document.querySelector("#rp-current"); //add rate plans select menus
+const previousRatePlanInput = document.querySelector("#rp-prev");
 
 for (let i = 0; i < ratePlans.length; i++) {
     const newOptionItem = document.createElement("option");
@@ -140,11 +140,11 @@ for (let i = 0; i < ratePlans.length; i++) {
     previousRatePlanInput.appendChild(newOptionCopy);
 }
 
-const channelsContainer = document.querySelector("#promo-channels"); //add channels to page
+const channelsContainer = document.querySelector("#channels"); //add channels to page
 
 for (let i = 0; i < productPackages.length; i++) {
     const newListItem = document.createElement("li");
-    newListItem.classList.add("checkbox--wrapper");
+    newListItem.classList.add("wrapper--checkbox");
     const newCheckbox = document.createElement("input");
     newCheckbox.setAttribute("type", "checkbox");
     newCheckbox.setAttribute("id", `${productPackages[i].name}`);
@@ -169,7 +169,7 @@ const hardwareContainer = document.querySelector("#hardware"); //add hardware to
 
 for (let i = 0; i < hardwareItems.length; i++) {
     const newListItem = document.createElement("li");
-    newListItem.classList.add("checkbox--wrapper");
+    newListItem.classList.add("wrapper--checkbox");
     const newCheckbox = document.createElement("input");
     newCheckbox.setAttribute("type", "checkbox");
     newCheckbox.setAttribute("id", `${hardwareItems[i].name}`);
@@ -220,12 +220,12 @@ const currentMonth = new Date().getMonth() + 1;
 const currentYear = new Date().getFullYear();
 const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
 
-const displayToday = document.querySelector("#today");
+const displayToday = document.querySelector("#date-today");
 displayToday.textContent = todayFormatted;
 
 // 02. set contract start date
 
-const dateInput = document.querySelector("#contract-start-date");
+const dateInput = document.querySelector("#date-start-contract");
 
 let startDay, startMonth, startYear;
 
@@ -310,13 +310,13 @@ let totalPaymentsLeft = () => {
 //07. calculate reduced price
 
 
-const reductionType = document.querySelector("#price-reduction");
+const reductionType = document.querySelector("#reduction-type");
 const percentInput = [...document.querySelectorAll("input[type='radio']")];
-const percentContainer = document.querySelector("#percent");
+const percentContainer = document.querySelector("#reduction-percent");
 let previousRatePlan;
 let percentReduction;
-const displayReductionTotal = document.querySelector("#rp-total");
-const displayReducedPrice = document.querySelector("#price-reduction-ammount");
+const displayReductionTotal = document.querySelector("#total-reduction");
+const displayReducedPrice = document.querySelector("#reduction");
 
 previousRatePlanInput.addEventListener("click", (e) => {
     previousRatePlan = e.currentTarget.value;
@@ -520,7 +520,7 @@ function calcElementPrice(arr) {
     return arr.reduce((total, element) => total + element.calcPrice, 0);
 }
 
-const displaySinglePP = [...document.querySelectorAll("#promo-channels > li > span")];
+const displaySinglePP = [...document.querySelectorAll("#channels > li > span")];
 const displaySingleHW = [...document.querySelectorAll("#hardware > li > span")];
 
 function displayElementPrice(arrOfNodes, arrOfProducts) {
@@ -544,9 +544,9 @@ let buildOutputStringTotalBenefits = () => {
             finalStringBenefits += `Akcija ${percentReduction * 100} % od cene x`
         }
         if (multiplier) {
-            finalStringBenefits += ` ${multiplier} m, ukupno akcija ${formatPrice(totalBenefits())} + `
+            finalStringBenefits += ` ${multiplier} m, ukupno akcija ${formatPrice(reductionTotal())} + `
         } else {
-            finalStringBenefits += ` ${formattedDaysPassed()}, ukupno akcija ${formatPrice(totalBenefits())} + `
+            finalStringBenefits += ` ${formattedDaysPassed()}, ukupno akcija ${formatPrice(reductionTotal())} + `
         }
     }
     if (totalPackages()) {
@@ -588,9 +588,10 @@ buttonFinal.addEventListener("click", function () {
     buildOutputStringTotalLeft();
     buildOutputStringTotalBenefits()
     outputString =
-        `${todayFormatted} - HDS Agent:
+        `${todayFormatted} - HDS:
 
 Ukupno ostvareni benefiti: ${formatPrice(totalBenefits())} (${buildOutputStringTotalBenefits()});
+
 Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
     outputFinal.textContent = outputString;
 });
