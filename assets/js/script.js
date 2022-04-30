@@ -295,7 +295,6 @@ currentRatePlanInput.addEventListener("click", (e) => {
     selectedRatePlan = e.currentTarget.value;
     totalPaymentsLeft();
     updateDisplay();
-    buildOutputStringTotalLeft();
 });
 
 let currentPrice = () => {
@@ -327,7 +326,6 @@ previousRatePlanInput.addEventListener("click", (e) => {
     displayReducedPrice.textContent = formatPrice(reducedPrice());
     displayReductionTotal.textContent = formatPrice(reductionTotal());
     displayTotalBenefits.textContent = formatPrice(totalBenefits());
-    buildOutputStringTotalBenefits();
 });
 
 
@@ -339,7 +337,6 @@ percentInput.forEach(input => {
         displayReducedPrice.textContent = formatPrice(reducedPrice());
         displayReductionTotal.textContent = formatPrice(reductionTotal());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
-        buildOutputStringTotalBenefits();
     })
 });
 
@@ -369,7 +366,6 @@ inputMultiplier.addEventListener("change", (e) => {
     displayReducedPrice.textContent = formatPrice(reducedPrice());
     displayReductionTotal.textContent = formatPrice(reductionTotal());
     displayTotalBenefits.textContent = formatPrice(totalBenefits());
-    buildOutputStringTotalBenefits();
 })
 
 let reductionTotal = () => {
@@ -391,7 +387,6 @@ reductionType.addEventListener("change", () => {
         displayReducedPrice.textContent = formatPrice(reducedPrice());
         displayReductionTotal.textContent = formatPrice(reductionTotal());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
-        buildOutputStringTotalBenefits();
 
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
@@ -428,7 +423,6 @@ inputCheckboxes.forEach(checkbox => {
         displayTotalChannels.textContent = formatPrice(totalPackages());
         displayTotalHardware.textContent = formatPrice(totalHardware());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
-        buildOutputStringTotalBenefits();
     })
 })
 
@@ -462,7 +456,6 @@ inputText.forEach(textbox => {
         displayTotalChannels.textContent = formatPrice(totalPackages());
         displayTotalHardware.textContent = formatPrice(totalHardware());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
-        buildOutputStringTotalBenefits();
     })
 });
 
@@ -473,7 +466,6 @@ inputMultiRent.forEach(multi => {
         displayTotalChannels.textContent = formatPrice(totalPackages());
         displayTotalHardware.textContent = formatPrice(totalHardware());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
-        buildOutputStringTotalBenefits();
     })
 });
 
@@ -537,21 +529,51 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
     }
 }
 
-let buildOutputStringTotalLeft = () => `${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} ${formatPrice(totalPaymentsLeft())} x ${formattedDaysLeft()}`
+// 09. build output
+
+let buildOutputStringTotalLeft = () => `${formatPrice(totalPaymentsLeft())} (${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} x ${formattedDaysLeft()})`
 
 let buildOutputStringTotalBenefits = () => {
     let finalStringBenefits = "";
     if (reductionTotal()) {
-        finalStringBenefits += `Akcijska cena ${reductionTotal()}; `
-
+        if (reductionType.value === "one") {
+            finalStringBenefits += `Akcija dinar x`
+        } else if (reductionType.value === "prev") {
+            finalStringBenefits += `Akcija stara cena x`
+        } else if (reductionType.value === "percent") {
+            finalStringBenefits += `Akcija ${percentReduction * 100} % od cene x`
+        }
+        if (multiplier) {
+            finalStringBenefits += ` ${multiplier} m, ukupno akcija ${formatPrice(totalBenefits())} + `
+        } else {
+            finalStringBenefits += ` ${formattedDaysPassed()}, ukupno akcija ${formatPrice(totalBenefits())} + `
+        }
     }
     if (totalPackages()) {
-        finalStringBenefits += `Ukupno promo kanali ${totalPackages()}; `
+        for (let i = 0; i < productPackages.length; i++) {
+            if (productPackages[i].qty) {
+                if (productPackages[i].modifier) {
+                    finalStringBenefits += `${(productPackages[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(productPackages[i].price)} x ${productPackages[i].modifier} m + `
+                } else {
+                    finalStringBenefits += `${(productPackages[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(productPackages[i].price)} x ${formattedDaysPassed()} + `
+                }
+            }
+        }
     }
     if (totalHardware()) {
-        finalStringBenefits += `Ukupno oprema ${totalHardware()};`
+        for (let i = 0; i < hardwareItems.length; i++) {
+            if (hardwareItems[i].qty) {
+                if (hardwareItems[i].multiplier) {
+                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${formattedDaysPassed()} x ${hardwareItems[i].multiplier} + `
+                } else if (hardwareItems[i].modifier) {
+                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${hardwareItems[i].modifier} + `
+                } else {
+                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} + `
+                }
+            }
+        }
     }
-    console.log(finalStringBenefits)
+    finalStringBenefits = finalStringBenefits.slice(0, finalStringBenefits.length - 3);
     return finalStringBenefits;
 
 }
@@ -563,6 +585,8 @@ const outputFinal = document.querySelector("#output--final");
 let outputString = "";
 
 buttonFinal.addEventListener("click", function () {
+    buildOutputStringTotalLeft();
+    buildOutputStringTotalBenefits()
     outputString =
         `${todayFormatted} - HDS Agent:
 
