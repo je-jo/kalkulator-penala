@@ -272,6 +272,7 @@ function updateDisplay() { //runs on date button click, select curr rate plan
         displayRatePlanPrice.textContent = formatPrice(currentPrice());
         displayTotalPaymentsLeft.textContent = formatPrice(totalPaymentsLeft());
     }
+
 }
 
 // 05. date button
@@ -283,6 +284,7 @@ buttonDate.addEventListener("click", () => {
         alert("Pogresan unos! Proverite datum pocetka ugovora.")
     }
     updateDisplay();
+
 });
 
 //06. set current rate plan and total payments left
@@ -293,6 +295,7 @@ currentRatePlanInput.addEventListener("click", (e) => {
     selectedRatePlan = e.currentTarget.value;
     totalPaymentsLeft();
     updateDisplay();
+    buildOutputStringTotalLeft();
 });
 
 let currentPrice = () => {
@@ -302,6 +305,8 @@ let currentPrice = () => {
 let totalPaymentsLeft = () => {
     return (currentPrice() / 30) * totalDaysLeft();
 }
+
+
 
 //07. calculate reduced price
 
@@ -322,6 +327,7 @@ previousRatePlanInput.addEventListener("click", (e) => {
     displayReducedPrice.textContent = formatPrice(reducedPrice());
     displayReductionTotal.textContent = formatPrice(reductionTotal());
     displayTotalBenefits.textContent = formatPrice(totalBenefits());
+    buildOutputStringTotalBenefits();
 });
 
 
@@ -333,6 +339,7 @@ percentInput.forEach(input => {
         displayReducedPrice.textContent = formatPrice(reducedPrice());
         displayReductionTotal.textContent = formatPrice(reductionTotal());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        buildOutputStringTotalBenefits();
     })
 });
 
@@ -362,7 +369,7 @@ inputMultiplier.addEventListener("change", (e) => {
     displayReducedPrice.textContent = formatPrice(reducedPrice());
     displayReductionTotal.textContent = formatPrice(reductionTotal());
     displayTotalBenefits.textContent = formatPrice(totalBenefits());
-
+    buildOutputStringTotalBenefits();
 })
 
 let reductionTotal = () => {
@@ -384,6 +391,7 @@ reductionType.addEventListener("change", () => {
         displayReducedPrice.textContent = formatPrice(reducedPrice());
         displayReductionTotal.textContent = formatPrice(reductionTotal());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        buildOutputStringTotalBenefits();
 
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
@@ -420,6 +428,7 @@ inputCheckboxes.forEach(checkbox => {
         displayTotalChannels.textContent = formatPrice(totalPackages());
         displayTotalHardware.textContent = formatPrice(totalHardware());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        buildOutputStringTotalBenefits();
     })
 })
 
@@ -453,6 +462,7 @@ inputText.forEach(textbox => {
         displayTotalChannels.textContent = formatPrice(totalPackages());
         displayTotalHardware.textContent = formatPrice(totalHardware());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        buildOutputStringTotalBenefits();
     })
 });
 
@@ -463,6 +473,7 @@ inputMultiRent.forEach(multi => {
         displayTotalChannels.textContent = formatPrice(totalPackages());
         displayTotalHardware.textContent = formatPrice(totalHardware());
         displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        buildOutputStringTotalBenefits();
     })
 });
 
@@ -526,27 +537,36 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
     }
 }
 
+let buildOutputStringTotalLeft = () => `${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} ${formatPrice(totalPaymentsLeft())} x ${formattedDaysLeft()}`
+
+let buildOutputStringTotalBenefits = () => {
+    let finalStringBenefits = "";
+    if (reductionTotal()) {
+        finalStringBenefits += `Akcijska cena ${reductionTotal()}; `
+
+    }
+    if (totalPackages()) {
+        finalStringBenefits += `Ukupno promo kanali ${totalPackages()}; `
+    }
+    if (totalHardware()) {
+        finalStringBenefits += `Ukupno oprema ${totalHardware()};`
+    }
+    console.log(finalStringBenefits)
+    return finalStringBenefits;
+
+}
+
 // output
 
 const buttonFinal = document.querySelector("#btn--final");
 const outputFinal = document.querySelector("#output--final");
+let outputString = "";
 
 buttonFinal.addEventListener("click", function () {
-    outputFinal.innerHTML = `
+    outputString =
+        `${todayFormatted} - HDS Agent:
 
-    <p>${todayFormatted} - HDS Agent:</p>
-
-    <p>Ukupno ostvareni benefiti: ${totalBenefits().toFixed(2)} RSD (elaborat...);</p>
-
-    <p>Ukupno preostale pretplate: ${formatPrice(totalPaymentsLeft())} (${currentPrice().toFixed(2)} RSD X ${formattedDaysLeft()});</p>
-    
-    `
-})
-
-
-
-
-
-
-
-
+Ukupno ostvareni benefiti: ${formatPrice(totalBenefits())} (${buildOutputStringTotalBenefits()});
+Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
+    outputFinal.textContent = outputString;
+});
