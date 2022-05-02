@@ -537,16 +537,16 @@ let buildOutputStringTotalBenefits = () => {
     let finalStringBenefits = "";
     if (reductionTotal()) {
         if (reductionType.value === "one") {
-            finalStringBenefits += `Akcija dinar x`
+            finalStringBenefits += `Akcija dinar ${formatPrice(reducedPrice())} x`
         } else if (reductionType.value === "prev") {
-            finalStringBenefits += `Akcija stara cena x`
+            finalStringBenefits += `Akcija stara cena ${formatPrice(reducedPrice())} x`
         } else if (reductionType.value === "percent") {
-            finalStringBenefits += `Akcija ${percentReduction * 100} % od cene x`
+            finalStringBenefits += `Akcija ${percentReduction * 100} % od cene ${formatPrice(reducedPrice())} x`
         }
         if (multiplier) {
-            finalStringBenefits += ` ${multiplier} m, ukupno akcija ${formatPrice(reductionTotal())} + `
+            finalStringBenefits += ` ${multiplier} m + `
         } else {
-            finalStringBenefits += ` ${formattedDaysPassed()}, ukupno akcija ${formatPrice(reductionTotal())} + `
+            finalStringBenefits += ` ${formattedDaysPassed()} + `
         }
     }
     if (totalPackages()) {
