@@ -157,7 +157,7 @@ for (let i = 0; i < productPackages.length; i++) {
     newTextInput.classList.add("modifier");
     const newSpan = document.createElement("span");
     newSpan.classList.add("channels-calc-price");
-    newSpan.textContent = `${(productPackages[i].calcPrice)} RSD`;
+    newSpan.textContent = productPackages[i].calcPrice;
     newListItem.appendChild(newCheckbox);
     newListItem.appendChild(newLabel);
     newListItem.appendChild(newTextInput);
@@ -191,7 +191,7 @@ for (let i = 0; i < hardwareItems.length; i++) {
 
     const newSpan = document.createElement("span");
     newSpan.classList.add("hardware-calc-price");
-    newSpan.textContent = `${(hardwareItems[i].calcPrice)} RSD`;
+    newSpan.textContent = hardwareItems[i].calcPrice;
     newListItem.appendChild(newCheckbox);
     newListItem.appendChild(newLabel);
     newListItem.appendChild(newTextInput);
@@ -525,7 +525,7 @@ const displaySingleHW = [...document.querySelectorAll("#hardware > li > span")];
 
 function displayElementPrice(arrOfNodes, arrOfProducts) {
     for (let i = 0; i < arrOfNodes.length; i++) {
-        arrOfNodes[i].textContent = formatPrice(arrOfProducts[i].calcPrice);
+        arrOfNodes[i].textContent = (arrOfProducts[i].calcPrice).toFixed(2);
     }
 }
 

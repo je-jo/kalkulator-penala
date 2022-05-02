@@ -10,10 +10,14 @@
     padding: 0;
 }
 
+:focus {
+    outline: 2px solid var(--clr-primary);
+    outline-offset: 2px;
+    transition: var(--transition);
+}
 
 html {
     scroll-behavior: smooth;
- 
 }
 
 input,
@@ -27,16 +31,19 @@ select {
 
 :root {
     --clr-primary: #ef6155;
+    --clr-accented: #f72f1d;
     --clr-bg: #f9faf8;
     --clr-body: #4f424c;
     --border-radius: 8px;
     --fw-strong: 600;
-    --fs-h1: 4.2rem;
+    --fs-h1: 4rem;
     --fs-h2: 3.15rem;
     --fs-h3: 2rem;
     --fs-h4: 1.35rem;
     --fs-p: 1.15rem;
     --fs-lead: 1.35rem;
+    --box-shadow: 0 3px 5px rgba(0, 0, 0, 0.28);
+    --transition: ease-out .05s;
 }
 
 /* layout */
@@ -59,13 +66,12 @@ header {
     place-content: center;
     padding-top: 5vh;
     padding-bottom: 5vh;
-    /* text-align: center; */
     background-color: var(--clr-body);
     color: #fff;
 }
 
 main {
-    padding: 5vh;
+    padding: 5vh 0;
 }
 
 footer {
@@ -77,12 +83,48 @@ footer {
     color: #fff;
 }
 
+/* cards */
+
 .wrapper--card {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    padding: 1.5em;
-    gap: 3em;
+    /*display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); */
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2em;
+    gap: 2em;
     margin: 0 auto;
+}
+
+.card {
+    flex: 0 1 100%; 
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+    border-radius: var(--border-radius);
+    background-color: #fff;
+    box-shadow: var(--box-shadow);
+}
+
+.card--long {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+@media screen and (min-width: 54rem) {
+
+    .wrapper--card {
+        flex-wrap: nowrap;
+        }
+
+    .card--bump {
+        order: -1;
+        }
+    
+    .card--wide {
+        flex: 1 1 200%; 
+        }
+
 }
 
 /* typography */
@@ -93,13 +135,10 @@ h3,
 h4 {
     font-weight: var(--fw-strong);
     line-height: 1.15;
-    margin-bottom: 0.65em;
+    margin: 0.65em 0;
 }
 
-h1,
-h2 {
-    text-align: center;
-}
+h1, h2 { text-align: center; }
 
 h1 { font-size: var(--fs-h1); }
 
@@ -109,14 +148,11 @@ h3 { font-size: var(--fs-h3); }
 
 h4 { font-size: var(--fs-h4); }
 
-p,
-li { font-size: var(--fs-p); }
+p, li, label { font-size: var(--fs-p); }
 
 .lead { font-size: var(--fs-lead); }
 
-main p {
-    margin: 0 0 1rem;
-}
+main p { margin: 0 0 1rem; }
 
 section + section { margin-top: 2rem; } 
 
@@ -125,25 +161,38 @@ a { color: inherit; }
 
 blockquote {
     margin: 1.5rem auto;
+    width: min(90%, 950px);
     white-space: pre-wrap;
     padding: 1.5rem;
     font-family: 'Courier New', Courier, monospace;
-    border: 10px dashed var(--clr-primary);
+    border: 6px dashed var(--clr-primary);
     border-radius: 15px;
+    box-shadow: var(--box-shadow);
+}
+
+.output {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-strong);
+    padding: 0 0.5rem;
+    text-decoration: underline;
+    text-decoration-color: lightgrey;
+    text-decoration-thickness: 5px;
+    text-underline-offset: 3px;
 }
 
 /* buttons */
 
-button {
-    display: flex;
+.btn {
+    display: inline-flex;
     align-items: center;
     align-self: center;
     justify-content: center;
     min-width: 10ch;
     min-height: 44px;
+    margin: 1em;
     padding: 0.25em 1em;
-    transition: 180ms ease-in-out;
-    transition-property: background, border;
+    transition: var(--transition);
     border: 2px solid currentColor;
     border-radius: var(--border-radius);
     background-color: var(--clr-primary);
@@ -152,75 +201,59 @@ button {
     line-height: 1.1;
     text-align: center;
     text-decoration: none;
+    text-transform: uppercase;
     cursor: pointer;
 }
 
-button:focus,
-button:hover {
-    outline-color: transparent;
-    outline-style: solid;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0, 5);
+.btn:hover {
+    background-color: var(--clr-accented);
 }
 
-/* card */
-
-.card {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    width: 100%;
-    padding: 1em;
-    border-radius: var(--border-radius);
-    background-color: #fff;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-
-
-/* utilities */
-
-
-
-
-
-
-.output {
-    /* font-family: 'Courier New', Courier, monospace;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: underline;
-    text-decoration-style: dashed;
-    text-decoration-thickness: 5px;
-    text-decoration-color: #fec418; */
-    background-color: var(--clr-secondary);
-    outline: 1px dotted gray;
-    outline-offset: 2px;
-    border-radius: var(--border-radius) / 2;
-    font-family: 'Courier New', Courier, monospace;
-
-}
+/* input */
 
 input {
     margin: 0.5em 0;
-    padding: 0.2em 0;
-    width: 90%;
+    padding: 0.5em 0.8em;
     text-align: center;
+    border: 1px solid currentColor;
+    border-radius: 0.25em;
 }
 
-input[type="radio"] {
-    width: auto;
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2em;
 }
 
+input[type="date"] {
+    flex-grow: 1;
+}
 
+input[type="text"] {
+    width: 2ch;
+    padding: 0.2em 0.3em;
+}
+
+.wrapper--percentage > label {
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 1em;
+    align-items: baseline;
+    border-bottom: 1px dotted lightgray;
+}
 
 .wrapper--checkbox {
     display: grid;
-    grid-template-columns: 1fr 10fr 2fr 5fr;
+    grid-template-columns: 1ch auto 2ch 8ch;
     align-items: center;
     padding: 0.2em;
-    gap: 1em;
+    gap: 2em;
+}
+
+.container > li:nth-child(even) {
+    background-color: var(--clr-bg);
 }
 
 .wrapper--checkbox>label {
@@ -232,18 +265,15 @@ input[type="radio"] {
     display: none;
 }
 
-@media screen and (min-width: 960px) {
-
-    section:nth-child(1)>.wrapper--card>div:nth-child(2) {
-        order: -1;
-    }
-
+select {
+    padding: 0.5em 0.8em;
+    margin: 0;
+    width: 100%;
+    min-width: 15ch;
+    background-color: transparent;
+    border: 1px solid currentColor;
+    border-radius: 0.25em;
 }
 
-@media screen and (min-width: 1300px) {
 
-    .card--dbl-w {
-        grid-column: span 2;
-    }
 
-}
