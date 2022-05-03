@@ -318,14 +318,20 @@ let percentReduction;
 const displayReductionTotal = document.querySelector("#total-reduction");
 const displayReducedPrice = document.querySelector("#reduction");
 
+function updateDisplayBenefits() {
+    displayReducedPrice.textContent = formatPrice(reducedPrice());
+    displayReductionTotal.textContent = formatPrice(reductionTotal());
+    displayTotalChannels.textContent = formatPrice(totalPackages());
+    displayTotalHardware.textContent = formatPrice(totalHardware());
+    displayTotalBenefits.textContent = formatPrice(totalBenefits());
+}
+
 previousRatePlanInput.addEventListener("click", (e) => {
     previousRatePlan = e.currentTarget.value;
     previousPrice();
     reducedPrice();
     reductionTotal();
-    displayReducedPrice.textContent = formatPrice(reducedPrice());
-    displayReductionTotal.textContent = formatPrice(reductionTotal());
-    displayTotalBenefits.textContent = formatPrice(totalBenefits());
+    updateDisplayBenefits();
 });
 
 
@@ -334,9 +340,7 @@ percentInput.forEach(input => {
         percentReduction = e.currentTarget.value;
         reducedPrice();
         reductionTotal();
-        displayReducedPrice.textContent = formatPrice(reducedPrice());
-        displayReductionTotal.textContent = formatPrice(reductionTotal());
-        displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        updateDisplayBenefits();
     })
 });
 
@@ -363,9 +367,7 @@ inputMultiplier.addEventListener("change", (e) => {
     multiplier = +e.currentTarget.value;
     reducedPrice();
     reductionTotal();
-    displayReducedPrice.textContent = formatPrice(reducedPrice());
-    displayReductionTotal.textContent = formatPrice(reductionTotal());
-    displayTotalBenefits.textContent = formatPrice(totalBenefits());
+    updateDisplayBenefits();
 })
 
 let reductionTotal = () => {
@@ -384,9 +386,7 @@ reductionType.addEventListener("change", () => {
         percentContainer.style.display = "none";
         reducedPrice();
         reductionTotal();
-        displayReducedPrice.textContent = formatPrice(reducedPrice());
-        displayReductionTotal.textContent = formatPrice(reductionTotal());
-        displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        updateDisplayBenefits();
 
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
@@ -420,9 +420,7 @@ inputCheckboxes.forEach(checkbox => {
         displayElementPrice(displaySinglePP, productPackages);
         isChecked(e, hardwareItems);
         displayElementPrice(displaySingleHW, hardwareItems);
-        displayTotalChannels.textContent = formatPrice(totalPackages());
-        displayTotalHardware.textContent = formatPrice(totalHardware());
-        displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        updateDisplayBenefits();
     })
 })
 
@@ -453,9 +451,7 @@ inputText.forEach(textbox => {
         displayElementPrice(displaySinglePP, productPackages);
         hasValue(e, hardwareItems);
         displayElementPrice(displaySingleHW, hardwareItems);
-        displayTotalChannels.textContent = formatPrice(totalPackages());
-        displayTotalHardware.textContent = formatPrice(totalHardware());
-        displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        updateDisplayBenefits();
     })
 });
 
@@ -463,9 +459,7 @@ inputMultiRent.forEach(multi => {
     multi.addEventListener("change", function (e) {
         hasMulti(e, hardwareItems);
         displayElementPrice(displaySingleHW, hardwareItems);
-        displayTotalChannels.textContent = formatPrice(totalPackages());
-        displayTotalHardware.textContent = formatPrice(totalHardware());
-        displayTotalBenefits.textContent = formatPrice(totalBenefits());
+        updateDisplayBenefits();
     })
 });
 
