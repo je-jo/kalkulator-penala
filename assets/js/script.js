@@ -188,7 +188,6 @@ for (let i = 0; i < hardwareItems.length; i++) {
     } else {
         newTextInput.classList.add("modifier");
     }
-
     const newSpan = document.createElement("span");
     newSpan.classList.add("hardware-calc-price");
     newSpan.textContent = hardwareItems[i].calcPrice;
@@ -381,7 +380,7 @@ let reductionTotal = () => {
 
 
 reductionType.addEventListener("change", () => {
-    if (reductionType.value === "one") {
+    if (reductionType.value === "one" || reductionType.value === "none") {
         previousRatePlanInput.style.display = "none";
         percentContainer.style.display = "none";
         reducedPrice();
@@ -559,6 +558,8 @@ let buildOutputStringTotalBenefits = () => {
             if (hardwareItems[i].qty) {
                 if (hardwareItems[i].multiplier) {
                     finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${formattedDaysPassed()} x ${hardwareItems[i].multiplier} + `
+                } else if (hardwareItems[i].name.includes("rent")) {
+                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${formattedDaysPassed()} + `
                 } else if (hardwareItems[i].modifier) {
                     finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${hardwareItems[i].modifier} + `
                 } else {
@@ -589,3 +590,21 @@ Ukupno ostvareni benefiti: ${formatPrice(totalBenefits())} (${buildOutputStringT
 Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
     outputFinal.textContent = outputString;
 });
+
+// clear
+
+function clearAll() {
+    dateInput.value = "";
+    let selects = document.getElementsByTagName('select');
+    for (let i = 0; i < selects.length; i++) {
+        selects[i].selectedIndex = 0;
+    }
+    for (let i = 0; i < productPackages.length; i++) {
+        productPackages[i].qty = 0;
+        productPackages[i].calcPrice = 0;
+    }
+
+    updateDisplay();
+    updateDisplayBenefits();
+
+}
