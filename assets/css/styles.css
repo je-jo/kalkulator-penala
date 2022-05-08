@@ -163,14 +163,13 @@ section + section { margin-top: 2rem; }
 a { color: inherit; }
 
 
-blockquote {
+.wrapper--output {
+    display: flex;
+    flex-direction: column;
     margin: 3rem auto;
-    white-space: pre-wrap;
     padding: 1.5rem;
-    font-family: 'Courier New', Courier, monospace;
     border: 6px dashed var(--clr-cta);
     border-radius: 15px;
-    box-shadow: var(--box-shadow);
 }
 
 .output {
@@ -182,6 +181,13 @@ blockquote {
     text-decoration-color: var(--clr-grey);
     text-decoration-thickness: 5px;
     text-underline-offset: 3px;
+}
+
+#output--final {
+    white-space: pre-wrap;
+    padding: 1.5rem;
+    font-weight: normal;
+    text-decoration: none;
 }
 
 /* buttons */
@@ -213,6 +219,12 @@ blockquote {
     outline: 2px solid var(--clr-cta);
     outline-offset: 2px;
     transition: var(--transition);
+}
+
+#btn--final {
+    place-self: end;
+    margin: 0;
+    width: 100%;
 }
 
 /* input */

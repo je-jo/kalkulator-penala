@@ -593,18 +593,33 @@ Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
 
 // clear
 
-function clearAll() {
-    dateInput.value = "";
-    let selects = document.getElementsByTagName('select');
-    for (let i = 0; i < selects.length; i++) {
-        selects[i].selectedIndex = 0;
-    }
-    for (let i = 0; i < productPackages.length; i++) {
-        productPackages[i].qty = 0;
-        productPackages[i].calcPrice = 0;
-    }
+const form = document.querySelector("form");
+const outputAll = [...document.querySelectorAll(".output")];
 
-    updateDisplay();
-    updateDisplayBenefits();
 
+function clearAllObjects(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].qty = 0;
+        arr[i].modifier = 0;
+        arr[i].multiplier = 0;
+        calcElementPrice(arr);
+        displayElementPrice(displaySinglePP, productPackages);
+        displayElementPrice(displaySingleHW, hardwareItems);
+    }
 }
+
+function clearAll() {
+    form.reset();
+    dateInput.value = "";
+    selectedRatePlan = 0;
+    clearAllObjects(productPackages)
+    clearAllObjects(hardwareItems);
+    outputAll.forEach(output => output.textContent = "");
+    previousRatePlanInput.style.display = "none";
+    percentContainer.style.display = "none";
+}
+
+const buttonClear = document.querySelector("#btn--clear");
+
+buttonClear.addEventListener("click", clearAll)
+

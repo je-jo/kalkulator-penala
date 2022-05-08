@@ -16,114 +16,117 @@
     </header>
 
     <main>
-
-        <section>
-            <h2>Osnovni podaci</h2>
-            <div class="wrapper--card">
-                <div class="card card--wide">
-                    <h3>Datumi:</h3>
-                    <label for="date-start-contract">Unesite datum početka ugovora:</label>
-                    <div class="wrapper">
-                        <input type="date" id="date-start-contract" min="2020-01-01" max="2022-12-31">
-                        <button id="btn--date" class="btn">OK</button>
-                    </div>
-                    <p>Današnji datum: <span class="output" id="date-today"></span></p>
-                    <h3>Trenutni paket:</h3>
-                    <select name="rate-plan" id="rp-current">
-                        <option value="" selected disabled>Izaberi:</option>
-                    </select>
-                    <p>Cena paketa: <span class="output" id="rp-price"></span></p>
-                </div>
-                <div class="card card--bump">
-                    <h3>Ostvareni benefiti:</h3>
-                    <p>Proteklo vreme: <span class="output" id="time-passed"></span></p>
-                    <p>Ukupno benefiti: <span class="output" id="total-benefits"></span></p>
-                </div>
-                <div class="card">
-                    <h3>Preostale pretplate:</h3>
-                    <p>Preostalo vreme: <span class="output" id="time-left"></span></p>
-                    <p>Ukupno preostale pretplate: <span class="output" id="total-left"></span></p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Ostvareni benefiti</h2>
-            <div class="wrapper--card">
-                <div class="card">
-                    <h3>Akcija:</h3>
-                    <p>Vrsta akcije:</p>
-                    <select name="reduction-type" id="reduction-type">
-                        <option value="" selected disabled>Izaberi:</option>
-                        <option value="one">1 dinar</option>
-                        <option value="prev">Stara cena</option>
-                        <option value="percent">Procenat</option>
-                        <option value="none">Nema akciju</option>
-                    </select>
-
-                    <select name="previous-rate-plan" id="rp-prev">
-                        <option value="" selected disabled>Izaberi stari paket:</option>
-                    </select>
-                    <div id="reduction-percent">
-                        <p>Procenat:</p>
-                        <div class="wrapper--percentage">
-                            <label for="5">
-                                <input type="radio" id="5" name="reduction-percent" value="0.05">
-                                5 %</label>
-                            <label for="10">
-                                <input type="radio" id="10" name="reduction-percent" value="0.1">
-                                10 %</label>
-                            <label for="15">
-                                <input type="radio" id="15" name="reduction-percent" value="0.15">
-                                15 %</label>
-                            <label for="20">
-                                <input type="radio" id="20" name="reduction-percent" value="0.2">
-                                20 %</label>
-                            <label for="50">
-                                <input type="radio" id="50" name="reduction-percent" value="0.5">
-                                50 %</label>
+        <form action="" method="get">
+            <section>
+                <h2>Osnovni podaci</h2>
+                <div class="wrapper--card">
+                    <div class="card card--wide">
+                        <h3>Datumi:</h3>
+                        <label for="date-start-contract">Unesite datum početka ugovora:</label>
+                        <div class="wrapper">
+                            <input type="date" id="date-start-contract" min="2020-01-01" max="2022-12-31">
+                            <button id="btn--date" class="btn" type="button">OK</button>
                         </div>
+                        <p>Današnji datum: <span class="output" id="date-today"></span></p>
+                        <h3>Trenutni paket:</h3>
+                        <select name="rate-plan" id="rp-current">
+                            <option value="" selected disabled>Izaberi:</option>
+                        </select>
+                        <p>Cena paketa: <span class="output" id="rp-price"></span></p>
                     </div>
-                    <div class="wrapper">
-                        <label for="reduction-time">Trajanje:</label>
-                        <input type="text" id="reduction-time" class="multiplier">
+                    <div class="card card--bump">
+                        <h3>Ostvareni benefiti:</h3>
+                        <p>Proteklo vreme: <span class="output" id="time-passed"></span></p>
+                        <p>Ukupno benefiti: <span class="output" id="total-benefits"></span></p>
                     </div>
-                    <p>Iznos akcijske pogodnosti: <span id="reduction" class="output"></span></p>
-                    <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
+                    <div class="card">
+                        <h3>Preostale pretplate:</h3>
+                        <p>Preostalo vreme: <span class="output" id="time-left"></span></p>
+                        <p>Ukupno preostale pretplate: <span class="output" id="total-left"></span></p>
+                    </div>
                 </div>
-                <div class="card card--long">
-                    <h3>Promo Kanali:</h3>
-                    <p>Ukupno kanali: <span class="output" id="total-channels"></span></p>
-                    <ul id="channels" class="container">
-                        <li class="wrapper--checkbox">
-                            <div class="checkbox"></div>
-                            <div>Naziv</div>
-                            <div>M*</div>
-                            <div>Ukupno cena</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card card--long">
-                    <h3>Priključne takse:</h3>
-                    <p>Ukupno oprema: <span class="output" id="total-hardware"></span></p>
-                    <ul id="hardware" class="container">
-                        <li class="wrapper--checkbox">
-                            <div class="checkbox"></div>
-                            <div>Naziv</div>
-                            <div>K*</div>
-                            <div>Ukupno cena</div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section>
-            <h2>Izveštaj</h2>
-            <button id="btn--final" class="btn">Generiši izveštaj</button>
-            <blockquote id="output--final">...</blockquote>
-        </section>
+            <section>
+                <h2>Ostvareni benefiti</h2>
+                <div class="wrapper--card">
+                    <div class="card">
+                        <h3>Akcija:</h3>
+                        <p>Vrsta akcije:</p>
+                        <select name="reduction-type" id="reduction-type">
+                            <option value="" selected disabled>Izaberi:</option>
+                            <option value="one">1 dinar</option>
+                            <option value="prev">Stara cena</option>
+                            <option value="percent">Procenat</option>
+                            <option value="none">Nema akciju</option>
+                        </select>
 
+                        <select name="previous-rate-plan" id="rp-prev">
+                            <option value="" selected disabled>Izaberi stari paket:</option>
+                        </select>
+                        <div id="reduction-percent">
+                            <p>Procenat:</p>
+                            <div class="wrapper--percentage">
+                                <label for="5">
+                                    <input type="radio" id="5" name="reduction-percent" value="0.05">
+                                    5 %</label>
+                                <label for="10">
+                                    <input type="radio" id="10" name="reduction-percent" value="0.1">
+                                    10 %</label>
+                                <label for="15">
+                                    <input type="radio" id="15" name="reduction-percent" value="0.15">
+                                    15 %</label>
+                                <label for="20">
+                                    <input type="radio" id="20" name="reduction-percent" value="0.2">
+                                    20 %</label>
+                                <label for="50">
+                                    <input type="radio" id="50" name="reduction-percent" value="0.5">
+                                    50 %</label>
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                            <label for="reduction-time">Trajanje:</label>
+                            <input type="text" id="reduction-time" class="multiplier">
+                        </div>
+                        <p>Iznos akcijske pogodnosti: <span id="reduction" class="output"></span></p>
+                        <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
+                    </div>
+                    <div class="card card--long">
+                        <h3>Promo Kanali:</h3>
+                        <p>Ukupno kanali: <span class="output" id="total-channels"></span></p>
+                        <ul id="channels" class="container">
+                            <li class="wrapper--checkbox">
+                                <div class="checkbox"></div>
+                                <div>Naziv</div>
+                                <div>M*</div>
+                                <div>Ukupno cena</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card card--long">
+                        <h3>Priključne takse:</h3>
+                        <p>Ukupno oprema: <span class="output" id="total-hardware"></span></p>
+                        <ul id="hardware" class="container">
+                            <li class="wrapper--checkbox">
+                                <div class="checkbox"></div>
+                                <div>Naziv</div>
+                                <div>K*</div>
+                                <div>Ukupno cena</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Izveštaj</h2>
+                <div class="wrapper--output">
+                    <blockquote id="output--final" class="output">...</blockquote>
+                    <button id="btn--final" class="btn" type="button">Kreiraj izveštaj</button>
+                </div>
+                <button id="btn--clear" class="btn" type="button">Kreni ispočetka</button>
+            </section>
+        </form>
     </main>
 
     <footer>
