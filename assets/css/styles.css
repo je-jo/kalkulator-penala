@@ -11,7 +11,7 @@
 }
 
 :focus {
-    outline: 2px solid var(--clr-cta);
+    outline: 2px solid var(--clr-primary);
     outline-offset: 2px;
     transition: var(--transition);
 }
@@ -30,8 +30,10 @@ select {
 /* theme */
 
 :root {
-    --clr-cta: #ef6155;
-    --clr-cta-hover: #f72f1d;
+    --clr-primary: #ef6155;
+    --clr-primary-hover: #f72f1d;
+    --clr-secondary: #5BC4BF;
+    --clr-secondary-hover: #32b8b1;
     --clr-hover: hsl(70, 24%, 90%);
     --clr-bg: #f4f5ef;
     --clr-body: #4f424c;
@@ -168,7 +170,7 @@ a { color: inherit; }
     flex-direction: column;
     margin: 3rem auto;
     padding: 1.5rem;
-    border: 6px dashed var(--clr-cta);
+    border: 6px dashed var(--clr-primary);
     border-radius: 15px;
 }
 
@@ -185,9 +187,14 @@ a { color: inherit; }
 
 #output--final {
     white-space: pre-wrap;
+    resize: none;
+    font-size: var(--fs-p);
+    background-color: inherit;
+    height: fit-content;
     padding: 1.5rem;
     font-weight: normal;
     text-decoration: none;
+    border: 1px solid transparent;
 }
 
 /* buttons */
@@ -204,7 +211,7 @@ a { color: inherit; }
     transition: var(--transition);
     border: 2px solid currentColor;
     border-radius: var(--border-radius);
-    background-color: var(--clr-cta);
+    background-color: var(--clr-primary);
     color: var(--clr-white);
     font-size: 1.125rem;
     line-height: 1.1;
@@ -215,16 +222,25 @@ a { color: inherit; }
 }
 
 .btn:hover {
-    background-color: var(--clr-cta-hover);
-    outline: 2px solid var(--clr-cta);
+    background-color: var(--clr-primary-hover);
+    outline: 2px solid var(--clr-primary);
     outline-offset: 2px;
     transition: var(--transition);
 }
 
-#btn--final {
+.btn--final {
     place-self: end;
     margin: 0;
     width: 100%;
+}
+
+.btn--clear {
+    background-color: var(--clr-secondary);
+}
+
+.btn--clear:hover {
+    background-color: var(--clr-secondary-hover);
+    outline-color: var(--clr-secondary-hover);
 }
 
 /* input */

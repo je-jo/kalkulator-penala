@@ -276,7 +276,7 @@ function updateDisplay() { //runs on date button click, select curr rate plan
 
 // 05. date button
 
-const buttonDate = document.querySelector("#btn--date");
+const buttonDate = document.querySelector(".btn--date");
 buttonDate.addEventListener("click", () => {
     setStartDate();
     if (totalDaysPassed() <= 0) {
@@ -575,7 +575,7 @@ let buildOutputStringTotalBenefits = () => {
 
 // output
 
-const buttonFinal = document.querySelector("#btn--final");
+const buttonFinal = document.querySelector(".btn--final");
 const outputFinal = document.querySelector("#output--final");
 let outputString = "";
 
@@ -617,9 +617,10 @@ function clearAll() {
     outputAll.forEach(output => output.textContent = "");
     previousRatePlanInput.style.display = "none";
     percentContainer.style.display = "none";
+    displayToday.textContent = todayFormatted;
 }
 
-const buttonClear = document.querySelector("#btn--clear");
+const buttonClear = document.querySelector(".btn--clear");
 
 buttonClear.addEventListener("click", clearAll)
 

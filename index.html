@@ -25,7 +25,7 @@
                         <label for="date-start-contract">Unesite datum početka ugovora:</label>
                         <div class="wrapper">
                             <input type="date" id="date-start-contract" min="2020-01-01" max="2022-12-31">
-                            <button id="btn--date" class="btn" type="button">OK</button>
+                            <button class="btn btn--date" type="button">OK</button>
                         </div>
                         <p>Današnji datum: <span class="output" id="date-today"></span></p>
                         <h3>Trenutni paket:</h3>
@@ -121,10 +121,10 @@
             <section>
                 <h2>Izveštaj</h2>
                 <div class="wrapper--output">
-                    <blockquote id="output--final" class="output">...</blockquote>
-                    <button id="btn--final" class="btn" type="button">Kreiraj izveštaj</button>
+                    <textarea id="output--final" class="output">...</textarea>
+                    <button class="btn btn--final" type="button">Kreiraj izveštaj</button>
                 </div>
-                <button id="btn--clear" class="btn" type="button">Kreni ispočetka</button>
+                <button class="btn btn--clear" type="button">Obriši sve unose</button>
             </section>
         </form>
     </main>
