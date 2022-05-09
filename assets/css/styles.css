@@ -190,11 +190,11 @@ a { color: inherit; }
     resize: none;
     font-size: var(--fs-p);
     background-color: inherit;
-    height: fit-content;
     padding: 1.5rem;
     font-weight: normal;
     text-decoration: none;
     border: 1px solid transparent;
+    cursor: text;
 }
 
 /* buttons */

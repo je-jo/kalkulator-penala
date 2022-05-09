@@ -364,6 +364,10 @@ let multiplier;
 const inputMultiplier = document.querySelector("input[class='multiplier']");
 inputMultiplier.addEventListener("change", (e) => {
     multiplier = +e.currentTarget.value;
+    if (multiplier > totalDaysPassed() / 30) {
+        alert("Pogresan unos! Akcija jos nije istekla.");
+        return
+    }
     reducedPrice();
     reductionTotal();
     updateDisplayBenefits();
@@ -467,6 +471,9 @@ function hasValue(e, arr) {
         if (elem.name === e.currentTarget.parentNode.firstElementChild.id) {
             if (e.currentTarget.value) {
                 elem.modifier = +e.currentTarget.value;
+                if (elem.modifier > totalDaysPassed() / 30) {
+                    alert("Pogresan unos! Akcija jos nije istekla.")
+                }
             } else {
                 elem.modifier = null
             }
@@ -589,6 +596,8 @@ Ukupno ostvareni benefiti: ${formatPrice(totalBenefits())} (${buildOutputStringT
 
 Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
     outputFinal.textContent = outputString;
+    outputFinal.style.height = "auto";
+    outputFinal.style.height = outputFinal.scrollHeight + "px";
 });
 
 // clear
@@ -618,9 +627,12 @@ function clearAll() {
     previousRatePlanInput.style.display = "none";
     percentContainer.style.display = "none";
     displayToday.textContent = todayFormatted;
+    outputFinal.style.height = "auto";
 }
 
 const buttonClear = document.querySelector(".btn--clear");
 
-buttonClear.addEventListener("click", clearAll)
+buttonClear.addEventListener("click", clearAll);
+
+clearAll();
 
