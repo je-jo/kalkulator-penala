@@ -529,6 +529,14 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
     }
 }
 
+const customInput = document.querySelector("#custom");
+customInput.addEventListener("change", function(e) {
+    productPackages.push(constructPlan("custom", e.currentTarget.value, 0, 0))
+    console.table(productPackages)
+    calcElementPrice(productPackages)
+})
+
+
 // 09. build output
 
 let buildOutputStringTotalLeft = () => `${formatPrice(totalPaymentsLeft())} (${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} x ${formattedDaysLeft()})`
