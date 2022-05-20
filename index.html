@@ -22,11 +22,14 @@
                 <div class="wrapper--card">
                     <div class="card card--wide">
                         <h3>Datumi:</h3>
-                        <label for="date-start-contract">Unesite datum početka ugovora:</label>
+                        <label for="date-start-contract">Unesite datum početka ugovora i pritisnite OK:</label>
                         <div class="wrapper">
                             <input type="date" id="date-start-contract" min="2020-01-01" max="2022-12-31">
                             <button class="btn btn--date" type="button">OK</button>
+                            <input type="checkbox" id="length">
+                            <label for="length">12 meseci?</label>
                         </div>
+                        <p>Datum početka ugovora: <span class="output" id="date-start"></span></p>
                         <p>Današnji datum: <span class="output" id="date-today"></span></p>
                         <h3>Trenutni paket:</h3>
                         <select name="rate-plan" id="rp-current">
@@ -58,6 +61,7 @@
                             <option value="one">1 dinar</option>
                             <option value="prev">Stara cena</option>
                             <option value="percent">Procenat</option>
+                            <option value="ammount">Iznos</option>
                             <option value="none">Nema akciju</option>
                         </select>
 
@@ -83,39 +87,78 @@
                                     <input type="radio" id="50" name="reduction-percent" value="0.5">
                                     50 %</label>
                             </div>
+
+
+
+                        </div>
+                        <div id="reduction-ammount">
+                            <p>Ime akcije:</p>
+                            <div class="wrapper--ammount">
+                                <label for="599">
+                                    <input type="radio" id="599" name="reduction-ammount" value="599">
+                                    Placaj 599,00 DIN</label>
+                                <label for="699">
+                                    <input type="radio" id="699" name="reduction-ammount" value="699">
+                                    Placaj 699,00 DIN</label>
+                                <label for="1499">
+                                    <input type="radio" id="1499" name="reduction-ammount" value="1499">
+                                    Placaj 1.499,00 DIN</label>
+                                <label for="1599">
+                                    <input type="radio" id="1599" name="reduction-ammount" value="1599">
+                                    Placaj 1.599,00 DIN</label>
+                                <label for="1799">
+                                    <input type="radio" id="1799" name="reduction-ammount" value="1799">
+                                    Placaj 1.799,00 DIN</label>
+                                <label for="1999">
+                                    <input type="radio" id="1999" name="reduction-ammount" value="1999">
+                                    Placaj 1.999,00 DIN</label>
+                            </div>
                         </div>
                         <div class="wrapper">
                             <label for="reduction-time">Trajanje:</label>
+
                             <input type="text" id="reduction-time" class="multiplier">
                         </div>
-                        <p>Iznos akcijske pogodnosti: <span id="reduction" class="output"></span></p>
+                        <p><small><strong>Uneti broj meseci SAMO AKO je isteklo vreme akcije!</strong></p></small>
+                        <p><small>Mesečna razlika u ceni: </small><span id="reduction"></span></p>
                         <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
                     </div>
+                    <div class="card">
+                        <h3>Unesi proizvoljni iznos</h3>
+                        <div class="wrapper wrapper--custom">
+                            <input type="text" id="custom-price" placeholder="49.5">
+                            <input type="text" id="custom-months" placeholder="M">
+                            <input type="text" id="custom-days" placeholder="D">
+
+                            <button class="btn btn--custom" type="button">OK</button>
+                        </div>
+                        <p>Ukupno: <span class="output" id="output-custom"></span></p>
+                    </div>
+                </div>
+                <div class="wrapper--card">
                     <div class="card card--long">
                         <h3>Promo Kanali:</h3>
+                        <p><small><strong>Uneti broj meseci SAMO AKO je isteklo vreme akcije!</strong></p></small>
                         <p>Ukupno kanali: <span class="output" id="total-channels"></span></p>
                         <ul id="channels" class="container">
                             <li class="wrapper--checkbox">
                                 <div class="checkbox"></div>
                                 <div>Naziv</div>
+                                <div>Cena</div>
                                 <div>M*</div>
                                 <div>Ukupno cena</div>
-                            </li>
-                            <li class="wrapper--checkbox">
-                                <input type="checkbox" name="calc-by-time"></input>
-                                <div><input type="text" id="custom" placeholder="1495"></div>
-                                <div><input type="text"></div>
-                                <div><span></span></div>
                             </li>
                         </ul>
                     </div>
                     <div class="card card--long">
                         <h3>Priključne takse:</h3>
+                        <p><small><strong>Uneti količinu SAMO AKO ima više uređaja istog tipa!</strong></p></small>
                         <p>Ukupno oprema: <span class="output" id="total-hardware"></span></p>
                         <ul id="hardware" class="container">
                             <li class="wrapper--checkbox">
                                 <div class="checkbox"></div>
                                 <div>Naziv</div>
+                                <div>Cena</div>
                                 <div>K*</div>
                                 <div>Ukupno cena</div>
                             </li>
@@ -132,6 +175,7 @@
                 </div>
                 <button class="btn btn--clear" type="button">Obriši sve unose</button>
             </section>
+
         </form>
     </main>
 

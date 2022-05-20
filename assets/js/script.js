@@ -119,9 +119,10 @@ const hardwareItems = [
     constructPlan("d3-cam", 1900, 0, 0),
     constructPlan("wifi-mesh", 9900, 0, 0),
     constructPlan("eon-smart-box-50%", 3450, 0, 0),
-    constructPlan("pt-ttv", 4900, 0, 0),
+    constructPlan("pt-ttv", 3500, 0, 0),
     constructPlan("ttv-montaza", 9900, 0, 0),
     constructPlan("renta-ttv-risiver", 490, 0, 0),
+    constructPlan("renta-ttv-risiver-akcija-200", 290, 0, 0),
 ]
 
 
@@ -152,6 +153,8 @@ for (let i = 0; i < productPackages.length; i++) {
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${productPackages[i].name}`);
     newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " "))}`;
+    const newSpanPrice = document.createElement("span");
+    newSpanPrice.textContent = productPackages[i].price;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
     newTextInput.classList.add("modifier");
@@ -160,6 +163,7 @@ for (let i = 0; i < productPackages.length; i++) {
     newSpan.textContent = productPackages[i].calcPrice;
     newListItem.appendChild(newCheckbox);
     newListItem.appendChild(newLabel);
+    newListItem.appendChild(newSpanPrice);
     newListItem.appendChild(newTextInput);
     newListItem.appendChild(newSpan);
     channelsContainer.appendChild(newListItem);
@@ -181,6 +185,8 @@ for (let i = 0; i < hardwareItems.length; i++) {
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${hardwareItems[i].name}`);
     newLabel.textContent = `${(hardwareItems[i].name).replaceAll("-", " ")}`;
+    const newSpanPrice = document.createElement("span");
+    newSpanPrice.textContent = hardwareItems[i].price;
     const newTextInput = document.createElement("input");
     newTextInput.setAttribute("type", "text");
     if (`${hardwareItems[i].name}`.includes("rent")) {
@@ -193,6 +199,7 @@ for (let i = 0; i < hardwareItems.length; i++) {
     newSpan.textContent = hardwareItems[i].calcPrice;
     newListItem.appendChild(newCheckbox);
     newListItem.appendChild(newLabel);
+    newListItem.appendChild(newSpanPrice);
     newListItem.appendChild(newTextInput);
     newListItem.appendChild(newSpan);
     hardwareContainer.appendChild(newListItem);
@@ -206,6 +213,16 @@ function formatPrice(num) {
         maximumFractionDigits: 2
     })
 }
+
+function formatDate(date) {
+    return date.toLocaleString('sr-ME', options)
+}
+
+let options = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+};
 
 
 
@@ -229,6 +246,7 @@ const dateInput = document.querySelector("#date-start-contract");
 let startDay, startMonth, startYear;
 
 function setStartDate() { //run on button click
+    
     let startDate = dateInput.value.split("-");
     startYear = +startDate[0]; //assumes date format '2021', '12', '31'
     startMonth = +startDate[1];
@@ -238,6 +256,21 @@ function setStartDate() { //run on button click
         startDay = +startDate[2];
     }
 }
+
+let contractLength = 719;
+
+const lengthInput = document.querySelector("#length");
+
+lengthInput.addEventListener("change", function (e) {
+    if (e.currentTarget.checked) {
+        contractLength = 359;
+    } else {
+        contractLength = 719;
+    }
+    setStartDate();
+    updateDisplay();
+})
+
 
 //03. calculate days left and passed
 
@@ -252,7 +285,7 @@ let totalDaysPassed = () => {
     }
 }
 
-let totalDaysLeft = () => 719 - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
+let totalDaysLeft = () => contractLength - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
 
 // 04. format and display days
 
@@ -263,8 +296,13 @@ const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
 const displayRatePlanPrice = document.querySelector("#rp-price");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
+const displayDateStart = document.querySelector("#date-start");
+
 
 function updateDisplay() { //runs on date button click, select curr rate plan
+    let startDateValue = new Date(dateInput.value)
+    displayDateStart.textContent = formatDate(startDateValue)
+
     displayTimePassed.textContent = formattedDaysPassed();
     displayTimeLeft.textContent = formattedDaysLeft();
     if (selectedRatePlan) {
@@ -310,10 +348,13 @@ let totalPaymentsLeft = () => {
 
 
 const reductionType = document.querySelector("#reduction-type");
-const percentInput = [...document.querySelectorAll("input[type='radio']")];
+const percentInput = [...document.querySelectorAll("input[name='reduction-percent']")];
+const ammountInput = [...document.querySelectorAll("input[name='reduction-ammount']")];
 const percentContainer = document.querySelector("#reduction-percent");
+const ammountContainer = document.querySelector("#reduction-ammount");
 let previousRatePlan;
 let percentReduction;
+let ammountReduction;
 const displayReductionTotal = document.querySelector("#total-reduction");
 const displayReducedPrice = document.querySelector("#reduction");
 
@@ -343,6 +384,15 @@ percentInput.forEach(input => {
     })
 });
 
+ammountInput.forEach(input => {
+    input.addEventListener("change", (e) => {
+        ammountReduction = e.currentTarget.value;
+        reducedPrice();
+        reductionTotal();
+        updateDisplayBenefits();
+    })
+});
+
 let previousPrice = () => {
     return (ratePlans.find(plan => (plan.name.includes(previousRatePlan)))).price
 }
@@ -356,6 +406,9 @@ let reducedPrice = () => {
     }
     if (reductionType.value === "percent") {
         return currentPrice() * percentReduction;
+    }
+    if (reductionType.value === "ammount") {
+        return currentPrice() - ammountReduction;
     }
     else return 0;
 }
@@ -387,6 +440,7 @@ reductionType.addEventListener("change", () => {
     if (reductionType.value === "one" || reductionType.value === "none") {
         previousRatePlanInput.style.display = "none";
         percentContainer.style.display = "none";
+        ammountContainer.style.display = "none";
         reducedPrice();
         reductionTotal();
         updateDisplayBenefits();
@@ -394,9 +448,16 @@ reductionType.addEventListener("change", () => {
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
         percentContainer.style.display = "none";
+        ammountContainer.style.display = "none";
     }
     else if (reductionType.value === "percent") {
         percentContainer.style.display = "block";
+        previousRatePlanInput.style.display = "none";
+        ammountContainer.style.display = "none";
+    }
+    else if (reductionType.value === "ammount") {
+        ammountContainer.style.display = "block";
+        percentContainer.style.display = "none";
         previousRatePlanInput.style.display = "none";
     }
 });
@@ -520,22 +581,14 @@ function calcElementPrice(arr) {
     return arr.reduce((total, element) => total + element.calcPrice, 0);
 }
 
-const displaySinglePP = [...document.querySelectorAll("#channels > li > span")];
-const displaySingleHW = [...document.querySelectorAll("#hardware > li > span")];
+const displaySinglePP = [...document.querySelectorAll("#channels > li > span.channels-calc-price")]; 
+const displaySingleHW = [...document.querySelectorAll("#hardware > li > span.hardware-calc-price")];
 
 function displayElementPrice(arrOfNodes, arrOfProducts) {
     for (let i = 0; i < arrOfNodes.length; i++) {
         arrOfNodes[i].textContent = (arrOfProducts[i].calcPrice).toFixed(2);
     }
 }
-
-const customInput = document.querySelector("#custom");
-customInput.addEventListener("change", function(e) {
-    productPackages.push(constructPlan("custom", e.currentTarget.value, 0, 0))
-    console.table(productPackages)
-    calcElementPrice(productPackages)
-})
-
 
 // 09. build output
 
@@ -550,6 +603,8 @@ let buildOutputStringTotalBenefits = () => {
             finalStringBenefits += `Akcija stara cena ${formatPrice(reducedPrice())} x`
         } else if (reductionType.value === "percent") {
             finalStringBenefits += `Akcija ${percentReduction * 100} % od cene ${formatPrice(reducedPrice())} x`
+        } else if (reductionType.value === "ammount") {
+            finalStringBenefits += `Akcija "Plaćaj ${ammountReduction} DIN" x `
         }
         if (multiplier) {
             finalStringBenefits += ` ${multiplier} m + `
@@ -634,6 +689,7 @@ function clearAll() {
     outputAll.forEach(output => output.textContent = "");
     previousRatePlanInput.style.display = "none";
     percentContainer.style.display = "none";
+    ammountContainer.style.display = "none";
     displayToday.textContent = todayFormatted;
     outputFinal.style.height = "auto";
 }
@@ -642,5 +698,23 @@ const buttonClear = document.querySelector(".btn--clear");
 
 buttonClear.addEventListener("click", clearAll);
 
+const buttonCustom = document.querySelector(".btn--custom");
+const customPrice = document.querySelector("#custom-price");
+const customMonths = document.querySelector("#custom-months");
+const customDays = document.querySelector("#custom-days");
+const customOutput = document.querySelector("#output-custom");
+let custom;
+
+
+
+function calculateCustom() {
+    custom = (customPrice.value * customMonths.value) + (customDays.value * (customPrice.value / 30));
+    customOutput.textContent = formatPrice(custom);
+}
+
+buttonCustom.addEventListener("click", calculateCustom);
+
+
 clearAll();
+
 

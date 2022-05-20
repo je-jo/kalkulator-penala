@@ -8,6 +8,7 @@
 * {
     margin: 0;
     padding: 0;
+    /* outline: 1px solid green; */
 }
 
 :focus {
@@ -46,7 +47,7 @@ select {
     --fs-h3: 2rem;
     --fs-h4: 1.35rem;
     --fs-p: 1.15rem;
-    --fs-lead: 1.35rem;
+    --fs-lead: 1.30rem;
     --box-shadow: 0 3px 5px rgba(0, 0, 0, 0.28);
     --transition: ease-out .05s;
 }
@@ -117,7 +118,7 @@ footer {
     overflow-y: auto;
 }
 
-@media screen and (min-width: 54rem) {
+@media screen and (min-width: 70rem) {
 
     .wrapper--card {
         flex-wrap: nowrap;
@@ -285,7 +286,7 @@ input[type="text"] {
 
 .wrapper--checkbox {
     display: grid;
-    grid-template-columns: 1ch auto 2ch 8ch;
+    grid-template-columns: 1ch auto 8ch 2ch 8ch;
     align-items: center;
     padding: 0.2em;
     gap: 2em;
