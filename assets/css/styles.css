@@ -8,7 +8,7 @@
 * {
     margin: 0;
     padding: 0;
-    /* outline: 1px solid green; */
+    /* outline: 1px solid salmon; */
 }
 
 :focus {
@@ -205,7 +205,7 @@ a { color: inherit; }
     align-items: center;
     align-self: center;
     justify-content: center;
-    min-width: 10ch;
+    width: 100%;
     min-height: 44px;
     margin: 2em auto;
     padding: 0.25em 1em;
@@ -232,11 +232,11 @@ a { color: inherit; }
 .btn--final {
     place-self: end;
     margin: 0;
-    width: 100%;
 }
 
 .btn--clear {
     background-color: var(--clr-secondary);
+    width: 97%;
 }
 
 .btn--clear:hover {
@@ -270,11 +270,6 @@ input[type="text"] {
     padding: 0.2em 0.3em;
 }
 
-#custom {
-    width: 12ch;
-    text-align: start;
-}
-
 .wrapper--percentage > label {
     line-height: 1.1;
     display: grid;
@@ -292,6 +287,25 @@ input[type="text"] {
     gap: 2em;
     border-bottom: 1px dotted var(--clr-grey);
 }
+
+.wrapper--custom {
+    display: grid;
+    grid-template-columns: 12ch 2ch 2ch auto 12ch auto;
+    align-items: center;
+    padding: 0.2em;
+    gap: 2em;
+    border-bottom: 1px dotted var(--clr-grey);
+}
+
+.wrapper--custom > input {
+    width: 100%;
+}
+
+.wrapper--custom > button {
+    margin: 0;
+}
+
+
 
 .container > li:nth-child(even) {
     background-color: var(--clr-bg);

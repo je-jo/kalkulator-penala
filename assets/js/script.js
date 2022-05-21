@@ -53,39 +53,32 @@ const ratePlans = [
     constructPlan("beogrid-duo-tel-gold", 2300, 0, 0),
     constructPlan("beogrid-duo-tel-platinum", 2810, 0, 0),
     constructPlan("beogrid-duo-tel-diamond", 3310, 0, 0),
-
+    constructPlan("beogrid-trio-silver", 2740, 0, 0),
+    constructPlan("beogrid-trio-gold", 3220, 0, 0),
+    constructPlan("beogrid-trio-platinum", 3830, 0, 0),
+    constructPlan("beogrid-trio-diamond", 4230, 0, 0),
+    constructPlan("beogrid-net-silver", 1540, 0, 0),
+    constructPlan("beogrid-net-gold", 1920, 0, 0),
+    constructPlan("beogrid-net-platinum", 2430, 0, 0),
+    constructPlan("beogrid-net-diamond", 2930, 0, 0),
+    constructPlan("ikom-flat-standard-1", 1770, 0, 0),
+    constructPlan("ikom-flat-standard-2", 2270, 0, 0),
+    constructPlan("ikom-flat-standard-3", 2870, 0, 0),
+    constructPlan("ikom-flat-standard-4", 3470, 0, 0),
+    constructPlan("ikom-flat-standard-5", 4570, 0, 0),
+    constructPlan("ikom-flat-extra-1", 1870, 0, 0),
+    constructPlan("ikom-flat-extra-2", 2420, 0, 0),
+    constructPlan("ikom-flat-extra-3", 2920, 0, 0),
+    constructPlan("ikom-flat-extra-4", 3520, 0, 0),
+    constructPlan("ikom-flat-extra-5", 4620, 0, 0),
+    constructPlan("ikom-fon-standard", 1770, 0, 0),
+    constructPlan("ikom-fon-extra", 2170, 0, 0),
+    constructPlan("ikom-tel-1", 2170, 0, 0),
+    constructPlan("ikom-tel-2", 2720, 0, 0),
+    constructPlan("ikom-tel-3", 3220, 0, 0),
+    constructPlan("ikom-tel-4", 3820, 0, 0),
+    constructPlan("ikom-tel-5", 4920, 0, 0),
 ];
-
-/*
-
-BEOGRID NET DIAMOND	2930
-BEOGRID NET GOLD	1920
-BEOGRID NET PLATINUM	2430
-BEOGRID NET SILVER	1540
-BEOGRID TRIO DIAMOND	4230
-BEOGRID TRIO GOLD	3220
-BEOGRID TRIO PLATINUM	3830
-BEOGRID TRIO SILVER	2740
-
-IKOM FLAT EXTRA 1	1870
-IKOM FLAT EXTRA 2	2420
-IKOM FLAT EXTRA 3	2920
-IKOM FLAT EXTRA 4	3520
-IKOM FLAT EXTRA 5	4620
-IKOM FLAT STANDARD 1	1770
-IKOM FLAT STANDARD 2	2270
-IKOM FLAT STANDARD 3	2870
-IKOM FLAT STANDARD 4	3470
-IKOM FLAT STANDARD 5	4570
-IKOM FON EXTRA	2170
-IKOM FON STANDARD	1770
-IKOM TEL 1	2170
-IKOM TEL 2	2720
-IKOM TEL 3	3220
-IKOM TEL 4	3820
-IKOM TEL 5	4920
-
-*/
 
 const productPackages = [
     constructPlan("pink", 310, 0, 0),
@@ -234,7 +227,8 @@ if (currentDay === 31) {
 }
 const currentMonth = new Date().getMonth() + 1;
 const currentYear = new Date().getFullYear();
-const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
+//const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
+const todayFormatted = formatDate(new Date())
 
 const displayToday = document.querySelector("#date-today");
 displayToday.textContent = todayFormatted;
@@ -643,7 +637,7 @@ let buildOutputStringTotalBenefits = () => {
 
 }
 
-// output
+// 10. output
 
 const buttonFinal = document.querySelector(".btn--final");
 const outputFinal = document.querySelector("#output--final");
@@ -662,6 +656,64 @@ Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
     outputFinal.style.height = "auto";
     outputFinal.style.height = outputFinal.scrollHeight + "px";
 });
+
+//custom entries
+
+const sectionCustom = document.querySelector("#section--custom");
+const buttonCustom = document.querySelector(".btn--custom");
+const customPrice = document.querySelector("#custom-price");
+const customMonths = document.querySelector("#custom-months");
+const customDays = document.querySelector("#custom-days");
+const customOutput = document.querySelector("#output-custom");
+let custom;
+
+function createNewRow() {
+const newRow = document.createElement("div");
+newRow.classList.add("wrapper--custom");
+const newCustomPrice = document.createElement("input");
+newCustomPrice.setAttribute("type", "text");
+newCustomPrice.setAttribute("id", "custom-price");
+newCustomPrice.setAttribute("placeholder", "49.5")
+const newCustomMonths = document.createElement("input");
+newCustomMonths.setAttribute("type", "text");
+newCustomMonths.setAttribute("id", "custom-months");
+newCustomMonths.setAttribute("placeholder", "M");
+const newCustomDays = document.createElement("input");
+newCustomDays.setAttribute("type", "text");
+newCustomDays.setAttribute("id", "custom-days");
+newCustomDays.setAttribute("placeholder", "D");
+const buttonCalculateCustom = document.createElement("button");
+buttonCalculateCustom.setAttribute("type", "button");
+buttonCalculateCustom.classList.add("btn", "btn--custom");
+buttonCalculateCustom.textContent = "OK";
+const newSpanCustom = document.createElement("span");
+newSpanCustom.setAttribute("id", "output-custom")
+newSpanCustom.classList.add("custom")
+newSpanCustom.textContent = "0000" //formatPrice(custom);
+const buttonRemoveRow = document.createElement("button");
+buttonRemoveRow.setAttribute("type", "button");
+buttonRemoveRow.classList.add("btn", "btn--remove");
+buttonRemoveRow.textContent = "X";
+buttonRemoveRow.addEventListener("click", () => newRow.remove());
+newRow.appendChild(newCustomPrice);
+newRow.appendChild(newCustomMonths);
+newRow.appendChild(newCustomDays);
+newRow.appendChild(buttonCalculateCustom);
+newRow.appendChild(newSpanCustom);
+newRow.appendChild(buttonRemoveRow);
+sectionCustom.insertBefore(newRow, buttonAddRow);
+}
+
+const buttonAddRow = document.querySelector(".btn--add");
+buttonAddRow.addEventListener("click", createNewRow)
+
+
+function calculateCustom() {
+    custom = (customPrice.value * customMonths.value) + (customDays.value * (customPrice.value / 30));
+    customOutput.textContent = formatPrice(custom);
+}
+
+//buttonCustom.addEventListener("click", calculateCustom);
 
 // clear
 
@@ -698,23 +750,10 @@ const buttonClear = document.querySelector(".btn--clear");
 
 buttonClear.addEventListener("click", clearAll);
 
-const buttonCustom = document.querySelector(".btn--custom");
-const customPrice = document.querySelector("#custom-price");
-const customMonths = document.querySelector("#custom-months");
-const customDays = document.querySelector("#custom-days");
-const customOutput = document.querySelector("#output-custom");
-let custom;
 
-
-
-function calculateCustom() {
-    custom = (customPrice.value * customMonths.value) + (customDays.value * (customPrice.value / 30));
-    customOutput.textContent = formatPrice(custom);
-}
-
-buttonCustom.addEventListener("click", calculateCustom);
 
 
 clearAll();
+createNewRow();
 
 

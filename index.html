@@ -25,10 +25,10 @@
                         <label for="date-start-contract">Unesite datum početka ugovora i pritisnite OK:</label>
                         <div class="wrapper">
                             <input type="date" id="date-start-contract" min="2020-01-01" max="2022-12-31">
-                            <button class="btn btn--date" type="button">OK</button>
                             <input type="checkbox" id="length">
-                            <label for="length">12 meseci?</label>
+                            <label for="length">UO 12 meseci?</label>
                         </div>
+                        <button class="btn btn--date" type="button">OK</button>
                         <p>Datum početka ugovora: <span class="output" id="date-start"></span></p>
                         <p>Današnji datum: <span class="output" id="date-today"></span></p>
                         <h3>Trenutni paket:</h3>
@@ -123,17 +123,13 @@
                         <p><small>Mesečna razlika u ceni: </small><span id="reduction"></span></p>
                         <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
                     </div>
-                    <div class="card">
-                        <h3>Unesi proizvoljni iznos</h3>
-                        <div class="wrapper wrapper--custom">
-                            <input type="text" id="custom-price" placeholder="49.5">
-                            <input type="text" id="custom-months" placeholder="M">
-                            <input type="text" id="custom-days" placeholder="D">
 
-                            <button class="btn btn--custom" type="button">OK</button>
-                        </div>
-                        <p>Ukupno: <span class="output" id="output-custom"></span></p>
+                    <div id="section--custom" class="card">
+                        <h3>Unesi proizvoljni iznos</h3>
+                        <button class="btn btn--add" type="button">Dodaj red</button>
+                        <!-- <p>Ukupno: <span class="output" id="output-custom"></span></p> -->
                     </div>
+
                 </div>
                 <div class="wrapper--card">
                     <div class="card card--long">
