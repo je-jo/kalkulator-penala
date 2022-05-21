@@ -240,7 +240,7 @@ const dateInput = document.querySelector("#date-start-contract");
 let startDay, startMonth, startYear;
 
 function setStartDate() { //run on button click
-    
+
     let startDate = dateInput.value.split("-");
     startYear = +startDate[0]; //assumes date format '2021', '12', '31'
     startMonth = +startDate[1];
@@ -575,7 +575,7 @@ function calcElementPrice(arr) {
     return arr.reduce((total, element) => total + element.calcPrice, 0);
 }
 
-const displaySinglePP = [...document.querySelectorAll("#channels > li > span.channels-calc-price")]; 
+const displaySinglePP = [...document.querySelectorAll("#channels > li > span.channels-calc-price")];
 const displaySingleHW = [...document.querySelectorAll("#hardware > li > span.hardware-calc-price")];
 
 function displayElementPrice(arrOfNodes, arrOfProducts) {
@@ -660,57 +660,75 @@ Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
 //custom entries
 
 const sectionCustom = document.querySelector("#section--custom");
-const buttonCustom = document.querySelector(".btn--custom");
-const customPrice = document.querySelector("#custom-price");
-const customMonths = document.querySelector("#custom-months");
-const customDays = document.querySelector("#custom-days");
-const customOutput = document.querySelector("#output-custom");
-let custom;
+
+
 
 function createNewRow() {
-const newRow = document.createElement("div");
-newRow.classList.add("wrapper--custom");
-const newCustomPrice = document.createElement("input");
-newCustomPrice.setAttribute("type", "text");
-newCustomPrice.setAttribute("id", "custom-price");
-newCustomPrice.setAttribute("placeholder", "49.5")
-const newCustomMonths = document.createElement("input");
-newCustomMonths.setAttribute("type", "text");
-newCustomMonths.setAttribute("id", "custom-months");
-newCustomMonths.setAttribute("placeholder", "M");
-const newCustomDays = document.createElement("input");
-newCustomDays.setAttribute("type", "text");
-newCustomDays.setAttribute("id", "custom-days");
-newCustomDays.setAttribute("placeholder", "D");
-const buttonCalculateCustom = document.createElement("button");
-buttonCalculateCustom.setAttribute("type", "button");
-buttonCalculateCustom.classList.add("btn", "btn--custom");
-buttonCalculateCustom.textContent = "OK";
-const newSpanCustom = document.createElement("span");
-newSpanCustom.setAttribute("id", "output-custom")
-newSpanCustom.classList.add("custom")
-newSpanCustom.textContent = "0000" //formatPrice(custom);
-const buttonRemoveRow = document.createElement("button");
-buttonRemoveRow.setAttribute("type", "button");
-buttonRemoveRow.classList.add("btn", "btn--remove");
-buttonRemoveRow.textContent = "X";
-buttonRemoveRow.addEventListener("click", () => newRow.remove());
-newRow.appendChild(newCustomPrice);
-newRow.appendChild(newCustomMonths);
-newRow.appendChild(newCustomDays);
-newRow.appendChild(buttonCalculateCustom);
-newRow.appendChild(newSpanCustom);
-newRow.appendChild(buttonRemoveRow);
-sectionCustom.insertBefore(newRow, buttonAddRow);
+    const newRow = document.createElement("div");
+    newRow.classList.add("wrapper--custom");
+    const newCustomPrice = document.createElement("input");
+    newCustomPrice.setAttribute("type", "text");
+    newCustomPrice.setAttribute("placeholder", "49.5")
+    newCustomPrice.classList.add("custom-price")
+    const newCustomMonths = document.createElement("input");
+    newCustomMonths.setAttribute("type", "text");
+    newCustomMonths.setAttribute("placeholder", "M");
+    newCustomMonths.classList.add("custom-months")
+    const newCustomDays = document.createElement("input");
+    newCustomDays.setAttribute("type", "text");
+    newCustomDays.setAttribute("placeholder", "D");
+    newCustomDays.classList.add("custom-days")
+    // const buttonCalculateCustom = document.createElement("button");
+    // buttonCalculateCustom.setAttribute("type", "button");
+    // buttonCalculateCustom.classList.add("btn", "btn--custom");
+    // buttonCalculateCustom.textContent = "OK";
+    const newSpanCustom = document.createElement("span");
+    newSpanCustom.classList.add("custom", "output-custom")
+    newSpanCustom.textContent = "0000" //formatPrice(custom);
+    const buttonRemoveRow = document.createElement("button");
+    buttonRemoveRow.setAttribute("type", "button");
+    buttonRemoveRow.classList.add("btn", "btn--remove");
+    buttonRemoveRow.textContent = "X";
+    buttonRemoveRow.addEventListener("click", () => newRow.remove());
+    newRow.appendChild(newCustomPrice);
+    newRow.appendChild(newCustomMonths);
+    newRow.appendChild(newCustomDays);
+    //newRow.appendChild(buttonCalculateCustom);
+    newRow.appendChild(newSpanCustom);
+    newRow.appendChild(buttonRemoveRow);
+    sectionCustom.insertBefore(newRow, buttonAddRow);
+
 }
 
+
+
 const buttonAddRow = document.querySelector(".btn--add");
-buttonAddRow.addEventListener("click", createNewRow)
+buttonAddRow.addEventListener("click", () => {
+    createNewRow();
+    calculateCustom();
+})
 
+// const buttonCustom = [...document.querySelectorAll(".btn--custom")];
+// buttonCustom.forEach(btn => btn.addEventListener("click", calculateCustom))
 
+const displayTotalCustom = document.querySelector("#total-custom");
+let totalCustom;
+
+let customCalcPrice = []
 function calculateCustom() {
-    custom = (customPrice.value * customMonths.value) + (customDays.value * (customPrice.value / 30));
-    customOutput.textContent = formatPrice(custom);
+    const customPrice = [...document.querySelectorAll(".custom-price")];
+    const customMonths = [...document.querySelectorAll(".custom-months")];
+    const customDays = [...document.querySelectorAll(".custom-days")];
+    const customOutput = [...document.querySelectorAll(".output-custom")];
+ 
+    for (let i = 0; i < customPrice.length; i++) {
+        customCalcPrice[i] = (customPrice[i].value * customMonths[i].value) + (customDays[i].value * (customPrice[i].value / 30));
+        customOutput[i].textContent = formatPrice(customCalcPrice[i]);
+    }
+    console.log(customCalcPrice)
+    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr);
+    displayTotalCustom.textContent = formatPrice(totalCustom)
+
 }
 
 //buttonCustom.addEventListener("click", calculateCustom);

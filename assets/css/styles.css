@@ -290,8 +290,9 @@ input[type="text"] {
 
 .wrapper--custom {
     display: grid;
-    grid-template-columns: 12ch 2ch 2ch auto 12ch auto;
-    align-items: center;
+    grid-template-columns: 18ch 2ch 2ch 12ch 2ch;
+    place-items: center;
+    place-content: center;
     padding: 0.2em;
     gap: 2em;
     border-bottom: 1px dotted var(--clr-grey);
