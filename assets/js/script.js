@@ -208,15 +208,12 @@ function formatPrice(num) {
 }
 
 function formatDate(date) {
-    return date.toLocaleString('sr-ME', options)
+    return date.toLocaleString('sr-ME', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    })
 }
-
-let options = {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-};
-
 
 
 //01. set today
@@ -470,7 +467,7 @@ const displayTotalBenefits = document.querySelector("#total-benefits");
 
 let totalPackages = () => calcElementPrice(productPackages);
 let totalHardware = () => calcElementPrice(hardwareItems);
-let totalBenefits = () => [reductionTotal(), totalPackages(), totalHardware()].reduce((acc, curr) => acc + curr, 0);
+let totalBenefits = () => [reductionTotal(), totalPackages(), totalHardware(), calculateCustom()].reduce((acc, curr) => acc + curr, 0);
 
 inputCheckboxes.forEach(checkbox => {
     checkbox.addEventListener("change", function (e) {
@@ -586,7 +583,7 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
 
 // 09. build output
 
-let buildOutputStringTotalLeft = () => `${formatPrice(totalPaymentsLeft())} (${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} x ${formattedDaysLeft()})`
+let buildOutputStringTotalLeft = () => `${formatPrice(totalPaymentsLeft())} (${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} ${formatPrice(currentPrice())} x ${formattedDaysLeft()})`
 
 let buildOutputStringTotalBenefits = () => {
     let finalStringBenefits = "";
@@ -632,6 +629,9 @@ let buildOutputStringTotalBenefits = () => {
             }
         }
     }
+    if (totalCustom) {
+        finalStringBenefits += outputStringCustom
+    }
     finalStringBenefits = finalStringBenefits.slice(0, finalStringBenefits.length - 3);
     return finalStringBenefits;
 
@@ -664,11 +664,11 @@ const sectionCustom = document.querySelector("#section--custom");
 
 
 function createNewRow() {
-    const newRow = document.createElement("div");
+    const newRow = document.createElement("li");
     newRow.classList.add("wrapper--custom");
     const newCustomPrice = document.createElement("input");
     newCustomPrice.setAttribute("type", "text");
-    newCustomPrice.setAttribute("placeholder", "49.5")
+    //newCustomPrice.setAttribute("placeholder", "49.5")
     newCustomPrice.classList.add("custom-price")
     const newCustomMonths = document.createElement("input");
     newCustomMonths.setAttribute("type", "text");
@@ -678,25 +678,23 @@ function createNewRow() {
     newCustomDays.setAttribute("type", "text");
     newCustomDays.setAttribute("placeholder", "D");
     newCustomDays.classList.add("custom-days")
-    // const buttonCalculateCustom = document.createElement("button");
-    // buttonCalculateCustom.setAttribute("type", "button");
-    // buttonCalculateCustom.classList.add("btn", "btn--custom");
-    // buttonCalculateCustom.textContent = "OK";
     const newSpanCustom = document.createElement("span");
     newSpanCustom.classList.add("custom", "output-custom")
-    newSpanCustom.textContent = "0000" //formatPrice(custom);
+    newSpanCustom.textContent = formatPrice(0) //formatPrice(custom);
     const buttonRemoveRow = document.createElement("button");
     buttonRemoveRow.setAttribute("type", "button");
-    buttonRemoveRow.classList.add("btn", "btn--remove");
+    buttonRemoveRow.classList.add("btn", "btn--remove", "btn--alt");
     buttonRemoveRow.textContent = "X";
-    buttonRemoveRow.addEventListener("click", () => newRow.remove());
+    buttonRemoveRow.addEventListener("click", () => {
+        newRow.remove();
+        calculateCustom()
+    });
     newRow.appendChild(newCustomPrice);
     newRow.appendChild(newCustomMonths);
     newRow.appendChild(newCustomDays);
-    //newRow.appendChild(buttonCalculateCustom);
     newRow.appendChild(newSpanCustom);
     newRow.appendChild(buttonRemoveRow);
-    sectionCustom.insertBefore(newRow, buttonAddRow);
+    sectionCustom.appendChild(newRow);
 
 }
 
@@ -708,30 +706,28 @@ buttonAddRow.addEventListener("click", () => {
     calculateCustom();
 })
 
-// const buttonCustom = [...document.querySelectorAll(".btn--custom")];
-// buttonCustom.forEach(btn => btn.addEventListener("click", calculateCustom))
-
 const displayTotalCustom = document.querySelector("#total-custom");
-let totalCustom;
+let totalCustom = 0;
+let outputStringCustom = ""
 
-let customCalcPrice = []
+let customCalcPrice = [];
 function calculateCustom() {
     const customPrice = [...document.querySelectorAll(".custom-price")];
     const customMonths = [...document.querySelectorAll(".custom-months")];
     const customDays = [...document.querySelectorAll(".custom-days")];
     const customOutput = [...document.querySelectorAll(".output-custom")];
- 
+    outputStringCustom = "";
     for (let i = 0; i < customPrice.length; i++) {
         customCalcPrice[i] = (customPrice[i].value * customMonths[i].value) + (customDays[i].value * (customPrice[i].value / 30));
         customOutput[i].textContent = formatPrice(customCalcPrice[i]);
+        outputStringCustom += `OSTALO ${customPrice[i].value} x ${customMonths[i].value} m i ${customDays[i].value} d + `
     }
-    console.log(customCalcPrice)
     totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr);
-    displayTotalCustom.textContent = formatPrice(totalCustom)
+    displayTotalCustom.textContent = formatPrice(totalCustom);
 
+
+    return totalCustom;
 }
-
-//buttonCustom.addEventListener("click", calculateCustom);
 
 // clear
 
@@ -773,5 +769,6 @@ buttonClear.addEventListener("click", clearAll);
 
 clearAll();
 createNewRow();
+
 
 

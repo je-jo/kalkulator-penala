@@ -205,6 +205,7 @@ a { color: inherit; }
     align-items: center;
     align-self: center;
     justify-content: center;
+    /* min-width: 10ch; */
     width: 100%;
     min-height: 44px;
     margin: 2em auto;
@@ -230,6 +231,7 @@ a { color: inherit; }
 }
 
 .btn--final {
+    /* width: 100%; */
     place-self: end;
     margin: 0;
 }
@@ -242,6 +244,16 @@ a { color: inherit; }
 .btn--clear:hover {
     background-color: var(--clr-secondary-hover);
     outline-color: var(--clr-secondary-hover);
+}
+
+.btn--alt {
+    background-color: transparent;
+    color: var(--clr-primary);
+    border-color: var(--clr-primary);
+}
+
+.btn--alt:hover {
+    color: var(--clr-white);
 }
 
 /* input */
@@ -291,8 +303,8 @@ input[type="text"] {
 .wrapper--custom {
     display: grid;
     grid-template-columns: 18ch 2ch 2ch 12ch 2ch;
-    place-items: center;
-    place-content: center;
+    align-items: center;
+    justify-content: space-evenly;
     padding: 0.2em;
     gap: 2em;
     border-bottom: 1px dotted var(--clr-grey);
@@ -312,7 +324,7 @@ input[type="text"] {
     background-color: var(--clr-bg);
 }
 
-.container > li:hover {
+.container > li:not(:first-child):hover {
     background-color: var(--clr-hover);
 }
 
