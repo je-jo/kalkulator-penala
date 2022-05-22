@@ -581,7 +581,7 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
     }
 }
 
-// 09. build output
+// 09. build output string
 
 let buildOutputStringTotalLeft = () => `${formatPrice(totalPaymentsLeft())} (${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} ${formatPrice(currentPrice())} x ${formattedDaysLeft()})`
 
@@ -673,11 +673,11 @@ function createNewRow() {
     const newCustomMonths = document.createElement("input");
     newCustomMonths.setAttribute("type", "text");
     newCustomMonths.setAttribute("placeholder", "M");
-    newCustomMonths.classList.add("custom-months")
+    newCustomMonths.classList.add("custom-months");
     const newCustomDays = document.createElement("input");
     newCustomDays.setAttribute("type", "text");
     newCustomDays.setAttribute("placeholder", "D");
-    newCustomDays.classList.add("custom-days")
+    newCustomDays.classList.add("custom-days");
     const newSpanCustom = document.createElement("span");
     newSpanCustom.classList.add("custom", "output-custom")
     newSpanCustom.textContent = formatPrice(0) //formatPrice(custom);
@@ -718,11 +718,20 @@ function calculateCustom() {
     const customOutput = [...document.querySelectorAll(".output-custom")];
     outputStringCustom = "";
     for (let i = 0; i < customPrice.length; i++) {
-        customCalcPrice[i] = (customPrice[i].value * customMonths[i].value) + (customDays[i].value * (customPrice[i].value / 30));
-        customOutput[i].textContent = formatPrice(customCalcPrice[i]);
-        outputStringCustom += `OSTALO ${customPrice[i].value} x ${customMonths[i].value} m i ${customDays[i].value} d + `
+        if (customPrice[i].value) {
+            customCalcPrice[i] = (customPrice[i].value * customMonths[i].value) + (customDays[i].value * (customPrice[i].value / 30));
+            customOutput[i].textContent = formatPrice(customCalcPrice[i]);
+            outputStringCustom += `OSTALO ${+(customPrice[i].value)} x `;
+            if (customMonths[i].value) {
+                outputStringCustom += `${customMonths[i].value} m `
+            }
+            if (customDays[i].value) {
+                outputStringCustom += `i ${customDays[i].value} d `
+            }
+        }
+        
     }
-    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr);
+    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr,0);
     displayTotalCustom.textContent = formatPrice(totalCustom);
 
 
@@ -750,6 +759,10 @@ function clearAll() {
     form.reset();
     dateInput.value = "";
     selectedRatePlan = 0;
+    while (sectionCustom.firstChild) {
+        sectionCustom.removeChild(sectionCustom.lastChild)
+    }
+    createNewRow();
     clearAllObjects(productPackages)
     clearAllObjects(hardwareItems);
     outputAll.forEach(output => output.textContent = "");
@@ -768,7 +781,7 @@ buttonClear.addEventListener("click", clearAll);
 
 
 clearAll();
-createNewRow();
+
 
 
 

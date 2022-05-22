@@ -282,7 +282,8 @@ input[type="text"] {
     padding: 0.2em 0.3em;
 }
 
-.wrapper--percentage > label {
+.wrapper--percentage > label,
+.wrapper--ammount > label {
     line-height: 1.1;
     display: grid;
     grid-template-columns: 1em auto;
