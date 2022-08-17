@@ -8,7 +8,7 @@
 * {
     margin: 0;
     padding: 0;
-    /* outline: 1px solid salmon; */
+    outline: 1px solid salmon;
 }
 
 :focus {
@@ -36,16 +36,15 @@ select {
     --clr-secondary: #5BC4BF;
     --clr-secondary-hover: #32b8b1;
     --clr-hover: hsl(70, 24%, 90%);
-    --clr-bg: #f4f5ef;
-    --clr-body: #4f424c;
+    --clr-bg: rgb(241, 242, 237);
+    --clr-body: #41323F;
     --clr-white: #fff;
-    --clr-grey: #b9b6b0;
+    --clr-grey: #B9B6B0;
     --border-radius: 8px;
     --fw-strong: 600;
     --fs-h1: 4rem;
     --fs-h2: 3.15rem;
     --fs-h3: 2rem;
-    --fs-h4: 1.35rem;
     --fs-p: 1.15rem;
     --fs-small: 0.95rem;
     --fs-lead: 1.30rem;
@@ -100,58 +99,13 @@ footer {
     color: var(--clr-white);
 }
 
-/* cards */
 
-.wrapper--card {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 2em;
-    gap: 2em;
-    margin: 0 auto;
-}
-
-.wrapper--card>* {
-    flex: 0 1 100%;
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    gap: 1em;
-    border-radius: var(--border-radius);
-    background-color: var(--clr-white);
-    box-shadow: var(--box-shadow);
-}
-
-.card--long {
-    max-height: 65vh;
-    overflow-y: auto;
-}
-
-
-@media screen and (min-width: 55rem) {
-
-    .wrapper--card {
-        flex-wrap: nowrap;
-    } 
-
-    .card--bump {
-        order: -1;
-    }
-
-    .card--wide {
-        flex: 1 1 200%;
-    } 
-
-}
 
 /* typography */
 
 h1,
 h2,
-h3,
-h4 {
+h3 {
     font-weight: var(--fw-strong);
     line-height: 1.15;
     margin: 0.65em 0;
@@ -163,25 +117,31 @@ h2 {
 }
 
 h1 {
-    font-size: var(--fs-h1);
+    font-size: var(--fs-h1); 
+    font-size: min(max(3rem, 5vw), var(--fs-h1));
 }
 
+
 h2 {
-    font-size: var(--fs-h2);
+    font-size: var(--fs-h2); 
+    font-size: min(max(2.5rem, 4.5vw), var(--fs-h2));
 }
 
 h3 {
-    font-size: var(--fs-h3);
-}
-
-h4 {
-    font-size: var(--fs-h4);
+    font-size: var(--fs-h3); 
+    font-size: min(max(1.5rem, 2.5vw), var(--fs-h3));
 }
 
 p,
-li,
 label {
-    font-size: var(--fs-p);
+    font-size: var(--fs-p); 
+    font-size: min(max(0.9rem, 1.5vw), var(--fs-p));
+}
+
+li,
+.wrapper--checkbox>label,
+.btn--remove {
+    font-size: min(max(0.55rem, 1vw), var(--fs-p));
 }
 
 .lead {
@@ -295,6 +255,12 @@ a {
     color: var(--clr-white);
 }
 
+.btn--remove {
+    font-size: min(max(0.55rem, 1vw), var(--fs-p));
+    padding: clamp(1em, 3%, 1.5em);
+    min-height: unset;
+}
+
 /* input */
 
 input {
@@ -326,11 +292,37 @@ input[type="text"] {
 
 /*labels and info */
 
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(50vw, 35ch), 1fr));
+    padding: clamp(1em, 3%, 1.5em);
+    gap: clamp(1em, 4vmax, 2em);
+}
+
+.card--wide {
+    grid-row: span 2;
+}
+
 .wrapper--general {
+    background-color: var(--clr-grey)
+
+}
+
+/* cards */
+
+.card {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 2em;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+    border-radius: var(--border-radius);
+    background-color: var(--clr-white);
+    box-shadow: var(--box-shadow);
+}
+
+.card--long {
+    max-height: 65vh;
+    overflow-y: auto;
 }
 
 .wrapper--percentage>label,
@@ -376,11 +368,10 @@ input[type="text"] {
 
 /* the list */
 
-.container>li:nth-child(even) {
+.container>li:nth-child(odd) {
     background-color: var(--clr-bg);
 }
 
 .container>li:not(:first-child):hover {
     background-color: var(--clr-hover);
 }
-

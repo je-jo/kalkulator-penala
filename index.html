@@ -19,14 +19,15 @@
         <form action="" method="get">
             <section>
                 <h2>Osnovni podaci</h2>
-                <div class="wrapper--card">
+                <div class="wrapper wrapper--card">
                     <div class="card card--wide">
                         <h3>Datumi:</h3>
                         <label for="date-start-contract">Unesite datum početka ugovora i pritisnite OK:</label>
-                        <div class="wrapper--general">
+                        <div class="wrapper wrapper--general">
                             <input type="date" id="date-start-contract">
-                            <input type="checkbox" id="length">
-                            <label for="length">UO 12 meseci?</label>
+                                <input type="checkbox" id="length">
+                                <label for="length">UO 12 meseci?</label>
+
                         </div>
                         <button class="btn btn--date" type="button">OK</button>
                         <p>Datum početka ugovora: <span class="output" id="date-start"></span></p>
@@ -52,7 +53,7 @@
 
             <section>
                 <h2>Ostvareni benefiti</h2>
-                <div class="wrapper--card">
+                <div class="wrapper wrapper--card">
                     <div class="card">
                         <h3>Akcija:</h3>
                         <p>Vrsta akcije:</p>
@@ -70,7 +71,7 @@
                         </select>
                         <div id="reduction-percent">
                             <p>Procenat:</p>
-                            <div class="wrapper--percentage">
+                            <div class="wrapper wrapper--percentage">
                                 <label for="5">
                                     <input type="radio" id="5" name="reduction-percent" value="0.05">
                                     5 %</label>
@@ -96,7 +97,7 @@
                         </div>
                         <div id="reduction-ammount">
                             <p>Ime akcije:</p>
-                            <div class="wrapper--ammount">
+                            <div class="wrapper wrapper--ammount">
                                 <label for="599">
                                     <input type="radio" id="599" name="reduction-ammount" value="599">
                                     Placaj 599,00 DIN</label>
@@ -117,7 +118,7 @@
                                     Placaj 1.999,00 DIN</label>
                             </div>
                         </div>
-                        <div class="wrapper--general">
+                        <div class="wrapper wrapper--general">
                             <label for="reduction-time">Trajanje:</label>
 
                             <input type="text" id="reduction-time" class="multiplier">
@@ -133,39 +134,44 @@
                         <p class="info">Ovde možete izračunati ostvarene benefite koji nisu deo standardne ponude i/ili
                             benefite koji su prekinuti pre predviđenog roka. Unesite iznos, broj meseci i broj dana. Za
                             izračunavanje broja dana možete koristiti kalendar ispod.</p>
-                        <div class="wrapper--custom">
-                            <div>Upisi iznos</div>
-                            <div>M</div>
-                            <div>D</div>
-                            <div>Izracunato</div>
-                            <div>Obrisi red</div>
-                        </div>
+                        <ul>
+                            <li class="wrapper wrapper--custom strong">
+                                <div>Upisi iznos</div>
+                                <div>M</div>
+                                <div>D</div>
+                                <div>Izracunato</div>
+                                <div>Obrisi red</div>
+                            </li>
+                        </ul>
+
                         <ul id="section--custom" class="container">
                         </ul>
                         <button class="btn btn--add btn--alt" type="button">Dodaj novi red / Završi</button>
                         <p>Ukupno proizvoljno: <span class="output" id="total-custom"></span></p>
                         <hr>
                         <p class="info">Ovaj kalendar služi da izračuna broj meseci i dana od datuma početka ugovora do
-                            unetog datuma kada se prekida benefit. Ne koristi se automatski u kalkulaciji, već je
+                            unetog proizvoljnog datuma kada se prekida benefit. Ne koristi se automatski u kalkulaciji,
+                            već je
                             potrebno ručno upisati broj meseci i dana u polja iznad.</p>
                         <label for="custom-date-input">Unesite proizvoljni datum i pritisnite OK:</label>
-                        <div class="wrapper--general">
+                        <div class="wrapper wrapper--general">
                             <input type="date" id="custom-date-input" min="2020-01-01" max="2022-12-31">
                             <button class="btn btn--custom-date btn--alt" type="button">OK</button>
                         </div>
                         <p>Proizvoljno vreme: <span class="output" id="custom-time-passed"></span></p>
                     </div>
 
-                </div>
-                <div class="wrapper--card">
+                <!-- </div>
+                <div class="wrapper wrapper--card"> -->
                     <div class="card card--long card--bump">
                         <h3>Promo Kanali:</h3>
-                        <p class="info">* Cena paketa kanala se množi sa brojem proteklih meseci i dana, osim ako se ručno
+                        <p class="info">* Cena paketa kanala se množi sa brojem proteklih meseci i dana, osim ako se
+                            ručno
                             upiše broj meseci koliko je trajala akcija.</p>
                         <p class="info strong">Uneti broj meseci SAMO AKO je isteklo vreme akcije!</p>
                         <p>Ukupno kanali: <span class="output" id="total-channels"></span></p>
                         <ul id="channels" class="container">
-                            <li class="wrapper--checkbox">
+                            <li class="wrapper wrapper--checkbox strong">
                                 <div class="checkbox"></div>
                                 <div>Naziv</div>
                                 <div>Cena</div>
@@ -182,7 +188,7 @@
                         <p class="info strong">Uneti količinu SAMO AKO korisnik ima više uređaja istog tipa!</p>
                         <p>Ukupno oprema: <span class="output" id="total-hardware"></span></p>
                         <ul id="hardware" class="container">
-                            <li class="wrapper--checkbox">
+                            <li class="wrapper wrapper--checkbox strong">
                                 <div class="checkbox"></div>
                                 <div>Naziv</div>
                                 <div>Cena</div>
@@ -196,7 +202,7 @@
 
             <section>
                 <h2>Izveštaj</h2>
-                <div class="wrapper--output">
+                <div class="wrapper wrapper--output">
                     <textarea id="output--final" class="output">...</textarea>
                     <button class="btn btn--final" type="button">Kreiraj izveštaj</button>
                 </div>
