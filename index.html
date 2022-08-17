@@ -23,8 +23,8 @@
                     <div class="card card--wide">
                         <h3>Datumi:</h3>
                         <label for="date-start-contract">Unesite datum početka ugovora i pritisnite OK:</label>
-                        <div class="wrapper">
-                            <input type="date" id="date-start-contract" min="2020-01-01" max="2022-12-31">
+                        <div class="wrapper--general">
+                            <input type="date" id="date-start-contract">
                             <input type="checkbox" id="length">
                             <label for="length">UO 12 meseci?</label>
                         </div>
@@ -83,6 +83,9 @@
                                 <label for="20">
                                     <input type="radio" id="20" name="reduction-percent" value="0.2">
                                     20 %</label>
+                                <label for="30">
+                                    <input type="radio" id="30" name="reduction-percent" value="0.3">
+                                    30 %</label>
                                 <label for="50">
                                     <input type="radio" id="50" name="reduction-percent" value="0.5">
                                     50 %</label>
@@ -114,18 +117,22 @@
                                     Placaj 1.999,00 DIN</label>
                             </div>
                         </div>
-                        <div class="wrapper">
+                        <div class="wrapper--general">
                             <label for="reduction-time">Trajanje:</label>
 
                             <input type="text" id="reduction-time" class="multiplier">
                         </div>
-                        <p><small><strong>Uneti broj meseci SAMO AKO je isteklo vreme akcije!</strong></p></small>
-                        <p><small>Mesečna razlika u ceni: </small><span id="reduction"></span></p>
+                        <p class="info strong">Uneti broj meseci SAMO AKO je isteklo vreme akcije!</p>
+                        <p class="info">Mesečna razlika u ceni: <span id="reduction"></span></p>
                         <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
                     </div>
 
                     <div class="card">
                         <h3>Unesi proizvoljni iznos</h3>
+                        <p class="info strong">Koristiti samo u slučaju nestandardne ponude!</p>
+                        <p class="info">Ovde možete izračunati ostvarene benefite koji nisu deo standardne ponude i/ili
+                            benefite koji su prekinuti pre predviđenog roka. Unesite iznos, broj meseci i broj dana. Za
+                            izračunavanje broja dana možete koristiti kalendar ispod.</p>
                         <div class="wrapper--custom">
                             <div>Upisi iznos</div>
                             <div>M</div>
@@ -135,15 +142,27 @@
                         </div>
                         <ul id="section--custom" class="container">
                         </ul>
-                        <button class="btn btn--add btn--alt" type="button">Izračunaj i dodaj novi red</button>
+                        <button class="btn btn--add btn--alt" type="button">Dodaj novi red / Završi</button>
                         <p>Ukupno proizvoljno: <span class="output" id="total-custom"></span></p>
+                        <hr>
+                        <p class="info">Ovaj kalendar služi da izračuna broj meseci i dana od datuma početka ugovora do
+                            unetog datuma kada se prekida benefit. Ne koristi se automatski u kalkulaciji, već je
+                            potrebno ručno upisati broj meseci i dana u polja iznad.</p>
+                        <label for="custom-date-input">Unesite proizvoljni datum i pritisnite OK:</label>
+                        <div class="wrapper--general">
+                            <input type="date" id="custom-date-input" min="2020-01-01" max="2022-12-31">
+                            <button class="btn btn--custom-date btn--alt" type="button">OK</button>
+                        </div>
+                        <p>Proizvoljno vreme: <span class="output" id="custom-time-passed"></span></p>
                     </div>
 
                 </div>
                 <div class="wrapper--card">
                     <div class="card card--long card--bump">
                         <h3>Promo Kanali:</h3>
-                        <p><small><strong>Uneti broj meseci SAMO AKO je isteklo vreme akcije!</strong></p></small>
+                        <p class="info">* Cena paketa kanala se množi sa brojem proteklih meseci i dana, osim ako se ručno
+                            upiše broj meseci koliko je trajala akcija.</p>
+                        <p class="info strong">Uneti broj meseci SAMO AKO je isteklo vreme akcije!</p>
                         <p>Ukupno kanali: <span class="output" id="total-channels"></span></p>
                         <ul id="channels" class="container">
                             <li class="wrapper--checkbox">
@@ -157,7 +176,10 @@
                     </div>
                     <div class="card card--long">
                         <h3>Priključne takse:</h3>
-                        <p><small><strong>Uneti količinu SAMO AKO ima više uređaja istog tipa!</strong></p></small>
+                        <p class="info">* Jednokratne priključne takse se množe sa 1, osim ako se u polje "Količina"
+                            ne upiše broj uređaja istog tipa. Iznos rente se množi brojem proteklih meseci i dana, a ako
+                            korisnik ima više uređaja istog tipa, i sa brojem uređaja.</p>
+                        <p class="info strong">Uneti količinu SAMO AKO korisnik ima više uređaja istog tipa!</p>
                         <p>Ukupno oprema: <span class="output" id="total-hardware"></span></p>
                         <ul id="hardware" class="container">
                             <li class="wrapper--checkbox">

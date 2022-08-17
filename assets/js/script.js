@@ -97,6 +97,13 @@ const productPackages = [
     constructPlan("ttv-filmski-paket", 690, 0, 0),
     constructPlan("ttv-filmbox", 360, 0, 0),
     constructPlan("ttv-pink", 550, 0, 0),
+    constructPlan("zauder", 490, 0, 0),
+    constructPlan("da-vinci", 590, 0, 0),
+    constructPlan("tidal-hifi-plus", 900, 0, 0),
+    constructPlan("tidal-hifi-family", 675, 0, 0),
+    constructPlan("tidal-hifi-family-plus", 1350, 0, 0),
+    constructPlan("giga-dodatak", 4000, 0, 0),
+    constructPlan("dorcel", 590, 0, 0),
 ];
 
 const hardwareItems = [
@@ -111,14 +118,15 @@ const hardwareItems = [
     constructPlan("d3-mini", 1900, 0, 0),
     constructPlan("d3-cam", 1900, 0, 0),
     constructPlan("wifi-mesh", 9900, 0, 0),
+    constructPlan("wifi-mesh-50%", 4950, 0, 0),
+    constructPlan("renta-wifi-mesh", 590, 0, 0),
     constructPlan("eon-smart-box-50%", 3450, 0, 0),
-    constructPlan("pt-ttv", 3500, 0, 0),
-    constructPlan("ttv-montaza", 9900, 0, 0),
+    constructPlan("pt-ttv-dodatni", 3500, 0, 0),
+    constructPlan("ttv-montaza", 4000, 0, 0),
     constructPlan("renta-ttv-risiver", 490, 0, 0),
+    constructPlan("reklamacija-ttv", 1500, 0, 0),
     constructPlan("renta-ttv-risiver-akcija-200", 290, 0, 0),
-]
-
-
+];
 
 //setup: dinamically add select menus and checkboxes
 
@@ -128,7 +136,9 @@ const previousRatePlanInput = document.querySelector("#rp-prev");
 for (let i = 0; i < ratePlans.length; i++) {
     const newOptionItem = document.createElement("option");
     newOptionItem.setAttribute("value", `${ratePlans[i].name}`);
-    newOptionItem.textContent = `${((ratePlans[i].name).replaceAll("-", " ")).toUpperCase()}`;
+    newOptionItem.textContent = `${ratePlans[i].name
+        .replaceAll("-", " ")
+        .toUpperCase()}`;
     let newOptionCopy = newOptionItem.cloneNode(true);
     currentRatePlanInput.appendChild(newOptionItem);
     previousRatePlanInput.appendChild(newOptionCopy);
@@ -145,7 +155,7 @@ for (let i = 0; i < productPackages.length; i++) {
     newCheckbox.setAttribute("name", "calc-by-time");
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${productPackages[i].name}`);
-    newLabel.textContent = `${((productPackages[i].name).replaceAll("-", " "))}`;
+    newLabel.textContent = `${productPackages[i].name.replaceAll("-", " ")}`;
     const newSpanPrice = document.createElement("span");
     newSpanPrice.textContent = productPackages[i].price;
     const newTextInput = document.createElement("input");
@@ -170,14 +180,15 @@ for (let i = 0; i < hardwareItems.length; i++) {
     const newCheckbox = document.createElement("input");
     newCheckbox.setAttribute("type", "checkbox");
     newCheckbox.setAttribute("id", `${hardwareItems[i].name}`);
-    if (`${hardwareItems[i].name}`.includes("rent")) {          //some items are rented and we need to calculate them by contract time, instead of once
+    if (`${hardwareItems[i].name}`.includes("rent")) {
+        //some items are rented and we need to calculate them by contract time, instead of once
         newCheckbox.setAttribute("name", "calc-by-time");
     } else {
         newCheckbox.setAttribute("name", "calc-by-piece");
     }
     const newLabel = document.createElement("label");
     newLabel.setAttribute("for", `${hardwareItems[i].name}`);
-    newLabel.textContent = `${(hardwareItems[i].name).replaceAll("-", " ")}`;
+    newLabel.textContent = `${hardwareItems[i].name.replaceAll("-", " ")}`;
     const newSpanPrice = document.createElement("span");
     newSpanPrice.textContent = hardwareItems[i].price;
     const newTextInput = document.createElement("input");
@@ -199,33 +210,32 @@ for (let i = 0; i < hardwareItems.length; i++) {
 }
 
 function formatPrice(num) {
-    return num.toLocaleString('de-DE', {
-        style: 'currency',
-        currency: 'DIN',
+    return num.toLocaleString("de-DE", {
+        style: "currency",
+        currency: "DIN",
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    })
+        maximumFractionDigits: 2,
+    });
 }
 
 function formatDate(date) {
-    return date.toLocaleString('sr-ME', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-    })
+    return date.toLocaleString("sr-ME", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+    });
 }
-
 
 //01. set today
 
-const currentDay = new Date().getDate();
+let currentDay = new Date().getDate();
 if (currentDay === 31) {
     currentDay = 30;
 }
 const currentMonth = new Date().getMonth() + 1;
 const currentYear = new Date().getFullYear();
 //const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
-const todayFormatted = formatDate(new Date())
+const todayFormatted = formatDate(new Date());
 
 const displayToday = document.querySelector("#date-today");
 displayToday.textContent = todayFormatted;
@@ -236,7 +246,8 @@ const dateInput = document.querySelector("#date-start-contract");
 
 let startDay, startMonth, startYear;
 
-function setStartDate() { //run on button click
+function setStartDate() {
+    //run on button click
 
     let startDate = dateInput.value.split("-");
     startYear = +startDate[0]; //assumes date format '2021', '12', '31'
@@ -245,6 +256,20 @@ function setStartDate() { //run on button click
         startDay = 30;
     } else {
         startDay = +startDate[2];
+    }
+}
+
+const customDateInput = document.querySelector("#custom-date-input");
+
+function setCustomDate() {
+    let customDate = customDateInput.value.split("-");
+    console.log(customDate);
+    customYear = +customDate[0]; //assumes date format '2021', '12', '31'
+    customMonth = +customDate[1];
+    if (customDate[2] == 31) {
+        customDay = 30;
+    } else {
+        customDay = +customDate[2];
     }
 }
 
@@ -260,39 +285,87 @@ lengthInput.addEventListener("change", function (e) {
     }
     setStartDate();
     updateDisplay();
-})
-
+});
 
 //03. calculate days left and passed
 
 let totalDaysPassed = () => {
     switch (currentYear - startYear) {
-        case (0):
-            return (currentDay - startDay) + ((currentMonth - startMonth) * 30);
-        case (1):
-            return ((30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30));
-        case (2):
-            return (30 - startDay) + ((12 - startMonth) * 30) + currentDay + ((currentMonth - 1) * 30) + 360;
+        case 0:
+            return currentDay - startDay + (currentMonth - startMonth) * 30;
+        case 1:
+            return (
+                30 -
+                startDay +
+                (12 - startMonth) * 30 +
+                currentDay +
+                (currentMonth - 1) * 30
+            );
+        case 2:
+            return (
+                30 -
+                startDay +
+                (12 - startMonth) * 30 +
+                currentDay +
+                (currentMonth - 1) * 30 +
+                360
+            );
     }
-}
+};
+
+let customDaysPassed = () => {
+    switch (customYear - startYear) {
+        case 0:
+            return customDay - startDay + (customMonth - startMonth) * 30;
+        case 1:
+            return (
+                30 -
+                startDay +
+                (12 - startMonth) * 30 +
+                customDay +
+                (customMonth - 1) * 30
+            );
+        case 2:
+            return (
+                30 -
+                startDay +
+                (12 - startMonth) * 30 +
+                customDay +
+                (customMonth - 1) * 30 +
+                360
+            );
+    }
+};
+
+const customButtonDate = document.querySelector(".btn--custom-date");
+customButtonDate.addEventListener("click", () => {
+    setCustomDate();
+    displayCustomTimePassed.textContent = formattedCustomDaysPassed();
+});
 
 let totalDaysLeft = () => contractLength - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
 
 // 04. format and display days
 
-let formattedDaysPassed = () => `${Math.floor(totalDaysPassed() / 30)} m i ${totalDaysPassed() % 30} d`;
-let formattedDaysLeft = () => `${Math.floor(totalDaysLeft() / 30)} m i ${totalDaysLeft() % 30} d`;
+let formattedDaysPassed = () =>
+    `${Math.floor(totalDaysPassed() / 30)} m i ${totalDaysPassed() % 30} d`;
+let formattedCustomDaysPassed = () =>
+    `${Math.floor(customDaysPassed() / 30)} m i ${customDaysPassed() % 30} d`;
+let formattedDaysLeft = () =>
+    `${Math.floor(totalDaysLeft() / 30)} m i ${totalDaysLeft() % 30} d`;
 
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
+const displayCustomTimePassed = document.querySelector("#custom-time-passed");
+
 const displayRatePlanPrice = document.querySelector("#rp-price");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
 const displayDateStart = document.querySelector("#date-start");
 
-
-function updateDisplay() { //runs on date button click, select curr rate plan
-    let startDateValue = new Date(dateInput.value)
-    displayDateStart.textContent = formatDate(startDateValue)
+function updateDisplay() {
+    //runs on date button click, select curr rate plan
+    let startDateValue = new Date(dateInput.value);
+    displayDateStart.textContent = formatDate(startDateValue);
 
     displayTimePassed.textContent = formattedDaysPassed();
     displayTimeLeft.textContent = formattedDaysLeft();
@@ -300,7 +373,6 @@ function updateDisplay() { //runs on date button click, select curr rate plan
         displayRatePlanPrice.textContent = formatPrice(currentPrice());
         displayTotalPaymentsLeft.textContent = formatPrice(totalPaymentsLeft());
     }
-
 }
 
 // 05. date button
@@ -309,10 +381,9 @@ const buttonDate = document.querySelector(".btn--date");
 buttonDate.addEventListener("click", () => {
     setStartDate();
     if (totalDaysPassed() <= 0) {
-        alert("Pogresan unos! Proverite datum pocetka ugovora.")
+        alert("Pogresan unos! Proverite datum pocetka ugovora.");
     }
     updateDisplay();
-
 });
 
 //06. set current rate plan and total payments left
@@ -326,21 +397,22 @@ currentRatePlanInput.addEventListener("click", (e) => {
 });
 
 let currentPrice = () => {
-    return ratePlans.find(plan => (plan.name.includes(selectedRatePlan))).price //important!
-}
+    return ratePlans.find((plan) => plan.name.includes(selectedRatePlan)).price; //important!
+};
 
 let totalPaymentsLeft = () => {
     return (currentPrice() / 30) * totalDaysLeft();
-}
-
-
+};
 
 //07. calculate reduced price
 
-
 const reductionType = document.querySelector("#reduction-type");
-const percentInput = [...document.querySelectorAll("input[name='reduction-percent']")];
-const ammountInput = [...document.querySelectorAll("input[name='reduction-ammount']")];
+const percentInput = [
+    ...document.querySelectorAll("input[name='reduction-percent']"),
+];
+const ammountInput = [
+    ...document.querySelectorAll("input[name='reduction-ammount']"),
+];
 const percentContainer = document.querySelector("#reduction-percent");
 const ammountContainer = document.querySelector("#reduction-ammount");
 let previousRatePlan;
@@ -365,44 +437,42 @@ previousRatePlanInput.addEventListener("click", (e) => {
     updateDisplayBenefits();
 });
 
-
-percentInput.forEach(input => {
+percentInput.forEach((input) => {
     input.addEventListener("change", (e) => {
         percentReduction = e.currentTarget.value;
         reducedPrice();
         reductionTotal();
         updateDisplayBenefits();
-    })
+    });
 });
 
-ammountInput.forEach(input => {
+ammountInput.forEach((input) => {
     input.addEventListener("change", (e) => {
         ammountReduction = e.currentTarget.value;
         reducedPrice();
         reductionTotal();
         updateDisplayBenefits();
-    })
+    });
 });
 
 let previousPrice = () => {
-    return (ratePlans.find(plan => (plan.name.includes(previousRatePlan)))).price
-}
+    return ratePlans.find((plan) => plan.name.includes(previousRatePlan)).price;
+};
 
 let reducedPrice = () => {
     if (reductionType.value === "one") {
-        return currentPrice() - 1
+        return currentPrice() - 1;
     }
     if (reductionType.value === "prev") {
-        return currentPrice() - previousPrice()
+        return currentPrice() - previousPrice();
     }
     if (reductionType.value === "percent") {
         return currentPrice() * percentReduction;
     }
     if (reductionType.value === "ammount") {
         return currentPrice() - ammountReduction;
-    }
-    else return 0;
-}
+    } else return 0;
+};
 
 let multiplier;
 const inputMultiplier = document.querySelector("input[class='multiplier']");
@@ -410,12 +480,12 @@ inputMultiplier.addEventListener("change", (e) => {
     multiplier = +e.currentTarget.value;
     if (multiplier > totalDaysPassed() / 30) {
         alert("Pogresan unos! Akcija jos nije istekla.");
-        return
+        return;
     }
     reducedPrice();
     reductionTotal();
     updateDisplayBenefits();
-})
+});
 
 let reductionTotal = () => {
     if (multiplier) {
@@ -423,9 +493,7 @@ let reductionTotal = () => {
     } else {
         return reducedPrice() * (totalDaysPassed() / 30);
     }
-}
-
-
+};
 
 reductionType.addEventListener("change", () => {
     if (reductionType.value === "one" || reductionType.value === "none") {
@@ -435,31 +503,31 @@ reductionType.addEventListener("change", () => {
         reducedPrice();
         reductionTotal();
         updateDisplayBenefits();
-
     } else if (reductionType.value === "prev") {
         previousRatePlanInput.style.display = "block";
         percentContainer.style.display = "none";
         ammountContainer.style.display = "none";
-    }
-    else if (reductionType.value === "percent") {
+    } else if (reductionType.value === "percent") {
         percentContainer.style.display = "block";
         previousRatePlanInput.style.display = "none";
         ammountContainer.style.display = "none";
-    }
-    else if (reductionType.value === "ammount") {
+    } else if (reductionType.value === "ammount") {
         ammountContainer.style.display = "block";
         percentContainer.style.display = "none";
         previousRatePlanInput.style.display = "none";
     }
 });
 
-
 //08. benefits - promo channels and hardware items
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
-const inputCheckboxes = [...document.querySelectorAll("input[type='checkbox']")];
+const inputCheckboxes = [
+    ...document.querySelectorAll("input[type='checkbox']"),
+];
 const inputText = [...document.querySelectorAll("input[class='modifier']")];
-const inputMultiRent = [...document.querySelectorAll("input[class='multiple-rent']")];
+const inputMultiRent = [
+    ...document.querySelectorAll("input[class='multiple-rent']"),
+];
 const displayTotalChannels = document.querySelector("#total-channels");
 const displayTotalHardware = document.querySelector("#total-hardware");
 
@@ -467,20 +535,26 @@ const displayTotalBenefits = document.querySelector("#total-benefits");
 
 let totalPackages = () => calcElementPrice(productPackages);
 let totalHardware = () => calcElementPrice(hardwareItems);
-let totalBenefits = () => [reductionTotal(), totalPackages(), totalHardware(), calculateCustom()].reduce((acc, curr) => acc + curr, 0);
+let totalBenefits = () =>
+    [
+        reductionTotal(),
+        totalPackages(),
+        totalHardware(),
+        calculateCustom(),
+    ].reduce((acc, curr) => acc + curr, 0);
 
-inputCheckboxes.forEach(checkbox => {
+inputCheckboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", function (e) {
         isChecked(e, productPackages);
         displayElementPrice(displaySinglePP, productPackages);
         isChecked(e, hardwareItems);
         displayElementPrice(displaySingleHW, hardwareItems);
         updateDisplayBenefits();
-    })
-})
+    });
+});
 
 function isChecked(e, arr) {
-    arr.forEach(elem => {
+    arr.forEach((elem) => {
         if (elem.name === e.currentTarget.id) {
             if (e.currentTarget.checked && elem.modifier) {
                 elem.qty = elem.modifier;
@@ -491,8 +565,7 @@ function isChecked(e, arr) {
                 if (e.currentTarget.name === "calc-by-piece") {
                     elem.qty = 1;
                 }
-            }
-            else {
+            } else {
                 elem.qty = 0;
             }
         }
@@ -500,34 +573,34 @@ function isChecked(e, arr) {
     });
 }
 
-inputText.forEach(textbox => {
+inputText.forEach((textbox) => {
     textbox.addEventListener("change", function (e) {
         hasValue(e, productPackages);
         displayElementPrice(displaySinglePP, productPackages);
         hasValue(e, hardwareItems);
         displayElementPrice(displaySingleHW, hardwareItems);
         updateDisplayBenefits();
-    })
+    });
 });
 
-inputMultiRent.forEach(multi => {
+inputMultiRent.forEach((multi) => {
     multi.addEventListener("change", function (e) {
         hasMulti(e, hardwareItems);
         displayElementPrice(displaySingleHW, hardwareItems);
         updateDisplayBenefits();
-    })
+    });
 });
 
 function hasValue(e, arr) {
-    arr.forEach(elem => {
+    arr.forEach((elem) => {
         if (elem.name === e.currentTarget.parentNode.firstElementChild.id) {
             if (e.currentTarget.value) {
                 elem.modifier = +e.currentTarget.value;
                 if (elem.modifier > totalDaysPassed() / 30) {
-                    alert("Pogresan unos! Akcija jos nije istekla.")
+                    alert("Pogresan unos! Akcija jos nije istekla.");
                 }
             } else {
-                elem.modifier = null
+                elem.modifier = null;
             }
             if (elem.modifier) {
                 if (e.currentTarget.parentNode.firstElementChild.checked) {
@@ -544,12 +617,12 @@ function hasValue(e, arr) {
 }
 
 function hasMulti(e) {
-    hardwareItems.forEach(elem => {
+    hardwareItems.forEach((elem) => {
         if (elem.name === e.currentTarget.parentNode.firstElementChild.id) {
             if (e.currentTarget.value) {
                 elem.multiplier = +e.currentTarget.value;
             } else {
-                elem.multiplier = null
+                elem.multiplier = null;
             }
             if (elem.multiplier) {
                 if (e.currentTarget.parentNode.firstElementChild.checked) {
@@ -566,50 +639,67 @@ function hasMulti(e) {
 }
 
 function calcElementPrice(arr) {
-    arr.forEach(elem => {
+    arr.forEach((elem) => {
         elem.calcPrice = elem.qty * elem.price;
-    })
+    });
     return arr.reduce((total, element) => total + element.calcPrice, 0);
 }
 
-const displaySinglePP = [...document.querySelectorAll("#channels > li > span.channels-calc-price")];
-const displaySingleHW = [...document.querySelectorAll("#hardware > li > span.hardware-calc-price")];
+const displaySinglePP = [
+    ...document.querySelectorAll("#channels > li > span.channels-calc-price"),
+];
+const displaySingleHW = [
+    ...document.querySelectorAll("#hardware > li > span.hardware-calc-price"),
+];
 
 function displayElementPrice(arrOfNodes, arrOfProducts) {
     for (let i = 0; i < arrOfNodes.length; i++) {
-        arrOfNodes[i].textContent = (arrOfProducts[i].calcPrice).toFixed(2);
+        arrOfNodes[i].textContent = arrOfProducts[i].calcPrice.toFixed(2);
     }
 }
 
 // 09. build output string
 
-let buildOutputStringTotalLeft = () => `${formatPrice(totalPaymentsLeft())} (${(selectedRatePlan).replaceAll("-", " ").toUpperCase()} ${formatPrice(currentPrice())} x ${formattedDaysLeft()})`
+let buildOutputStringTotalLeft = () =>
+    `${formatPrice(totalPaymentsLeft())} (${selectedRatePlan
+        .replaceAll("-", " ")
+        .toUpperCase()} ${formatPrice(currentPrice())} x ${formattedDaysLeft()})`;
 
 let buildOutputStringTotalBenefits = () => {
     let finalStringBenefits = "";
     if (reductionTotal()) {
         if (reductionType.value === "one") {
-            finalStringBenefits += `Akcija dinar ${formatPrice(reducedPrice())} x`
+            finalStringBenefits += `Akcija dinar ${formatPrice(reducedPrice())} x`;
         } else if (reductionType.value === "prev") {
-            finalStringBenefits += `Akcija stara cena ${formatPrice(reducedPrice())} x`
+            finalStringBenefits += `Akcija stara cena ${formatPrice(
+                reducedPrice()
+            )} x`;
         } else if (reductionType.value === "percent") {
-            finalStringBenefits += `Akcija ${percentReduction * 100} % od cene ${formatPrice(reducedPrice())} x`
+            finalStringBenefits += `Akcija ${percentReduction * 100
+                } % od cene ${formatPrice(reducedPrice())} x`;
         } else if (reductionType.value === "ammount") {
-            finalStringBenefits += `Akcija "Plaćaj ${ammountReduction} DIN" x `
+            finalStringBenefits += `Akcija "Plaćaj ${ammountReduction} DIN" x `;
         }
         if (multiplier) {
-            finalStringBenefits += ` ${multiplier} m + `
+            finalStringBenefits += ` ${multiplier} m + `;
         } else {
-            finalStringBenefits += ` ${formattedDaysPassed()} + `
+            finalStringBenefits += ` ${formattedDaysPassed()} + `;
         }
     }
     if (totalPackages()) {
         for (let i = 0; i < productPackages.length; i++) {
             if (productPackages[i].qty) {
                 if (productPackages[i].modifier) {
-                    finalStringBenefits += `${(productPackages[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(productPackages[i].price)} x ${productPackages[i].modifier} m + `
+                    finalStringBenefits += `${productPackages[i].name
+                        .replaceAll("-", " ")
+                        .toUpperCase()} ${formatPrice(productPackages[i].price)} x ${productPackages[i].modifier
+                        } m + `;
                 } else {
-                    finalStringBenefits += `${(productPackages[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(productPackages[i].price)} x ${formattedDaysPassed()} + `
+                    finalStringBenefits += `${productPackages[i].name
+                        .replaceAll("-", " ")
+                        .toUpperCase()} ${formatPrice(
+                            productPackages[i].price
+                        )} x ${formattedDaysPassed()} + `;
                 }
             }
         }
@@ -618,24 +708,39 @@ let buildOutputStringTotalBenefits = () => {
         for (let i = 0; i < hardwareItems.length; i++) {
             if (hardwareItems[i].qty) {
                 if (hardwareItems[i].multiplier) {
-                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${formattedDaysPassed()} x ${hardwareItems[i].multiplier} + `
+                    finalStringBenefits += `${hardwareItems[i].name
+                        .replaceAll("-", " ")
+                        .toUpperCase()} ${formatPrice(
+                            hardwareItems[i].price
+                        )} x ${formattedDaysPassed()} x ${hardwareItems[i].multiplier} + `;
                 } else if (hardwareItems[i].name.includes("rent")) {
-                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${formattedDaysPassed()} + `
+                    finalStringBenefits += `${hardwareItems[i].name
+                        .replaceAll("-", " ")
+                        .toUpperCase()} ${formatPrice(
+                            hardwareItems[i].price
+                        )} x ${formattedDaysPassed()} + `;
                 } else if (hardwareItems[i].modifier) {
-                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${hardwareItems[i].modifier} + `
+                    finalStringBenefits += `${hardwareItems[i].name
+                        .replaceAll("-", " ")
+                        .toUpperCase()} ${formatPrice(hardwareItems[i].price)} x ${hardwareItems[i].modifier
+                        } + `;
                 } else {
-                    finalStringBenefits += `${(hardwareItems[i].name).replaceAll("-", " ").toUpperCase()} ${formatPrice(hardwareItems[i].price)} + `
+                    finalStringBenefits += `${hardwareItems[i].name
+                        .replaceAll("-", " ")
+                        .toUpperCase()} ${formatPrice(hardwareItems[i].price)} + `;
                 }
             }
         }
     }
     if (totalCustom) {
-        finalStringBenefits += outputStringCustom
+        finalStringBenefits += outputStringCustom;
     }
-    finalStringBenefits = finalStringBenefits.slice(0, finalStringBenefits.length - 3);
+    finalStringBenefits = finalStringBenefits.slice(
+        0,
+        finalStringBenefits.length - 3
+    );
     return finalStringBenefits;
-
-}
+};
 
 // 10. output
 
@@ -645,13 +750,14 @@ let outputString = "";
 
 buttonFinal.addEventListener("click", function () {
     buildOutputStringTotalLeft();
-    buildOutputStringTotalBenefits()
-    outputString =
-        `${todayFormatted} - HDS:
-
-Ukupno ostvareni benefiti: ${formatPrice(totalBenefits())} (${buildOutputStringTotalBenefits()});
-
-Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
+    buildOutputStringTotalBenefits();
+    outputString = `${todayFormatted} - HDS:
+  
+  Ukupno ostvareni benefiti: ${formatPrice(
+        totalBenefits()
+    )} (${buildOutputStringTotalBenefits()});
+  
+  Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
     outputFinal.textContent = outputString;
     outputFinal.style.height = "auto";
     outputFinal.style.height = outputFinal.scrollHeight + "px";
@@ -661,15 +767,13 @@ Ukupno preostale pretplate: ${buildOutputStringTotalLeft()};`;
 
 const sectionCustom = document.querySelector("#section--custom");
 
-
-
 function createNewRow() {
     const newRow = document.createElement("li");
     newRow.classList.add("wrapper--custom");
     const newCustomPrice = document.createElement("input");
     newCustomPrice.setAttribute("type", "text");
     //newCustomPrice.setAttribute("placeholder", "49.5")
-    newCustomPrice.classList.add("custom-price")
+    newCustomPrice.classList.add("custom-price");
     const newCustomMonths = document.createElement("input");
     newCustomMonths.setAttribute("type", "text");
     newCustomMonths.setAttribute("placeholder", "M");
@@ -679,15 +783,15 @@ function createNewRow() {
     newCustomDays.setAttribute("placeholder", "D");
     newCustomDays.classList.add("custom-days");
     const newSpanCustom = document.createElement("span");
-    newSpanCustom.classList.add("custom", "output-custom")
-    newSpanCustom.textContent = formatPrice(0) //formatPrice(custom);
+    newSpanCustom.classList.add("custom", "output-custom");
+    newSpanCustom.textContent = formatPrice(0); //formatPrice(custom);
     const buttonRemoveRow = document.createElement("button");
     buttonRemoveRow.setAttribute("type", "button");
     buttonRemoveRow.classList.add("btn", "btn--remove", "btn--alt");
     buttonRemoveRow.textContent = "X";
     buttonRemoveRow.addEventListener("click", () => {
         newRow.remove();
-        calculateCustom()
+        calculateCustom();
     });
     newRow.appendChild(newCustomPrice);
     newRow.appendChild(newCustomMonths);
@@ -695,20 +799,17 @@ function createNewRow() {
     newRow.appendChild(newSpanCustom);
     newRow.appendChild(buttonRemoveRow);
     sectionCustom.appendChild(newRow);
-
 }
-
-
 
 const buttonAddRow = document.querySelector(".btn--add");
 buttonAddRow.addEventListener("click", () => {
     createNewRow();
     calculateCustom();
-})
+});
 
 const displayTotalCustom = document.querySelector("#total-custom");
 let totalCustom = 0;
-let outputStringCustom = ""
+let outputStringCustom = "";
 
 let customCalcPrice = [];
 function calculateCustom() {
@@ -718,22 +819,23 @@ function calculateCustom() {
     const customOutput = [...document.querySelectorAll(".output-custom")];
     outputStringCustom = "";
     for (let i = 0; i < customPrice.length; i++) {
-        if (customPrice[i].value) {
-            customCalcPrice[i] = (customPrice[i].value * customMonths[i].value) + (customDays[i].value * (customPrice[i].value / 30));
-            customOutput[i].textContent = formatPrice(customCalcPrice[i]);
-            outputStringCustom += `OSTALO ${+(customPrice[i].value)} x `;
-            if (customMonths[i].value) {
-                outputStringCustom += `${customMonths[i].value} m `
-            }
-            if (customDays[i].value) {
-                outputStringCustom += `i ${customDays[i].value} d `
-            }
-        }
-        
-    }
-    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr,0);
-    displayTotalCustom.textContent = formatPrice(totalCustom);
+        customCalcPrice[i] =
+            customPrice[i].value * customMonths[i].value +
+            customDays[i].value * (customPrice[i].value / 30);
+        customOutput[i].textContent = formatPrice(customCalcPrice[i]);
 
+        if (customMonths[i].value) {
+            outputStringCustom += `OSTALO ${+customPrice[i].value} x `;
+            outputStringCustom += `${customMonths[i].value} m `;
+        }
+
+        if (customDays[i].value) {
+            outputStringCustom += `i ${customDays[i].value} d `;
+        }
+    }
+    console.log(customCalcPrice);
+    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr, 0);
+    displayTotalCustom.textContent = formatPrice(totalCustom);
 
     return totalCustom;
 }
@@ -742,7 +844,6 @@ function calculateCustom() {
 
 const form = document.querySelector("form");
 const outputAll = [...document.querySelectorAll(".output")];
-
 
 function clearAllObjects(arr) {
     for (let i = 0; i < arr.length; i++) {
@@ -759,13 +860,14 @@ function clearAll() {
     form.reset();
     dateInput.value = "";
     selectedRatePlan = 0;
+    multiplier = null;
     while (sectionCustom.firstChild) {
-        sectionCustom.removeChild(sectionCustom.lastChild)
+        sectionCustom.removeChild(sectionCustom.lastChild);
     }
     createNewRow();
-    clearAllObjects(productPackages)
+    clearAllObjects(productPackages);
     clearAllObjects(hardwareItems);
-    outputAll.forEach(output => output.textContent = "");
+    outputAll.forEach((output) => (output.textContent = ""));
     previousRatePlanInput.style.display = "none";
     percentContainer.style.display = "none";
     ammountContainer.style.display = "none";
@@ -777,11 +879,4 @@ const buttonClear = document.querySelector(".btn--clear");
 
 buttonClear.addEventListener("click", clearAll);
 
-
-
-
 clearAll();
-
-
-
-
