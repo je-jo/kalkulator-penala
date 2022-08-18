@@ -25,9 +25,12 @@
                         <label for="date-start-contract">Unesite datum početka ugovora i pritisnite OK:</label>
                         <div class="wrapper wrapper--general">
                             <input type="date" id="date-start-contract">
-                                <input type="checkbox" id="length">
-                                <label for="length">UO 12 meseci?</label>
-
+                            <div class="wrapper wrapper--ammount">
+                                <label for="length">
+                                    <input type="checkbox" id="length">
+                                    UO 12 meseci?
+                                </label>
+                            </div>
                         </div>
                         <button class="btn btn--date" type="button">OK</button>
                         <p>Datum početka ugovora: <span class="output" id="date-start"></span></p>
@@ -38,7 +41,7 @@
                         </select>
                         <p>Cena paketa: <span class="output" id="rp-price"></span></p>
                     </div>
-                    <div class="card card--bump">
+                    <div class="card">
                         <h3>Ostvareni benefiti:</h3>
                         <p>Proteklo vreme: <span class="output" id="time-passed"></span></p>
                         <p>Ukupno benefiti: <span class="output" id="total-benefits"></span></p>
@@ -160,10 +163,7 @@
                         </div>
                         <p>Proizvoljno vreme: <span class="output" id="custom-time-passed"></span></p>
                     </div>
-
-                <!-- </div>
-                <div class="wrapper wrapper--card"> -->
-                    <div class="card card--long card--bump">
+                    <div class="card card--long">
                         <h3>Promo Kanali:</h3>
                         <p class="info">* Cena paketa kanala se množi sa brojem proteklih meseci i dana, osim ako se
                             ručno

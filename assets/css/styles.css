@@ -8,7 +8,7 @@
 * {
     margin: 0;
     padding: 0;
-    outline: 1px solid salmon;
+    /* outline: 1px solid salmon; */
 }
 
 :focus {
@@ -47,7 +47,6 @@ select {
     --fs-h3: 2rem;
     --fs-p: 1.15rem;
     --fs-small: 0.95rem;
-    --fs-lead: 1.30rem;
     --box-shadow: 0 3px 5px rgba(0, 0, 0, 0.28);
     --transition: ease-out .05s;
 }
@@ -144,12 +143,9 @@ li,
     font-size: min(max(0.55rem, 1vw), var(--fs-p));
 }
 
-.lead {
-    font-size: var(--fs-lead);
-}
-
 .info {
     font-size: var(--fs-small);
+    font-size: min(max(0.7rem, 1.3vw), var(--fs-small));
 }
 
 .strong {
@@ -283,6 +279,7 @@ select {
 
 input[type="date"] {
     flex-grow: 1;
+    width: fit-content;
 }
 
 input[type="text"] {
@@ -290,48 +287,28 @@ input[type="text"] {
     padding: 0.2em 0.3em;
 }
 
-/*labels and info */
+/*wrappers, labels and info */
 
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(50vw, 35ch), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(max(200px, 40%), 1fr));
     padding: clamp(1em, 3%, 1.5em);
     gap: clamp(1em, 4vmax, 2em);
-}
+} 
 
-.card--wide {
-    grid-row: span 2;
-}
+
 
 .wrapper--general {
-    background-color: var(--clr-grey)
-
-}
-
-/* cards */
-
-.card {
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    gap: 1em;
-    border-radius: var(--border-radius);
-    background-color: var(--clr-white);
-    box-shadow: var(--box-shadow);
-}
-
-.card--long {
-    max-height: 65vh;
-    overflow-y: auto;
+    background-color: yellow;
 }
 
 .wrapper--percentage>label,
 .wrapper--ammount>label {
     line-height: 1.1;
     display: grid;
-    grid-template-columns: 1em auto;
+    grid-template-columns: max-content auto;
     gap: 1em;
-    align-items: baseline;
+    align-items: center;
     border-bottom: 1px dotted var(--clr-grey);
 }
 
@@ -365,6 +342,29 @@ input[type="text"] {
 .wrapper--checkbox>label {
     text-transform: capitalize;
 }
+
+/* cards */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+    border-radius: var(--border-radius);
+    background-color: var(--clr-white);
+    box-shadow: var(--box-shadow);
+}
+
+.card--long {
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+.card--wide {
+    grid-row: span 2;
+}
+
+
 
 /* the list */
 
