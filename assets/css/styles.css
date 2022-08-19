@@ -160,15 +160,6 @@ a {
     color: inherit;
 }
 
-.wrapper--output {
-    display: flex;
-    flex-direction: column;
-    margin: 3rem auto;
-    padding: 1.5rem;
-    border: 6px dashed var(--clr-primary);
-    border-radius: 15px;
-}
-
 .output {
     font-family: 'Courier New', Courier, monospace;
     font-size: var(--fs-lead);
@@ -190,6 +181,129 @@ a {
     text-decoration: none;
     border: 1px solid transparent;
     cursor: text;
+}
+
+
+
+/*wrappers, labels and info */
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(max(258px, 40%), 1fr));
+    padding: clamp(1em, 3%, 1.5em);
+    gap: clamp(1em, 4vmax, 2em);
+} 
+
+.wrapper--card {
+    grid-auto-rows: 0.5fr; /* so the long cards don't dictate the container height */
+}
+
+.wrapper--label {
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: 1.5em;
+    align-items: center;
+    border-bottom: 1px dotted var(--clr-grey);
+}
+
+.wrapper--date {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1em;
+}
+    
+.wrapper--checkbox {
+    display: grid;
+    grid-template-columns: 1ch auto 8ch 2ch 8ch;
+    align-items: center;
+    padding: 0.2em;
+    gap: 2em;
+    border-bottom: 1px dotted var(--clr-grey);
+}
+
+.wrapper--checkbox>label {
+    text-transform: capitalize;
+}
+
+.wrapper--custom {
+    display: grid;
+    grid-template-columns: 1fr 2ch 2ch 1fr 2ch;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0.2em;
+    gap: 2em;
+    border-bottom: 1px dotted var(--clr-grey);
+}
+
+.wrapper--custom>input[type="text"] {
+    width: 100%;
+}
+
+.wrapper--custom>button {
+    margin: 0;
+}
+
+
+
+.wrapper--output {
+    grid-template-columns: 1fr;
+    margin: 3rem auto;
+    padding: 1.5rem;
+    border: 4px dashed var(--clr-primary);
+    border-radius: 15px;
+}
+
+/* cards */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+    border-radius: var(--border-radius);
+    background-color: var(--clr-white);
+    box-shadow: var(--box-shadow);
+}
+
+.card--wide {
+    grid-row: span 2;
+}
+
+.card--long {
+    overflow-y: auto;
+}
+
+/* input */
+
+input {
+    margin: 0.5em 0;
+    padding: 0.5em 0.8em;
+    text-align: center;
+    border: 1px solid currentColor;
+    border-radius: 0.25em;
+}
+
+select {
+    padding: 0.5em 0.8em;
+    margin: 0;
+    width: 100%;
+    min-width: 15ch;
+    background-color: transparent;
+    border: 1px solid currentColor;
+    border-radius: 0.25em;
+}
+
+
+
+input[type="date"] {
+    width: 90%;
+    justify-self: center;
+}
+
+input[type="text"] {
+    width: 2ch;
+    padding: 0.2em 0.3em;
 }
 
 /* buttons */
@@ -256,115 +370,6 @@ a {
     padding: clamp(1em, 3%, 1.5em);
     min-height: unset;
 }
-
-/* input */
-
-input {
-    margin: 0.5em 0;
-    padding: 0.5em 0.8em;
-    text-align: center;
-    border: 1px solid currentColor;
-    border-radius: 0.25em;
-}
-
-select {
-    padding: 0.5em 0.8em;
-    margin: 0;
-    width: 100%;
-    min-width: 15ch;
-    background-color: transparent;
-    border: 1px solid currentColor;
-    border-radius: 0.25em;
-}
-
-input[type="date"] {
-    flex-grow: 1;
-    width: fit-content;
-}
-
-input[type="text"] {
-    width: 2ch;
-    padding: 0.2em 0.3em;
-}
-
-/*wrappers, labels and info */
-
-.wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(max(200px, 40%), 1fr));
-    padding: clamp(1em, 3%, 1.5em);
-    gap: clamp(1em, 4vmax, 2em);
-} 
-
-
-
-.wrapper--general {
-    background-color: yellow;
-}
-
-.wrapper--percentage>label,
-.wrapper--ammount>label {
-    line-height: 1.1;
-    display: grid;
-    grid-template-columns: max-content auto;
-    gap: 1em;
-    align-items: center;
-    border-bottom: 1px dotted var(--clr-grey);
-}
-
-.wrapper--checkbox {
-    display: grid;
-    grid-template-columns: 1ch auto 8ch 2ch 8ch;
-    align-items: center;
-    padding: 0.2em;
-    gap: 2em;
-    border-bottom: 1px dotted var(--clr-grey);
-}
-
-.wrapper--custom {
-    display: grid;
-    grid-template-columns: 18ch 2ch 2ch 12ch 2ch;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 0.2em;
-    gap: 2em;
-    border-bottom: 1px dotted var(--clr-grey);
-}
-
-.wrapper--custom>input {
-    width: 100%;
-}
-
-.wrapper--custom>button {
-    margin: 0;
-}
-
-.wrapper--checkbox>label {
-    text-transform: capitalize;
-}
-
-/* cards */
-
-.card {
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    gap: 1em;
-    border-radius: var(--border-radius);
-    background-color: var(--clr-white);
-    box-shadow: var(--box-shadow);
-}
-
-.card--long {
-    max-height: 65vh;
-    overflow-y: auto;
-}
-
-.card--wide {
-    grid-row: span 2;
-}
-
-
 
 /* the list */
 
