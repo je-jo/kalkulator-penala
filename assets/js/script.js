@@ -1,4 +1,29 @@
-//setup: construct arrays of package objects
+/*
+CHANGE DATE AND CURRENCY FORMAT
+*/
+
+function formatPrice(num) {
+    return num.toLocaleString("de-DE", {
+        style: "currency",
+        currency: "DIN",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}
+
+function formatDate(date) {
+    return date.toLocaleString("sr-ME", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+    });
+}
+
+/*
+CHANGE RATE PLANS, BONUSES AND HARDWARE:
+*/
+
+//setup: construct arrays of package objects, don't touch this:
 
 function constructPlan(name, price, qty, calcPrice) {
     const obj = {};
@@ -8,6 +33,8 @@ function constructPlan(name, price, qty, calcPrice) {
     obj.calcPrice = calcPrice;
     return obj;
 }
+
+/* EDIT RATE PLANS HERE */
 
 const ratePlans = [
     constructPlan("d3-start", 1395, 0, 0),
@@ -80,6 +107,8 @@ const ratePlans = [
     constructPlan("ikom-tel-5", 4920, 0, 0),
 ];
 
+/* EDIT PRODUCT PACKAGES HERE (i.e. channels packages, others extras and benefits) */
+
 const productPackages = [
     constructPlan("pink", 310, 0, 0),
     constructPlan("cinestar-premiere", 490, 0, 0),
@@ -106,6 +135,8 @@ const productPackages = [
     constructPlan("dorcel", 590, 0, 0),
 ];
 
+/* EDIT HARDWARE ITEMS HERE. FOR ITEMS THAT ARE PAID FOR MONTHLY INSTEAD OF ONE-TIME-ONLY, YOU **MUST** INCLUDE THE WORD "RENT" */
+
 const hardwareItems = [
     constructPlan("pt-ktv-stan", 3900, 0, 0),
     constructPlan("pt-ktv-kuca", 9900, 0, 0),
@@ -130,7 +161,7 @@ const hardwareItems = [
 
 //setup: dinamically add select menus and checkboxes
 
-const currentRatePlanInput = document.querySelector("#rp-current"); //add rate plans select menus
+const currentRatePlanInput = document.querySelector("#rp-current"); //add rate plans select menus, constructed from rate plans array
 const previousRatePlanInput = document.querySelector("#rp-prev");
 
 for (let i = 0; i < ratePlans.length; i++) {
@@ -144,7 +175,7 @@ for (let i = 0; i < ratePlans.length; i++) {
     previousRatePlanInput.appendChild(newOptionCopy);
 }
 
-const channelsContainer = document.querySelector("#channels"); //add channels to page
+const channelsContainer = document.querySelector("#channels"); //add product packages to page, constructed from product packages array
 
 for (let i = 0; i < productPackages.length; i++) {
     const newListItem = document.createElement("li");
@@ -172,7 +203,7 @@ for (let i = 0; i < productPackages.length; i++) {
     channelsContainer.appendChild(newListItem);
 }
 
-const hardwareContainer = document.querySelector("#hardware"); //add hardware to page
+const hardwareContainer = document.querySelector("#hardware"); //add hardware to page, constructed from hardware array
 
 for (let i = 0; i < hardwareItems.length; i++) {
     const newListItem = document.createElement("li");
@@ -181,7 +212,7 @@ for (let i = 0; i < hardwareItems.length; i++) {
     newCheckbox.setAttribute("type", "checkbox");
     newCheckbox.setAttribute("id", `${hardwareItems[i].name}`);
     if (`${hardwareItems[i].name}`.includes("rent")) {
-        //some items are rented and we need to calculate them by contract time, instead of once
+        //some items are rented and we need to calculate them by contract time, instead of once, MUST INCLUDE WORD "RENT" IN NAME
         newCheckbox.setAttribute("name", "calc-by-time");
     } else {
         newCheckbox.setAttribute("name", "calc-by-piece");
@@ -209,23 +240,6 @@ for (let i = 0; i < hardwareItems.length; i++) {
     hardwareContainer.appendChild(newListItem);
 }
 
-function formatPrice(num) {
-    return num.toLocaleString("de-DE", {
-        style: "currency",
-        currency: "DIN",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    });
-}
-
-function formatDate(date) {
-    return date.toLocaleString("sr-ME", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-    });
-}
-
 //01. set today
 
 let currentDay = new Date().getDate();
@@ -234,7 +248,6 @@ if (currentDay === 31) {
 }
 const currentMonth = new Date().getMonth() + 1;
 const currentYear = new Date().getFullYear();
-//const todayFormatted = `${new Date().getDate()}.${currentMonth}.${currentYear}.`;
 const todayFormatted = formatDate(new Date());
 
 const displayToday = document.querySelector("#date-today");
@@ -246,9 +259,7 @@ const dateInput = document.querySelector("#date-start-contract");
 
 let startDay, startMonth, startYear;
 
-function setStartDate() {
-    //run on button click
-
+function setStartDate() { //runs on date button click and 12/24 check box
     let startDate = dateInput.value.split("-");
     startYear = +startDate[0]; //assumes date format '2021', '12', '31'
     startMonth = +startDate[1];
@@ -259,23 +270,9 @@ function setStartDate() {
     }
 }
 
-const customDateInput = document.querySelector("#custom-date-input");
-
-function setCustomDate() {
-    let customDate = customDateInput.value.split("-");
-    console.log(customDate);
-    customYear = +customDate[0]; //assumes date format '2021', '12', '31'
-    customMonth = +customDate[1];
-    if (customDate[2] == 31) {
-        customDay = 30;
-    } else {
-        customDay = +customDate[2];
-    }
-}
-
 let contractLength = 719;
 
-const lengthInput = document.querySelector("#length");
+const lengthInput = document.querySelector("#length"); // 12/24 checkbox
 
 lengthInput.addEventListener("change", function (e) {
     if (e.currentTarget.checked) {
@@ -313,65 +310,37 @@ let totalDaysPassed = () => {
     }
 };
 
-let customDaysPassed = () => {
-    switch (customYear - startYear) {
-        case 0:
-            return customDay - startDay + (customMonth - startMonth) * 30;
-        case 1:
-            return (
-                30 -
-                startDay +
-                (12 - startMonth) * 30 +
-                customDay +
-                (customMonth - 1) * 30
-            );
-        case 2:
-            return (
-                30 -
-                startDay +
-                (12 - startMonth) * 30 +
-                customDay +
-                (customMonth - 1) * 30 +
-                360
-            );
-    }
-};
-
-const customButtonDate = document.querySelector(".btn--custom-date");
-customButtonDate.addEventListener("click", () => {
-    setCustomDate();
-    displayCustomTimePassed.textContent = formattedCustomDaysPassed();
-});
-
 let totalDaysLeft = () => contractLength - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
 
 // 04. format and display days
 
 let formattedDaysPassed = () =>
     `${Math.floor(totalDaysPassed() / 30)} m i ${totalDaysPassed() % 30} d`;
-let formattedCustomDaysPassed = () =>
-    `${Math.floor(customDaysPassed() / 30)} m i ${customDaysPassed() % 30} d`;
 let formattedDaysLeft = () =>
     `${Math.floor(totalDaysLeft() / 30)} m i ${totalDaysLeft() % 30} d`;
 
+const displayDateStart = document.querySelector("#date-start");
 const displayTimePassed = document.querySelector("#time-passed");
 const displayTimeLeft = document.querySelector("#time-left");
-const displayCustomTimePassed = document.querySelector("#custom-time-passed");
 
 const displayRatePlanPrice = document.querySelector("#rp-price");
 const displayTotalPaymentsLeft = document.querySelector("#total-left");
-const displayDateStart = document.querySelector("#date-start");
 
-function updateDisplay() {
-    //runs on date button click, select curr rate plan
+
+function updateDisplay() {     //runs on date button click, 12/24 check box and select current rate plan
     let startDateValue = new Date(dateInput.value);
+    if (!dateInput.value) {
+        alert("Unesite tačan datum početka ugovora.");
+        return
+    }
     displayDateStart.textContent = formatDate(startDateValue);
-
     displayTimePassed.textContent = formattedDaysPassed();
     displayTimeLeft.textContent = formattedDaysLeft();
     if (selectedRatePlan) {
         displayRatePlanPrice.textContent = formatPrice(currentPrice());
         displayTotalPaymentsLeft.textContent = formatPrice(totalPaymentsLeft());
+    } else {
+        displayTotalPaymentsLeft.textContent = "Izaberite paket usluga.";
     }
 }
 
@@ -380,8 +349,13 @@ function updateDisplay() {
 const buttonDate = document.querySelector(".btn--date");
 buttonDate.addEventListener("click", () => {
     setStartDate();
-    if (totalDaysPassed() <= 0) {
-        alert("Pogresan unos! Proverite datum pocetka ugovora.");
+    if (!totalDaysPassed() || totalDaysPassed() <= 0) {
+        alert("Unesite tačan datum početka ugovora.");
+        return
+    }
+    if (totalDaysPassed() >= 719) {
+        alert("Ugovor je istekao.");
+        return
     }
     updateDisplay();
 });
@@ -407,93 +381,8 @@ let totalPaymentsLeft = () => {
 //07. calculate reduced price
 
 const reductionType = document.querySelector("#reduction-type");
-const percentInput = [
-    ...document.querySelectorAll("input[name='reduction-percent']"),
-];
-const ammountInput = [
-    ...document.querySelectorAll("input[name='reduction-ammount']"),
-];
 const percentContainer = document.querySelector("#reduction-percent");
 const ammountContainer = document.querySelector("#reduction-ammount");
-let previousRatePlan;
-let percentReduction;
-let ammountReduction;
-const displayReductionTotal = document.querySelector("#total-reduction");
-const displayReducedPrice = document.querySelector("#reduction");
-
-function updateDisplayBenefits() {
-    displayReducedPrice.textContent = formatPrice(reducedPrice());
-    displayReductionTotal.textContent = formatPrice(reductionTotal());
-    displayTotalChannels.textContent = formatPrice(totalPackages());
-    displayTotalHardware.textContent = formatPrice(totalHardware());
-    displayTotalBenefits.textContent = formatPrice(totalBenefits());
-}
-
-previousRatePlanInput.addEventListener("click", (e) => {
-    previousRatePlan = e.currentTarget.value;
-    previousPrice();
-    reducedPrice();
-    reductionTotal();
-    updateDisplayBenefits();
-});
-
-percentInput.forEach((input) => {
-    input.addEventListener("change", (e) => {
-        percentReduction = e.currentTarget.value;
-        reducedPrice();
-        reductionTotal();
-        updateDisplayBenefits();
-    });
-});
-
-ammountInput.forEach((input) => {
-    input.addEventListener("change", (e) => {
-        ammountReduction = e.currentTarget.value;
-        reducedPrice();
-        reductionTotal();
-        updateDisplayBenefits();
-    });
-});
-
-let previousPrice = () => {
-    return ratePlans.find((plan) => plan.name.includes(previousRatePlan)).price;
-};
-
-let reducedPrice = () => {
-    if (reductionType.value === "one") {
-        return currentPrice() - 1;
-    }
-    if (reductionType.value === "prev") {
-        return currentPrice() - previousPrice();
-    }
-    if (reductionType.value === "percent") {
-        return currentPrice() * percentReduction;
-    }
-    if (reductionType.value === "ammount") {
-        return currentPrice() - ammountReduction;
-    } else return 0;
-};
-
-let multiplier;
-const inputMultiplier = document.querySelector("input[class='multiplier']");
-inputMultiplier.addEventListener("change", (e) => {
-    multiplier = +e.currentTarget.value;
-    if (multiplier > totalDaysPassed() / 30) {
-        alert("Pogresan unos! Akcija jos nije istekla.");
-        return;
-    }
-    reducedPrice();
-    reductionTotal();
-    updateDisplayBenefits();
-});
-
-let reductionTotal = () => {
-    if (multiplier) {
-        return reducedPrice() * multiplier;
-    } else {
-        return reducedPrice() * (totalDaysPassed() / 30);
-    }
-};
 
 reductionType.addEventListener("change", () => {
     if (reductionType.value === "one" || reductionType.value === "none") {
@@ -518,7 +407,221 @@ reductionType.addEventListener("change", () => {
     }
 });
 
-//08. benefits - promo channels and hardware items
+let previousRatePlan;
+previousRatePlanInput.addEventListener("click", (e) => {
+    previousRatePlan = e.currentTarget.value;
+    previousPrice();
+    reducedPrice();
+    reductionTotal();
+    updateDisplayBenefits();
+});
+
+let previousPrice = () => {
+    if ((ratePlans.find((plan) => plan.name.includes(previousRatePlan)).price) > currentPrice()) {
+        return currentPrice(); //so the difference is zero if previous rate plan is more expensive than current.
+    } else {
+        return ratePlans.find((plan) => plan.name.includes(previousRatePlan)).price;
+    }
+};
+
+const percentInput = [
+    ...document.querySelectorAll("input[name='reduction-percent']"),
+];
+const ammountInput = [
+    ...document.querySelectorAll("input[name='reduction-ammount']"),
+];
+let percentReduction;
+let ammountReduction;
+percentInput.forEach((input) => {
+    input.addEventListener("change", (e) => {
+        percentReduction = e.currentTarget.value;
+        reducedPrice();
+        reductionTotal();
+        updateDisplayBenefits();
+    });
+});
+ammountInput.forEach((input) => {
+    input.addEventListener("change", (e) => {
+        ammountReduction = e.currentTarget.value;
+        reducedPrice();
+        reductionTotal();
+        updateDisplayBenefits();
+    });
+});
+
+let multiplier;
+const inputMultiplier = document.querySelector("input[class='multiplier']");
+inputMultiplier.addEventListener("change", (e) => {
+    multiplier = +e.currentTarget.value;
+    if (multiplier > totalDaysPassed() / 30) { //check if benefit period is larger than total time passed
+        alert("Pogresan unos! Akcija jos nije istekla.");
+        e.currentTarget.value = ""; //clear wrong value
+        multiplier = null;
+    }
+    reducedPrice();
+    reductionTotal();
+    updateDisplayBenefits();
+});
+
+let reducedPrice = () => {
+    if (reductionType.value === "one") {
+        return currentPrice() - 1;
+    }
+    if (reductionType.value === "prev") {
+        return currentPrice() - previousPrice();
+    }
+    if (reductionType.value === "percent") {
+        return currentPrice() * percentReduction;
+    }
+    if (reductionType.value === "ammount") {
+        return currentPrice() - ammountReduction;
+    } else return 0;
+};
+
+let reductionTotal = () => {
+    if (multiplier) {
+        return reducedPrice() * multiplier;
+    } else {
+        return reducedPrice() * (totalDaysPassed() / 30);
+    }
+};
+
+const displayReducedPrice = document.querySelector("#reduction");
+const displayReductionTotal = document.querySelector("#total-reduction");
+
+function updateDisplayBenefits() {
+    displayReducedPrice.textContent = formatPrice(reducedPrice());
+    displayReductionTotal.textContent = formatPrice(reductionTotal());
+    displayTotalChannels.textContent = formatPrice(totalPackages());
+    displayTotalHardware.textContent = formatPrice(totalHardware());
+    displayTotalBenefits.textContent = formatPrice(totalBenefits());
+}
+
+//08. benefits - custom entries
+
+const sectionCustom = document.querySelector("#section--custom");
+
+function createNewRow() {
+    const newRow = document.createElement("li");
+    newRow.classList.add("wrapper--custom");
+    const newCustomPrice = document.createElement("input");
+    newCustomPrice.setAttribute("type", "text");
+    //newCustomPrice.setAttribute("placeholder", "49.5")
+    newCustomPrice.classList.add("custom-price");
+    const newCustomMonths = document.createElement("input");
+    newCustomMonths.setAttribute("type", "text");
+    newCustomMonths.setAttribute("placeholder", "M");
+    newCustomMonths.classList.add("custom-months");
+    const newCustomDays = document.createElement("input");
+    newCustomDays.setAttribute("type", "text");
+    newCustomDays.setAttribute("placeholder", "D");
+    newCustomDays.classList.add("custom-days");
+    const newSpanCustom = document.createElement("span");
+    newSpanCustom.classList.add("custom", "output-custom");
+    newSpanCustom.textContent = formatPrice(0); //formatPrice(custom);
+    const buttonRemoveRow = document.createElement("button");
+    buttonRemoveRow.setAttribute("type", "button");
+    buttonRemoveRow.classList.add("btn", "btn--remove", "btn--alt");
+    buttonRemoveRow.textContent = "X";
+    buttonRemoveRow.addEventListener("click", () => {
+        newRow.remove();
+        calculateCustom();
+    });
+    newRow.appendChild(newCustomPrice);
+    newRow.appendChild(newCustomMonths);
+    newRow.appendChild(newCustomDays);
+    newRow.appendChild(newSpanCustom);
+    newRow.appendChild(buttonRemoveRow);
+    sectionCustom.appendChild(newRow);
+}
+
+const buttonAddRow = document.querySelector(".btn--add");
+buttonAddRow.addEventListener("click", () => {
+    createNewRow();
+    calculateCustom();
+});
+
+const displayTotalCustom = document.querySelector("#total-custom");
+let totalCustom = 0;
+let outputStringCustom = "";
+
+let customCalcPrice = [];
+function calculateCustom() {
+    const customPrice = [...document.querySelectorAll(".custom-price")];
+    const customMonths = [...document.querySelectorAll(".custom-months")];
+    const customDays = [...document.querySelectorAll(".custom-days")];
+    const customOutput = [...document.querySelectorAll(".output-custom")];
+    outputStringCustom = "";
+    for (let i = 0; i < customPrice.length; i++) {
+        customCalcPrice[i] =
+            customPrice[i].value * customMonths[i].value +
+            customDays[i].value * (customPrice[i].value / 30);
+        customOutput[i].textContent = formatPrice(customCalcPrice[i]);
+
+        if (customMonths[i].value) {
+            outputStringCustom += `OSTALO ${+customPrice[i].value} x `;
+            outputStringCustom += `${customMonths[i].value} m `;
+        }
+
+        if (customDays[i].value) {
+            outputStringCustom += `i ${customDays[i].value} d `;
+        }
+    }
+    console.log(customCalcPrice);
+    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr, 0);
+    displayTotalCustom.textContent = formatPrice(totalCustom);
+
+    return totalCustom;
+}
+
+const customDateInput = document.querySelector("#custom-date-input");
+function setCustomDate() {
+    let customDate = customDateInput.value.split("-");
+    console.log(customDate);
+    customYear = +customDate[0]; //assumes date format '2021', '12', '31'
+    customMonth = +customDate[1];
+    if (customDate[2] == 31) {
+        customDay = 30;
+    } else {
+        customDay = +customDate[2];
+    }
+}
+let customDaysPassed = () => {
+    switch (customYear - startYear) {
+        case 0:
+            return customDay - startDay + (customMonth - startMonth) * 30;
+        case 1:
+            return (
+                30 -
+                startDay +
+                (12 - startMonth) * 30 +
+                customDay +
+                (customMonth - 1) * 30
+            );
+        case 2:
+            return (
+                30 -
+                startDay +
+                (12 - startMonth) * 30 +
+                customDay +
+                (customMonth - 1) * 30 +
+                360
+            );
+    }
+};
+const customButtonDate = document.querySelector(".btn--custom-date");
+customButtonDate.addEventListener("click", () => {
+    setCustomDate();
+    displayCustomTimePassed.textContent = formattedCustomDaysPassed();
+});
+
+let formattedCustomDaysPassed = () =>
+    `${Math.floor(customDaysPassed() / 30)} m i ${customDaysPassed() % 30} d`;
+const displayCustomTimePassed = document.querySelector("#custom-time-passed");
+
+
+
+//09. benefits - promo channels and hardware items
 
 const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputCheckboxes = [
@@ -658,7 +761,7 @@ function displayElementPrice(arrOfNodes, arrOfProducts) {
     }
 }
 
-// 09. build output string
+// 10. build output string
 
 let buildOutputStringTotalLeft = () =>
     `${formatPrice(totalPaymentsLeft())} (${selectedRatePlan
@@ -765,80 +868,7 @@ buttonFinal.addEventListener("click", function () {
 
 //custom entries
 
-const sectionCustom = document.querySelector("#section--custom");
 
-function createNewRow() {
-    const newRow = document.createElement("li");
-    newRow.classList.add("wrapper--custom");
-    const newCustomPrice = document.createElement("input");
-    newCustomPrice.setAttribute("type", "text");
-    //newCustomPrice.setAttribute("placeholder", "49.5")
-    newCustomPrice.classList.add("custom-price");
-    const newCustomMonths = document.createElement("input");
-    newCustomMonths.setAttribute("type", "text");
-    newCustomMonths.setAttribute("placeholder", "M");
-    newCustomMonths.classList.add("custom-months");
-    const newCustomDays = document.createElement("input");
-    newCustomDays.setAttribute("type", "text");
-    newCustomDays.setAttribute("placeholder", "D");
-    newCustomDays.classList.add("custom-days");
-    const newSpanCustom = document.createElement("span");
-    newSpanCustom.classList.add("custom", "output-custom");
-    newSpanCustom.textContent = formatPrice(0); //formatPrice(custom);
-    const buttonRemoveRow = document.createElement("button");
-    buttonRemoveRow.setAttribute("type", "button");
-    buttonRemoveRow.classList.add("btn", "btn--remove", "btn--alt");
-    buttonRemoveRow.textContent = "X";
-    buttonRemoveRow.addEventListener("click", () => {
-        newRow.remove();
-        calculateCustom();
-    });
-    newRow.appendChild(newCustomPrice);
-    newRow.appendChild(newCustomMonths);
-    newRow.appendChild(newCustomDays);
-    newRow.appendChild(newSpanCustom);
-    newRow.appendChild(buttonRemoveRow);
-    sectionCustom.appendChild(newRow);
-}
-
-const buttonAddRow = document.querySelector(".btn--add");
-buttonAddRow.addEventListener("click", () => {
-    createNewRow();
-    calculateCustom();
-});
-
-const displayTotalCustom = document.querySelector("#total-custom");
-let totalCustom = 0;
-let outputStringCustom = "";
-
-let customCalcPrice = [];
-function calculateCustom() {
-    const customPrice = [...document.querySelectorAll(".custom-price")];
-    const customMonths = [...document.querySelectorAll(".custom-months")];
-    const customDays = [...document.querySelectorAll(".custom-days")];
-    const customOutput = [...document.querySelectorAll(".output-custom")];
-    outputStringCustom = "";
-    for (let i = 0; i < customPrice.length; i++) {
-        customCalcPrice[i] =
-            customPrice[i].value * customMonths[i].value +
-            customDays[i].value * (customPrice[i].value / 30);
-        customOutput[i].textContent = formatPrice(customCalcPrice[i]);
-
-        if (customMonths[i].value) {
-            outputStringCustom += `OSTALO ${+customPrice[i].value} x `;
-            outputStringCustom += `${customMonths[i].value} m `;
-        }
-
-        if (customDays[i].value) {
-            outputStringCustom += `i ${customDays[i].value} d `;
-        }
-    }
-    console.log(customCalcPrice);
-    totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr, 0);
-    displayTotalCustom.textContent = formatPrice(totalCustom);
-
-    return totalCustom;
-}
 
 // clear
 

@@ -21,45 +21,51 @@
                 <h2>Osnovni podaci</h2>
                 <div class="wrapper wrapper--card">
                     <div class="card card--wide">
-                        <h3>Datumi:</h3>
 
-                        <label for="date-start-contract" class="wrapper--date">Unesite datum početka ugovora i pritisnite OK:
+                        <h3>Datumi:</h3>
+                        <label for="date-start-contract" class="wrapper--date">Unesite datum početka ugovora i
+                            pritisnite OK:
                             <input type="date" id="date-start-contract">
                         </label>
-
                         <label for="length" class="wrapper--label">
                             <input type="checkbox" id="length">
                             UO 12 meseci?
                         </label>
-
                         <button class="btn btn--date" type="button">OK</button>
+
                         <p>Datum početka ugovora: <span class="output" id="date-start"></span></p>
                         <p>Današnji datum: <span class="output" id="date-today"></span></p>
+
                         <h3>Trenutni paket:</h3>
                         <select name="rate-plan" id="rp-current">
                             <option value="" selected disabled>Izaberi:</option>
                         </select>
                         <p>Cena paketa: <span class="output" id="rp-price"></span></p>
                     </div>
+
                     <div class="card">
                         <h3>Ostvareni benefiti:</h3>
                         <p>Proteklo vreme: <span class="output" id="time-passed"></span></p>
                         <p>Ukupno benefiti: <span class="output" id="total-benefits"></span></p>
                     </div>
+
                     <div class="card">
                         <h3>Preostale pretplate:</h3>
                         <p>Preostalo vreme: <span class="output" id="time-left"></span></p>
                         <p>Ukupno preostale pretplate: <span class="output" id="total-left"></span></p>
                     </div>
+
                 </div>
             </section>
 
             <section>
                 <h2>Ostvareni benefiti</h2>
                 <div class="wrapper wrapper--card">
+
                     <div class="card card--wide">
                         <h3>Akcija:</h3>
                         <p>Vrsta akcije:</p>
+
                         <select name="reduction-type" id="reduction-type">
                             <option value="" selected disabled>Izaberi:</option>
                             <option value="one">1 dinar</option>
@@ -72,6 +78,7 @@
                         <select name="previous-rate-plan" id="rp-prev">
                             <option value="" selected disabled>Izaberi stari paket:</option>
                         </select>
+
                         <div id="reduction-percent">
                             <p>Procenat:</p>
                             <div class="wrapper">
@@ -94,10 +101,8 @@
                                     <input type="radio" id="50" name="reduction-percent" value="0.5">
                                     50 %</label>
                             </div>
-
-
-
                         </div>
+
                         <div id="reduction-ammount">
                             <p>Ime akcije:</p>
                             <div class="wrapper">
@@ -121,13 +126,16 @@
                                     Placaj 1.999,00 DIN</label>
                             </div>
                         </div>
+
                         <p class="info strong">Uneti broj meseci SAMO AKO je isteklo vreme akcije!</p>
                         <label for="reduction-time" class="wrapper--label">
                             Trajanje:<input type="text" id="reduction-time" class="multiplier"></label>
 
                         <p class="info">Mesečna razlika u ceni: <span id="reduction"></span></p>
                         <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
+
                         <hr>
+
                         <h3>Unesi proizvoljni iznos</h3>
                         <p class="info strong">Koristiti samo u slučaju nestandardne ponude!</p>
                         <p class="info">Ovde možete izračunati ostvarene benefite koji nisu deo standardne ponude i/ili
@@ -143,11 +151,12 @@
                             </li>
                         </ul>
 
-                        <ul id="section--custom" class="container">
-                        </ul>
+                        <ul id="section--custom" class="container"></ul>
                         <button class="btn btn--add btn--alt" type="button">Dodaj novi red / Završi</button>
                         <p>Ukupno proizvoljno: <span class="output" id="total-custom"></span></p>
+
                         <hr>
+
                         <p class="info">Ovaj kalendar služi da izračuna broj meseci i dana od datuma početka ugovora do
                             unetog proizvoljnog datuma kada se prekida benefit. Ne koristi se automatski u kalkulaciji,
                             već je
@@ -160,7 +169,6 @@
                         <button class="btn btn--custom-date btn--alt" type="button">OK</button>
                         <p>Proizvoljno vreme: <span class="output" id="custom-time-passed"></span></p>
                     </div>
-
 
                     <div class="card card--long">
                         <h3>Promo Kanali:</h3>
@@ -179,6 +187,7 @@
                             </li>
                         </ul>
                     </div>
+
                     <div class="card card--long">
                         <h3>Priključne takse:</h3>
                         <p class="info">* Jednokratne priključne takse se množe sa 1, osim ako se u polje "Količina"
@@ -196,6 +205,7 @@
                             </li>
                         </ul>
                     </div>
+
                 </div>
             </section>
 
@@ -214,6 +224,7 @@
     <footer>
         <p>&copy; Jovičić, 2022.</p>
     </footer>
+    
 </body>
 
 </html>
