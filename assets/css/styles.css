@@ -235,10 +235,6 @@ a {
     border-bottom: 1px dotted var(--clr-grey);
 }
 
-.wrapper--custom>input[type="text"] {
-    width: 100%;
-} 
-
 .wrapper--custom>button {
     margin: 0;
 }
@@ -303,14 +299,15 @@ select {
     border-radius: 0.25em;
 }
 
-input[type="date"] {
-    width: 94%;
-    justify-self: center;
-}
-
 input[type="text"] {
     width: 2ch;
     padding: 0.2em 0.3em;
+}
+
+input[type="date"],
+.wrapper--custom>input[type="text"] {
+    width: 94%;
+    justify-self: center;
 }
 
 /* buttons */

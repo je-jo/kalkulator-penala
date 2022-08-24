@@ -506,7 +506,7 @@ function createNewRow() {
     newRow.classList.add("wrapper--custom");
     const newCustomPrice = document.createElement("input");
     newCustomPrice.setAttribute("type", "text");
-    //newCustomPrice.setAttribute("placeholder", "49.5")
+    newCustomPrice.setAttribute("placeholder", "49.5")
     newCustomPrice.classList.add("custom-price");
     const newCustomMonths = document.createElement("input");
     newCustomMonths.setAttribute("type", "text");
