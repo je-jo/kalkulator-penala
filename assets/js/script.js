@@ -286,29 +286,31 @@ lengthInput.addEventListener("change", function (e) {
 
 //03. calculate days left and passed
 
-let totalDaysPassed = () => {
-    switch (currentYear - startYear) {
+function calculateDays(fromDay, toDay, fromMonth, toMonth, fromYear, toYear) {
+    switch (toYear - fromYear) {
         case 0:
-            return currentDay - startDay + (currentMonth - startMonth) * 30;
+            return toDay - fromDay + (toMonth - fromMonth) * 30;
         case 1:
             return (
                 30 -
-                startDay +
-                (12 - startMonth) * 30 +
-                currentDay +
-                (currentMonth - 1) * 30
+                fromDay +
+                (12 - fromMonth) * 30 +
+                toDay +
+                (toMonth - 1) * 30
             );
         case 2:
             return (
                 30 -
-                startDay +
-                (12 - startMonth) * 30 +
-                currentDay +
-                (currentMonth - 1) * 30 +
+                fromDay +
+                (12 - fromMonth) * 30 +
+                toDay +
+                (toMonth - 1) * 30 +
                 360
             );
     }
 };
+
+let totalDaysPassed = () => calculateDays(startDay, currentDay, startMonth, currentMonth, startYear, currentYear);
 
 let totalDaysLeft = () => contractLength - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
 
@@ -575,6 +577,8 @@ function calculateCustom() {
 }
 
 const customDateInput = document.querySelector("#custom-date-input");
+let customDay, customMonth, customYear;
+
 function setCustomDate() {
     let customDate = customDateInput.value.split("-");
     console.log(customDate);
@@ -586,29 +590,9 @@ function setCustomDate() {
         customDay = +customDate[2];
     }
 }
-let customDaysPassed = () => {
-    switch (customYear - startYear) {
-        case 0:
-            return customDay - startDay + (customMonth - startMonth) * 30;
-        case 1:
-            return (
-                30 -
-                startDay +
-                (12 - startMonth) * 30 +
-                customDay +
-                (customMonth - 1) * 30
-            );
-        case 2:
-            return (
-                30 -
-                startDay +
-                (12 - startMonth) * 30 +
-                customDay +
-                (customMonth - 1) * 30 +
-                360
-            );
-    }
-};
+
+let customDaysPassed = () => calculateDays(startDay, customDay, startMonth, customMonth, startYear, customYear);
+
 const customButtonDate = document.querySelector(".btn--custom-date");
 customButtonDate.addEventListener("click", () => {
     setCustomDate();
