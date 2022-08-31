@@ -255,36 +255,25 @@ displayToday.textContent = todayFormatted;
 
 // 02. set contract start date
 
-const dateInput = document.querySelector("#date-start-contract");
+const dateInputStart = document.querySelector("#date-start-contract");
 
-let startDay, startMonth, startYear;
-
-function setStartDate() { //runs on date button click and 12/24 check box
-    let startDate = dateInput.value.split("-");
-    startYear = +startDate[0]; //assumes date format '2021', '12', '31'
-    startMonth = +startDate[1];
-    if (startDate[2] == 31) {
-        startDay = 30;
+function setStartYear(dateentry) {  //runs on date button click and 12/24 check box, 
+    return +dateentry.value.split("-")[0];
+}
+function setStartMonth(dateentry) {
+    return +dateentry.value.split("-")[1];
+}
+function setStartDay(dateentry) {
+    if (+dateentry.value.split("-")[2] == 31) {
+        return 30;
     } else {
-        startDay = +startDate[2];
+        return +dateentry.value.split("-")[2];
     }
 }
 
-let contractLength = 719;
-
-const lengthInput = document.querySelector("#length"); // 12/24 checkbox
-
-lengthInput.addEventListener("change", function (e) {
-    if (e.currentTarget.checked) {
-        contractLength = 359;
-    } else {
-        contractLength = 719;
-    }
-    setStartDate();
-    updateDisplay();
-});
-
 //03. calculate days left and passed
+
+let contractLength = 719; //assumes contract lasts 23m and 29 days, with 1m = 30 days
 
 function calculateDays(fromDay, toDay, fromMonth, toMonth, fromYear, toYear) {
     switch (toYear - fromYear) {
@@ -310,9 +299,9 @@ function calculateDays(fromDay, toDay, fromMonth, toMonth, fromYear, toYear) {
     }
 };
 
-let totalDaysPassed = () => calculateDays(startDay, currentDay, startMonth, currentMonth, startYear, currentYear);
+let totalDaysPassed = () => calculateDays(setStartDay(dateInputStart), currentDay, setStartMonth(dateInputStart), currentMonth, setStartYear(dateInputStart), currentYear);
 
-let totalDaysLeft = () => contractLength - totalDaysPassed(); //assumes contract lasts 23m and 29 days, with 1m = 30 days
+let totalDaysLeft = () => contractLength - totalDaysPassed();
 
 // 04. format and display days
 
@@ -330,8 +319,8 @@ const displayTotalPaymentsLeft = document.querySelector("#total-left");
 
 
 function updateDisplay() {     //runs on date button click, 12/24 check box and select current rate plan
-    let startDateValue = new Date(dateInput.value);
-    if (!dateInput.value) {
+    let startDateValue = new Date(dateInputStart.value);
+    if (!dateInputStart.value) {
         alert("Unesite tačan datum početka ugovora.");
         return
     }
@@ -346,11 +335,13 @@ function updateDisplay() {     //runs on date button click, 12/24 check box and 
     }
 }
 
-// 05. date button
+// 05. date button and 12/24 checkbox
 
 const buttonDate = document.querySelector(".btn--date");
 buttonDate.addEventListener("click", () => {
-    setStartDate();
+    setStartYear(dateInputStart);
+    setStartMonth(dateInputStart);
+    setStartDay(dateInputStart);
     if (!totalDaysPassed() || totalDaysPassed() <= 0) {
         alert("Unesite tačan datum početka ugovora.");
         return
@@ -359,6 +350,19 @@ buttonDate.addEventListener("click", () => {
         alert("Ugovor je istekao.");
         return
     }
+    updateDisplay();
+});
+
+const lengthInput = document.querySelector("#length"); // 12/24 checkbox
+lengthInput.addEventListener("change", function (e) {
+    if (e.currentTarget.checked) {
+        contractLength = 359;
+    } else {
+        contractLength = 719;
+    }
+    setStartYear(dateInputStart);
+    setStartMonth(dateInputStart);
+    setStartDay(dateInputStart);
     updateDisplay();
 });
 
@@ -546,9 +550,8 @@ buttonAddRow.addEventListener("click", () => {
 const displayTotalCustom = document.querySelector("#total-custom");
 let totalCustom = 0;
 let outputStringCustom = "";
-
 let customCalcPrice = [];
-function calculateCustom() {
+function calculateCustom() { //calculates all custom entries and builds output string
     const customPrice = [...document.querySelectorAll(".custom-price")];
     const customMonths = [...document.querySelectorAll(".custom-months")];
     const customDays = [...document.querySelectorAll(".custom-days")];
@@ -557,52 +560,41 @@ function calculateCustom() {
     for (let i = 0; i < customPrice.length; i++) {
         customCalcPrice[i] =
             customPrice[i].value * customMonths[i].value +
-            customDays[i].value * (customPrice[i].value / 30);
+            (customDays[i].value * (customPrice[i].value / 30));
         customOutput[i].textContent = formatPrice(customCalcPrice[i]);
-
-        if (customMonths[i].value) {
-            outputStringCustom += `OSTALO ${+customPrice[i].value} x `;
-            outputStringCustom += `${customMonths[i].value} m `;
+        if (customMonths[i].value && customDays[i].value) { //builds string 
+            outputStringCustom += `OSTALO ${+customPrice[i].value} x ${customMonths[i].value} m i ${customDays[i].value} d + `
         }
-
-        if (customDays[i].value) {
-            outputStringCustom += `i ${customDays[i].value} d `;
+        if (customMonths[i].value && !customDays[i].value) {
+            outputStringCustom += `OSTALO ${+customPrice[i].value} x ${customMonths[i].value} m + `;
+        }
+        if (customDays[i].value && !customMonths[i].value) {
+            outputStringCustom += `OSTALO ${+customPrice[i].value} x ${customDays[i].value} d + `;
         }
     }
-    console.log(customCalcPrice);
     totalCustom = customCalcPrice.reduce((acc, curr) => acc + curr, 0);
     displayTotalCustom.textContent = formatPrice(totalCustom);
-
     return totalCustom;
 }
 
-const customDateInput = document.querySelector("#custom-date-input");
-let customDay, customMonth, customYear;
+//08a. calculate custom days passed
 
-function setCustomDate() {
-    let customDate = customDateInput.value.split("-");
-    console.log(customDate);
-    customYear = +customDate[0]; //assumes date format '2021', '12', '31'
-    customMonth = +customDate[1];
-    if (customDate[2] == 31) {
-        customDay = 30;
-    } else {
-        customDay = +customDate[2];
-    }
-}
-
-let customDaysPassed = () => calculateDays(startDay, customDay, startMonth, customMonth, startYear, customYear);
+const dateInputCustom = document.querySelector("#custom-date-input");
 
 const customButtonDate = document.querySelector(".btn--custom-date");
 customButtonDate.addEventListener("click", () => {
-    setCustomDate();
+    setStartYear(dateInputCustom);
+    setStartMonth(dateInputCustom);
+    setStartDay(dateInputCustom);
     displayCustomTimePassed.textContent = formattedCustomDaysPassed();
 });
+
+let customDaysPassed = () => calculateDays(setStartDay(dateInputStart), setStartDay(dateInputCustom), setStartMonth(dateInputStart), setStartMonth(dateInputCustom),
+    setStartYear(dateInputStart), setStartYear(dateInputCustom));
 
 let formattedCustomDaysPassed = () =>
     `${Math.floor(customDaysPassed() / 30)} m i ${customDaysPassed() % 30} d`;
 const displayCustomTimePassed = document.querySelector("#custom-time-passed");
-
 
 
 //09. benefits - promo channels and hardware items
@@ -656,6 +648,7 @@ function isChecked(e, arr) {
                 elem.qty = 0;
             }
         }
+
         calcElementPrice(arr);
     });
 }
@@ -685,6 +678,8 @@ function hasValue(e, arr) {
                 elem.modifier = +e.currentTarget.value;
                 if (elem.modifier > totalDaysPassed() / 30) {
                     alert("Pogresan unos! Akcija jos nije istekla.");
+                    e.currentTarget.value = ""; //clear wrong value
+                    elem.modifier = null;
                 }
             } else {
                 elem.modifier = null;
@@ -696,7 +691,11 @@ function hasValue(e, arr) {
                     elem.qty = 0;
                 }
             } else {
-                elem.qty = totalDaysPassed() / 30;
+                if (e.currentTarget.parentNode.firstElementChild.checked) {
+                    elem.qty = totalDaysPassed() / 30;
+                } else {
+                    elem.qty = 0;
+                }
             }
         }
         calcElementPrice(arr);
@@ -829,7 +828,7 @@ let buildOutputStringTotalBenefits = () => {
     return finalStringBenefits;
 };
 
-// 10. output
+// 11. show output
 
 const buttonFinal = document.querySelector(".btn--final");
 const outputFinal = document.querySelector("#output--final");
@@ -850,11 +849,7 @@ buttonFinal.addEventListener("click", function () {
     outputFinal.style.height = outputFinal.scrollHeight + "px";
 });
 
-//custom entries
-
-
-
-// clear
+// 12. clear
 
 const form = document.querySelector("form");
 const outputAll = [...document.querySelectorAll(".output")];
@@ -872,7 +867,7 @@ function clearAllObjects(arr) {
 
 function clearAll() {
     form.reset();
-    dateInput.value = "";
+    dateInputStart.value = "";
     selectedRatePlan = 0;
     multiplier = null;
     while (sectionCustom.firstChild) {
@@ -890,7 +885,6 @@ function clearAll() {
 }
 
 const buttonClear = document.querySelector(".btn--clear");
-
 buttonClear.addEventListener("click", clearAll);
 
 clearAll();
