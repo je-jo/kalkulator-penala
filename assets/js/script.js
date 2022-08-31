@@ -297,7 +297,7 @@ function calculateDays(fromDay, toDay, fromMonth, toMonth, fromYear, toYear) {
                 360
             );
     }
-};
+}
 
 let totalDaysPassed = () => calculateDays(setStartDay(dateInputStart), currentDay, setStartMonth(dateInputStart), currentMonth, setStartYear(dateInputStart), currentYear);
 
@@ -322,7 +322,7 @@ function updateDisplay() {     //runs on date button click, 12/24 check box and 
     let startDateValue = new Date(dateInputStart.value);
     if (!dateInputStart.value) {
         alert("Unesite tačan datum početka ugovora.");
-        return
+        return;
     }
     displayDateStart.textContent = formatDate(startDateValue);
     displayTimePassed.textContent = formattedDaysPassed();
@@ -344,11 +344,11 @@ buttonDate.addEventListener("click", () => {
     setStartDay(dateInputStart);
     if (!totalDaysPassed() || totalDaysPassed() <= 0) {
         alert("Unesite tačan datum početka ugovora.");
-        return
+        return;
     }
     if (totalDaysPassed() >= 719) {
         alert("Ugovor je istekao.");
-        return
+        return;
     }
     updateDisplay();
 });
@@ -363,6 +363,13 @@ lengthInput.addEventListener("change", function (e) {
     setStartYear(dateInputStart);
     setStartMonth(dateInputStart);
     setStartDay(dateInputStart);
+    if (totalDaysLeft() <= 0) {
+        alert("12 meseci je isteklo");
+        contractLength = 719;
+        e.currentTarget.checked = false;
+        updateDisplay();
+        return;
+    }
     updateDisplay();
 });
 
@@ -512,7 +519,7 @@ function createNewRow() {
     newRow.classList.add("wrapper--custom");
     const newCustomPrice = document.createElement("input");
     newCustomPrice.setAttribute("type", "text");
-    newCustomPrice.setAttribute("placeholder", "49.5")
+    newCustomPrice.setAttribute("placeholder", "49.5");
     newCustomPrice.classList.add("custom-price");
     const newCustomMonths = document.createElement("input");
     newCustomMonths.setAttribute("type", "text");
@@ -563,7 +570,7 @@ function calculateCustom() { //calculates all custom entries and builds output s
             (customDays[i].value * (customPrice[i].value / 30));
         customOutput[i].textContent = formatPrice(customCalcPrice[i]);
         if (customMonths[i].value && customDays[i].value) { //builds string 
-            outputStringCustom += `OSTALO ${+customPrice[i].value} x ${customMonths[i].value} m i ${customDays[i].value} d + `
+            outputStringCustom += `OSTALO ${+customPrice[i].value} x ${customMonths[i].value} m i ${customDays[i].value} d + `;
         }
         if (customMonths[i].value && !customDays[i].value) {
             outputStringCustom += `OSTALO ${+customPrice[i].value} x ${customMonths[i].value} m + `;
@@ -599,7 +606,7 @@ const displayCustomTimePassed = document.querySelector("#custom-time-passed");
 
 //09. benefits - promo channels and hardware items
 
-const inputChannels = [...document.querySelectorAll("input[name='channels']")];
+//const inputChannels = [...document.querySelectorAll("input[name='channels']")];
 const inputCheckboxes = [
     ...document.querySelectorAll("input[type='checkbox']"),
 ];

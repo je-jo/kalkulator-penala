@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -7,24 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/styles.css">
     <script src="assets/js/script.js" defer></script>
-    <title>Kalkulator ugovornih kazni</title>
+    <title>Early Cancellation Fee Calculator</title>
 </head>
 
 <body>
     <header>
-        <h1>Kalkulator ugovornih kazni</h1>
+        <h1>Early Cancellation Fee Calculator</h1>
     </header>
 
     <main>
         <form method="get">
             <section>
-                <h2>Osnovni podaci</h2>
+                <h2>General</h2>
                 <div class="wrapper wrapper--card">
                     <div class="card card--wide">
 
-                        <h3>Datumi:</h3>
-                        <label for="date-start-contract" class="wrapper--date">Unesite datum početka ugovora i
-                            pritisnite OK:
+                        <h3>Dates:</h3>
+                        <label for="date-start-contract" class="wrapper--date">Please enter contract start date and press OK:
                             <input type="date" id="date-start-contract">
                         </label>
                         <label for="length" class="wrapper--label">
@@ -40,7 +39,7 @@
                         <select name="rate-plan" id="rp-current">
                             <option value="" selected disabled>Izaberi:</option>
                         </select>
-                        <p>Cena paketa: <span class="output" id="rp-price"></span></p>
+                        <p>Monthly Charge: <span class="output" id="rp-price"></span></p>
                     </div>
 
                     <div class="card">
@@ -51,7 +50,7 @@
 
                     <div class="card">
                         <h3>Preostale pretplate:</h3>
-                        <p>Preostalo vreme: <span class="output" id="time-left"></span></p>
+                        <p>Months remaining in term: <span class="output" id="time-left"></span></p>
                         <p>Ukupno preostale pretplate: <span class="output" id="total-left"></span></p>
                     </div>
 
@@ -212,19 +211,19 @@
             </section>
 
             <section>
-                <h2>Izveštaj</h2>
+                <h2>Report</h2>
                 <div class="wrapper wrapper--output">
                     <textarea id="output--final" class="output">...</textarea>
-                    <button class="btn btn--final" type="button">Kreiraj izveštaj</button>
+                    <button class="btn btn--final" type="button">Generate report</button>
                 </div>
-                <button class="btn btn--clear" type="button">Obriši sve unose</button>
+                <button class="btn btn--clear" type="button">Clear all entries</button>
             </section>
 
         </form>
     </main>
 
     <footer>
-        <p>&copy; Jovičić, 2022.</p>
+        <p>Coded by <a href="https://github.com/je-jo">Jelena Jovičić</a>, 2022.</p>
     </footer>
 
 </body>
