@@ -4,6 +4,8 @@
 
 A calculator of early cancellation fee for a broadband. Built with vanilla javaScript and used in real world. :)
 
+This repo features dummy rate plans, silly product packages and ridiculous prices. It's super easy to add your own products, should you wish to use this calculator for your purposes.
+
 ## Table of contents
 
 - [Overview](#overview)
@@ -20,14 +22,15 @@ A calculator of early cancellation fee for a broadband. Built with vanilla javaS
 
 ### Description
 
-Cancelling service while still within the minimum contractual term may result in early cancellation fee (sometimes also called early termination fee). 
+Cancelling service while still within the minimum contractual term may result in early cancellation fee (sometimes also called early termination fee). Companies usually calculate this fee by multiplying monthly charge with the remaining number of months, but things are a bit more complicated where I live. Here we do the following:
 
 - Add up all the benefits that customer got by signing the contract. These may include price reduction, extra channels, free device etc.
-- Monthly charge x remaining number of months
+- Multiply monthly subscription with the remaining number of months.
 
-This means that the customer chooses whether he will pay the total amount of monthly subscriptions until the end of the minimum contractual term or whether he will pay for all the benefits he has received by signing the contract.
+This gives us two different ammounts. The lesser number is the actual fee the customer has to pay in case of early cancellation. If a customer hasn't received any benefits by signing the contract (so the first number is zero), the contract can be cancelled without any penalties.
 
-
+Things can get quite complicated when calculating all the benefits..
+..which is why I've built this app.
 
 ### Screenshot
 
