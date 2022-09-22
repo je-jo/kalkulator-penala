@@ -20,7 +20,6 @@
 * {
     margin: 0;
     padding: 0;
-    /* outline: 1px solid salmon; */
 }
 
 :focus {
@@ -61,6 +60,8 @@ select {
     --fs-small: 0.95rem;
     --box-shadow: 0 3px 5px rgba(0, 0, 0, 0.28);
     --transition: ease-out .05s;
+    --ff-normal: 'Inter', sans-serif;
+    --ff-code: 'Ubuntu Mono', monospace;
 }
 
 /* layout */
@@ -70,7 +71,7 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--ff-normal);
     font-size: 100%;
     background-color: var(--clr-bg);
     color: var(--clr-body);
@@ -79,10 +80,10 @@ body {
 header {
     display: grid;
     width: 100%;
-    min-height: 10vh;
+    min-height: 8vh;
     place-content: center;
-    padding-top: 5vh;
-    padding-bottom: 5vh;
+    padding-top: 4vh;
+    padding-bottom: 4vh;
     background-color: var(--clr-body);
     color: var(--clr-white);
 }
@@ -104,7 +105,7 @@ hr {
 footer {
     width: 100%;
     margin-top: auto;
-    padding: 1vh 0;
+    padding: 2vh 0;
     text-align: center;
     background-color: var(--clr-body);
     color: var(--clr-white);
@@ -171,7 +172,7 @@ a {
 }
 
 .output {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: var(--ff-code);
     font-size: var(--fs-lead);
     font-weight: var(--fw-strong);
     padding: 0 0.5rem;
