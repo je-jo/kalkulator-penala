@@ -61,7 +61,7 @@ My company offers a big variety of benefits for signing a contract, so things ca
 - If the customer has gained a free device or other hardware related benefits, tick the appropriate boxes.
 - If the customer has gained a benefit not included in the app, enter the appropriate ammounts, months and days.
 - After you have ticked all the benefits the customer gained, click "Generate Report" button. The report can be edited and copied.
-- To calculate next customer's fee, click "Delete all entries" and/or refresh the page.
+- To calculate next customer's fee, click "Clear all entries" and/or refresh the page.
 
 ### Edit with your data
 
@@ -97,10 +97,13 @@ Substitute "item-name" with your product name (quoted, lower case, dashes instea
 
 ### Useful resources
 
-Too many things going on here, so I can only link to my two main learning resources. I'm sure there are better, cleaner and more advanced ways to achieve the functionality of this app, but I'm happy to be able to build an actual useful thing with the knowledge I currently possess. Everything I know about javaScript from these two platforms:
+Too many things going on here, so I can only link to my two main learning resources. I'm sure there are better, cleaner and more advanced ways to achieve the functionality of this app, but I'm happy to be able to build an actual useful thing with the knowledge I currently possess. Everything I know about javaScript is from these two platforms:
 
-- [The Odin Project](https://www.theodinproject.com/);
-- [freeCodeCamp](https://www.freecodecamp.org/);
+- [The Odin Project](https://www.theodinproject.com/)
+- [freeCodeCamp](https://www.freecodecamp.org/)
+
+The scissors favicon is from here:
+- [favicon.io](https://favicon.io/)
 
 ## Author
 

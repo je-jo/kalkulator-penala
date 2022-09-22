@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Ubuntu+Mono&display=swap"
+        rel="stylesheet">
     <script src="assets/js/script.js" defer></script>
     <title>Early Cancellation Fee Calculator</title>
 </head>
@@ -47,43 +49,43 @@
                     </div>
 
                     <div class="card">
-                        <h3>Ostvareni benefiti:</h3>
-                        <p>Proteklo vreme: <span class="output" id="time-passed"></span></p>
-                        <p>Ukupno benefiti: <span class="output" id="total-benefits"></span></p>
+                        <h3>Benefits:</h3>
+                        <p>Months completed: <span class="output" id="time-passed"></span></p>
+                        <p>Total benefits: <span class="output" id="total-benefits"></span></p>
                     </div>
 
                     <div class="card">
-                        <h3>Preostale pretplate:</h3>
+                        <h3>Time left</h3>
                         <p>Months remaining in term: <span class="output" id="time-left"></span></p>
-                        <p>Ukupno preostale pretplate: <span class="output" id="total-left"></span></p>
+                        <p>Total payments left: <span class="output" id="total-left"></span></p>
                     </div>
 
                 </div>
             </section>
 
             <section>
-                <h2>Ostvareni benefiti</h2>
+                <h2>Benefits</h2>
                 <div class="wrapper wrapper--card">
 
                     <div class="card card--wide">
-                        <h3>Akcija:</h3>
-                        <p>Vrsta akcije:</p>
+                        <h3>Price reduction:</h3>
+                        <p>Price reduction type:</p>
 
                         <select name="reduction-type" id="reduction-type">
-                            <option value="" selected disabled>Izaberi:</option>
-                            <option value="one">1 dinar</option>
-                            <option value="prev">Stara cena</option>
-                            <option value="percent">Procenat</option>
-                            <option value="ammount">Iznos</option>
-                            <option value="none">Nema akciju</option>
+                            <option value="" selected disabled>Choose:</option>
+                            <option value="one">1 euro</option>
+                            <option value="prev">Previous RP Price</option>
+                            <option value="percent">Percentage</option>
+                            <option value="ammount">Lowered Price</option>
+                            <option value="none">No reduction</option>
                         </select>
 
                         <select name="previous-rate-plan" id="rp-prev">
-                            <option value="" selected disabled>Izaberi stari paket:</option>
+                            <option value="" selected disabled>Choose previous rate plan:</option>
                         </select>
 
                         <div id="reduction-percent">
-                            <p>Procenat:</p>
+                            <p>Percentage:</p>
                             <div class="wrapper">
                                 <label for="5" class="wrapper--label">
                                     <input type="radio" id="5" name="reduction-percent" value="0.05">
@@ -107,106 +109,111 @@
                         </div>
 
                         <div id="reduction-ammount">
-                            <p>Ime akcije:</p>
+                            <p>Lowered price:</p>
                             <div class="wrapper">
-                                <label for="599" class="wrapper--label">
-                                    <input type="radio" id="599" name="reduction-ammount" value="599">
-                                    Placaj 599,00 DIN</label>
-                                <label for="699" class="wrapper--label">
-                                    <input type="radio" id="699" name="reduction-ammount" value="699">
-                                    Placaj 699,00 DIN</label>
-                                <label for="1499" class="wrapper--label">
-                                    <input type="radio" id="1499" name="reduction-ammount" value="1499">
-                                    Placaj 1.499,00 DIN</label>
-                                <label for="1599" class="wrapper--label">
-                                    <input type="radio" id="1599" name="reduction-ammount" value="1599">
-                                    Placaj 1.599,00 DIN</label>
-                                <label for="1799" class="wrapper--label">
-                                    <input type="radio" id="1799" name="reduction-ammount" value="1799">
-                                    Placaj 1.799,00 DIN</label>
-                                <label for="1999" class="wrapper--label">
-                                    <input type="radio" id="1999" name="reduction-ammount" value="1999">
-                                    Placaj 1.999,00 DIN</label>
+                                <label for="59.9" class="wrapper--label">
+                                    <input type="radio" id="59.9" name="reduction-ammount" value="59.9">
+                                    59,90 EUR</label>
+                                <label for="69.9" class="wrapper--label">
+                                    <input type="radio" id="69.9" name="reduction-ammount" value="69.9">
+                                    69,90 EUR</label>
+                                <label for="149.9" class="wrapper--label">
+                                    <input type="radio" id="149.9" name="reduction-ammount" value="149.9">
+                                    149,90 EUR</label>
+                                <label for="159.9" class="wrapper--label">
+                                    <input type="radio" id="159.9" name="reduction-ammount" value="159.9">
+                                    159,90 EUR</label>
+                                <label for="179.9" class="wrapper--label">
+                                    <input type="radio" id="179.9" name="reduction-ammount" value="179.9">
+                                    179,90 EUR</label>
+                                <label for="199.9" class="wrapper--label">
+                                    <input type="radio" id="199.9" name="reduction-ammount" value="199.9">
+                                    199,90 EUR</label>
                             </div>
                         </div>
 
-                        <p class="info strong">Uneti broj meseci SAMO AKO je isteklo vreme akcije!</p>
+                        <p class="info strong">Enter months ONLY IF the reduction time has already passed.</p>
                         <label for="reduction-time" class="wrapper--label">
-                            Trajanje:<input type="text" id="reduction-time" class="multiplier"></label>
+                            Months:<input type="text" id="reduction-time" class="multiplier"></label>
 
-                        <p class="info">Mesečna razlika u ceni: <span id="reduction"></span></p>
-                        <p>Ukupno akcijska pogodnost: <span id="total-reduction" class="output"></span></p>
+                        <p class="info">Monthly price difference: <span id="reduction"></span></p>
+                        <p>Total price reduction benefit: <span id="total-reduction" class="output"></span></p>
 
                         <hr>
 
-                        <h3>Unesi proizvoljni iznos</h3>
-                        <p class="info strong">Koristiti samo u slučaju nestandardne ponude!</p>
-                        <p class="info">Ovde možete izračunati ostvarene benefite koji nisu deo standardne ponude i/ili
-                            benefite koji su prekinuti pre predviđenog roka. Unesite iznos, broj meseci i broj dana. Za
-                            izračunavanje broja dana možete koristiti kalendar ispod.</p>
-                        <p class="info">Ovako obračunate stavke se pojavljuju na kraju izveštaja kao "OSTALO" pa je
-                            potrebno ručno uneti naziv ostvarenog benefita koji naplaćujemo korisniku.</p>
+                        <h3>Enter custom ammount</h3>
+                        <p class="info strong">Use only for non-standard benefits!</p>
+                        <p class="info">Here you can calculate the benefits which are not included in the app, or have
+                            ended prematurely. Enter the price, months and days. For calculating months and days, you
+                            can use
+                            the calendar below.
+                        </p>
+                        <p class="info">The custom entries are added to the end of the report as "MISC.". You can edit
+                            the name of the benefit in the report.</p>
                         <ul>
                             <li class="wrapper wrapper--custom strong">
-                                <div>Upisi iznos</div>
+                                <div>Price</div>
                                 <div>M</div>
                                 <div>D</div>
-                                <div>Izracunato</div>
-                                <div>Obrisi red</div>
+                                <div>Calculated</div>
+                                <div>Delete row</div>
                             </li>
                         </ul>
 
                         <ul id="section--custom" class="container"></ul>
-                        <button class="btn btn--add btn--alt" type="button">Dodaj novi red / Završi</button>
-                        <p>Ukupno proizvoljno: <span class="output" id="total-custom"></span></p>
+                        <button class="btn btn--add btn--alt" type="button">Add row / Calculate</button>
+                        <p>Total custom: <span class="output" id="total-custom"></span></p>
 
                         <hr>
 
-                        <p class="info">Ovaj kalendar služi da izračuna broj meseci i dana od datuma početka ugovora do
-                            unetog proizvoljnog datuma kada se prekida benefit. Ne koristi se automatski u kalkulaciji,
-                            već je
-                            potrebno ručno upisati broj meseci i dana u polja iznad.</p>
+                        <p class="info">This calendar calculates months and days from the start of the contract to the
+                            entered custom date when the benefit ended prematurely. The results are not used in
+                            any calculation, you must manually enter the months and days in the text fields above.
+                        </p>
 
-                        <label for="custom-date-input" class="wrapper--date">Unesite proizvoljni datum i pritisnite OK:
-                            <input type="date" id="custom-date-input" min="2020-01-01" max="2022-12-31">
+                        <label for="custom-date-input" class="wrapper--date">Enter custom date and press OK:
+                            <input type="date" id="custom-date-input">
                         </label>
 
                         <button class="btn btn--custom-date btn--alt" type="button">OK</button>
-                        <p>Proizvoljno vreme: <span class="output" id="custom-time-passed"></span></p>
+                        <p>Custom time passed: <span class="output" id="custom-time-passed"></span></p>
                     </div>
 
                     <div class="card card--long">
-                        <h3>Promo Kanali:</h3>
-                        <p class="info">* Cena paketa kanala se množi sa brojem proteklih meseci i dana, osim ako se
-                            ručno
-                            upiše broj meseci koliko je trajala akcija.</p>
-                        <p class="info strong">Uneti broj meseci SAMO AKO je isteklo vreme akcije!</p>
-                        <p>Ukupno kanali: <span class="output" id="total-channels"></span></p>
+                        <h3>Extra channels:</h3>
+                        <p class="info">* Channels' prices are multiplied by the number of completed months and days,
+                            unless
+                            you manually enter the number of Months the customer had extra channels.</p>
+                        <p class="info strong">Enter Months ONLY IF the free channels period has ended!</p>
+                        <p>Total channels: <span class="output" id="total-channels"></span></p>
                         <ul id="channels" class="container">
                             <li class="wrapper wrapper--checkbox strong">
                                 <div class="checkbox"></div>
-                                <div>Naziv</div>
-                                <div>Cena</div>
+                                <div>Name</div>
+                                <div>Price</div>
                                 <div>M*</div>
-                                <div>Ukupno cena</div>
+                                <div>Total</div>
                             </li>
                         </ul>
                     </div>
 
                     <div class="card card--long">
-                        <h3>Priključne takse:</h3>
-                        <p class="info">* Jednokratne priključne takse se množe sa 1, osim ako se u polje "Količina"
-                            ne upiše broj uređaja istog tipa. Iznos rente se množi brojem proteklih meseci i dana, a ako
-                            korisnik ima više uređaja istog tipa, i sa upisanim brojem uređaja.</p>
-                        <p class="info strong">Uneti količinu SAMO AKO korisnik ima više uređaja istog tipa!</p>
-                        <p>Ukupno oprema: <span class="output" id="total-hardware"></span></p>
+                        <h3>Hardware:</h3>
+                        <p class="info">* Hardware prices are multiplied by 1, unless you entered the Ammount of devices
+                            of same type.</p>
+                        <p class="info">For devices that are payed for on a montly basis, the "rent" price is
+                            multiplied by the number of completed months and days, and by the number of devices of same
+                            type, if the Ammount is entered.</p>
+                        <p class="info strong">
+                            Enter Ammount ONLY IF the customer has multiple devices of the same type!</p>
+                        <p>Total hardware: <span class="output" id="total-hardware"></span></p>
                         <ul id="hardware" class="container">
                             <li class="wrapper wrapper--checkbox strong">
                                 <div class="checkbox"></div>
-                                <div>Naziv</div>
-                                <div>Cena</div>
-                                <div>K*</div>
-                                <div>Ukupno cena</div>
+                                <div>Name</div>
+                                <div>Price</div>
+                                <div>A*</div>
+                                <div>Total</div>
                             </li>
                         </ul>
                     </div>
