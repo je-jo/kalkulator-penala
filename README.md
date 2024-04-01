@@ -1,10 +1,8 @@
-//this is for the public version
-
-# README - Early Cancellation Fee Calculator
+# README - Kalkulator penala (Early Cancellation Fee Calculator)
 
 A calculator of early cancellation fee for a broadband. Built with vanilla javaScript and used in real world. :)
 
-This repo features dummy rate plans, silly product packages and ridiculous prices. It's built to be super easy to add your own products, should you wish to use this calculator for your purposes.
+It's built to be super easy to add your own products, should you wish to use this calculator for your purposes.
 
 ## Table of contents
 
@@ -36,14 +34,12 @@ My company offers a big variety of benefits for signing a contract, so things ca
 
 ### Screenshot
 
-| ![](screenshot.png) |
-|:--:|
-| The version shown here is the actual version with real company data. The public version is in english and with dummy data.|
+![](screenshot.png)
 
 ### Links
 
-- [Repo](https://github.com/je-jo/early-cancellation-fee-calculator)
-- [Live Site](https://je-jo.github.io/early-cancellation-fee-calculator/)
+- [Repo](https://github.com/je-jo/kalkulator-penala)
+- [Live Site](https://kalkulator-penala.netlify.app/)
 
 ### Features
 
